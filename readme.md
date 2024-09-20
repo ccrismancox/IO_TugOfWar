@@ -5,7 +5,7 @@
 ## A note for replicators
 Conducting constrained maximum likelihood estimation (CMLE)  requires specialized (open source) software that we are only able to run using the Ubuntu Linux operating system. 
 We provide detailed setup instructions below. 
-All results were produced on a computer using Ubuntu 20.04.04 (Focal Fossa) using R 4.4.1 ("Race for Your Life") and Python 3.10.12.
+All results were produced on a computer using Ubuntu 20.04.4 (Focal Fossa) using R 4.4.1 ("Race for Your Life") and Python 3.10.12.
 
 ## Replication package contents
 Files marked with (U) require Ubuntu, with the setup as described below.
@@ -19,7 +19,7 @@ Files marked with (U) require Ubuntu, with the setup as described below.
 	- `replicateAppendix.sh` (U) Reproduces all results in the Appendix using the code files below in order. Tables and Figures are
       produced and placed in the Output folder
 - Installation
-    - `pyopt_setup_python3.sh` (U)  A bash script designed to be run on a fresh installation of Ubuntu 20.04.04.  This will install all the necessary outside software to replicate the results. (Internet connection is required)
+    - `pyopt_setup_python3.sh` (U)  A bash script designed to be run on a fresh installation of Ubuntu 20.04.4.  This will install all the necessary outside software to replicate the results. (Internet connection is required)
     - `Rpackages.r` An R script that installs all the `R` packages used here with the versions used here.
 - Data: These are both the original data used in the analysis as well as the merged and complete versions used in the analysis.
     - `acosta1993.csv` Acosta and Ramos' (2017) data to supplement missing data from the Global Terrorism Database (GTD).
@@ -100,9 +100,9 @@ Files marked with (U) require Ubuntu, with the setup as described below.
     - Tables. A folder containing all the produced tables in text format
 	
 
-## Ubuntu 20.04.04 setup 
+## Ubuntu 20.04.4 setup 
 
-From a fresh installation of Ubuntu 20.04.04, you will need to use the following steps to prepare the replication environment.
+From a fresh installation of Ubuntu 20.04.4, you will need to use the following steps to prepare the replication environment. [The iso image can be obtained here](https://old-releases.ubuntu.com/releases/20.04.4/ubuntu-20.04.4-desktop-amd64.iso).
 
 1. Download the replication package 
 2. Extract the replication package to the desired location (`${REPDIR}`)
