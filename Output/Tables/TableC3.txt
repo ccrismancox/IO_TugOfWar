@@ -1,0 +1,14 @@
+Table: ML estimates for the factor model
+
+|Equation                     |Variable       | Estimate|
+|:----------------------------|:--------------|--------:|
+|Factor Weights ($\omega$)    |Trusts Hamas   |    -0.09|
+|                             |Trust Fatah    |     0.06|
+|                             |Supports Hamas |    -0.11|
+|                             |Supports Fatah |     0.10|
+|                             |Votes Hamas    |    -0.07|
+|                             |Votes Fatah    |     0.07|
+|AR(1) term ($\rho$)          |Lagged DV      |     0.99|
+|Additional inputs ($\alpha$) |Constant       |    -0.01|
+|                             |Hamas attack   |    -0.28|
+|                             |Fatah attack   |     1.05|

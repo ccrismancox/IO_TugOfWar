@@ -1,0 +1,10 @@
+Table: Correlations among survey responses
+
+|                  | Trust in Hamas| Trust in Fatah| Support for Hamas| Support for Fatah| Vote for Hamas| Vote for Fatah|
+|:-----------------|--------------:|--------------:|-----------------:|-----------------:|--------------:|--------------:|
+|Trust in Hamas    |           1.00|          -0.19|              0.77|             -0.43|           0.98|          -0.72|
+|Trust in Fatah    |          -0.19|           1.00|             -0.27|              0.67|          -0.54|           0.92|
+|Support for Hamas |           0.77|          -0.27|              1.00|             -0.57|           0.89|          -0.83|
+|Support for Fatah |          -0.43|           0.67|             -0.57|              1.00|           0.56|          -0.32|
+|Vote for Hamas    |           0.98|          -0.54|              0.89|              0.56|           1.00|          -0.73|
+|Vote for Fatah    |          -0.72|           0.92|             -0.83|             -0.32|          -0.73|           1.00|

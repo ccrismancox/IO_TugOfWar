@@ -1,0 +1,6 @@
+Table: Comparative model tests
+
+|Alternative model |Test             |Null distribution  |Statistic |p value |
+|:-----------------|:----------------|:------------------|:---------|:-------|
+|No competition    |Likelihood ratio |chi^2(6)           |280       |< 0.01  |
+|Tit-for-tat       |Clarke's test    |Binomial(300, 0.5) |182       |< 0.01  |

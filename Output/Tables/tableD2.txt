@@ -1,0 +1,8 @@
+Table: ML estimates for latent unemployment conditions
+
+|Variable                                | Est.|
+|:---------------------------------------|----:|
+|Self reported unemployment rate (JMCC)  | 0.18|
+|Self reported unemployment rate (PCPSR) | 0.17|
+|Estimated unemployment rate (PCPSR)     | 0.08|
+|Estimated unemployment rate (PCBS)      | 0.21|

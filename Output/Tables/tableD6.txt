@@ -1,0 +1,8 @@
+Table: Robustness values and sensitivity of gamma_{i,1}.
+
+|                                       | \multicolumn{1}{c}{Fatah}| \multicolumn{1}{c}{Hamas}|
+|:--------------------------------------|-------------------------:|-------------------------:|
+|RV-symmetry                            |                 0.7002560|                 0.9393965|
+|RV-null                                |                 0.7625893|                 0.4409162|
+|$R^2$ other covariates                 |                 0.0252047|                 0.1568160|
+|Max. partial $R^2$ of other covariates |                 0.0107039|                 0.0517259|

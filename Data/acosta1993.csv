@@ -1,0 +1,11 @@
+DATE,ORGANIZATION,CITY,REGION,COUNTRY,GLOBAL REGION,KILLED,WOUNDED,TARGET,TARGET TYPE,ATTACK TYPE,WEAPON TYPE,SUICIDE?,SUCCESSFUL?
+1993-12-03,Fatah,"",Gaza Strip,Israel,Middle East & North Africa,0,0,IDF post,Military,Armed assault,Firearms,0,1
+1993-12-03,Fatah,"",Gaza Strip,Israel,Middle East & North Africa,0,0,IDF post,Military,Armed assault,Firearms,0,1
+1993-12-06,Hamas,Arura,Judea,Israel,Middle East & North Africa,0,0,IDF soldiers,Military,Unknown,Unknown,0,1
+1993-12-06,Hamas,Kiryat Arba,Judea,Israel,Middle East & North Africa,2,3,Israeli civilians,Private citizens and property,Armed assault,Firearms,0,1
+1993-12-11,Hamas,Gaza City,Gaza Strip,Israel,Middle East & North Africa,0,0,IDF soldiers,Military,Unknown,Unknown,0,1
+1993-12-14,Hamas,"",Gaza Strip,Israel,Middle East & North Africa,0,0,IDF soldiers,Military,Armed assault,Firearms,0,1
+1993-12-14,Hamas,Gaza City,Gaza Strip,Israel,Middle East & North Africa,0,0,Israeli border police,Police,Armed assault,Firearms,0,1
+1993-12-14,Hamas,"",Gaza Strip,Israel,Middle East & North Africa,0,0,IDF soldiers,Military,Armed assault,Other,0,0
+1993-12-24,Hamas,"",Gaza Strip,Israel,Middle East & North Africa,2,2,IDF commander; civilians,Military,Assassination,Firearms,0,1
+1993-12-25,Fatah,Eilat,"",Israel,Middle East & North Africa,0,11,Israeli ship,Maritime,Bombing/Explosion,Explosives/Bombs/Dynamite,0,1

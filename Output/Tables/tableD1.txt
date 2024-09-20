@@ -1,0 +1,30 @@
+Table: ML estimates for latent support for violence
+
+|Variable                                     |  Est.|
+|:--------------------------------------------|-----:|
+|\% Supporting two-state solution             | -0.15|
+|\% Supporting a one shared state solution    |  0.02|
+|\% Supporting a one Islamic state solution   |  0.15|
+|\% Saying there is no solution               |  0.14|
+|\% Supporting a peace process                | -0.17|
+|\% Opposing a peace process                  |  0.17|
+|\% Supporting military action against Israel |  0.17|
+|\% Opposing military action against Israel   | -0.18|
+|\% Supporting suicide bombings               |  0.17|
+|\% Opposing suicide bombings                 | -0.17|
+|\% Very optimistic about peace               | -0.16|
+|\% Optimistic about peace                    | -0.17|
+|\% Pessimistic about peace                   |  0.13|
+|\% Very pessimistic about peace              |  0.17|
+|\% Strongly support Oslo                     | -0.11|
+|\% Support Oslo                              | -0.10|
+|\% Oppose Oslo                               |  0.14|
+|\% Support the \emph{Intifada}               |  0.09|
+|\% Oppose the \emph{Intifada}                | -0.09|
+|\% Who think peace is dead                   |  0.10|
+|\% Who think the peace process is stalled    | -0.03|
+|\% Who think peace is alive                  | -0.13|
+|\% Support armed attacks generally           |  0.17|
+|\% Support armed attacks against civilians   |  0.16|
+|\% Support armed attacks against soliders    |  0.13|
+|\% Support armed attacks against settlers    |  0.12|
