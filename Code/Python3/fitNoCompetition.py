@@ -4,7 +4,7 @@ Sept 2024
 """
 
 from genGiven import *
-from estFunctions_noComp import *
+from estFunctions_NoComp import *
 from attackProbs import *
 import numpy as np
 import os

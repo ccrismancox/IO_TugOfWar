@@ -16,6 +16,7 @@ library("matrixStats")
 library("ggplot2")
 library("rootSolve")
 library("Matrix")
+library(knitr)
 source("gamma2trans.R")
 source("helperFunctions.r")
 ###############################################
@@ -190,14 +191,14 @@ ggCF_together$CF<- factor(ggCF_together$CF, level=useLevel, ordered=T)
 
 
 plotCF_together <- ggplot(ggCF_together, aes(x=time, y=change, color=actor)) +
-  geom_path(size=1.05) +
+  geom_path(linewidth=1.05) +
   theme_bw(12) +
   xlab("Time") + ylab("Change in Pr. Attack") + 
   facet_wrap(~cfbt, labeller=label_parsed,nrow = 2)+
   scale_color_manual("Effect on",
                      values=c("navyblue", "orangered")) +
   scale_linetype_manual(values= c(1, 2), name="Actor") +
-  geom_hline(yintercept=0,size=0.75) +
+  geom_hline(yintercept=0,linewidth=0.75) +
   scale_x_date(breaks=as.Date(paste(seq(from=1994,to=2018, by=4), "-02-01",sep="")),
                labels = seq(from=1994,to=2018, by=4)) +
   theme(legend.position="bottom",

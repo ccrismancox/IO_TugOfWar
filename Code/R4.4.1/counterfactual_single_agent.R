@@ -11,7 +11,7 @@ library("matrixStats")
 library("ggplot2")
 library("rootSolve")
 library("Matrix")
-
+library(knitr)
 source("helperFunctions.r")
 source("gamma2trans.R")
 # ######################################
@@ -103,12 +103,12 @@ ggdif2time <- data.frame(change = c(diffHamas[mainData$states.int],
 
 
 pd2time <- ggplot(ggdif2time) +
-  geom_line(aes(y=change, x=time, color = as.factor(actor), linetype = as.factor(actor)), size=1.15) +
+  geom_line(aes(y=change, x=time, color = as.factor(actor), linetype = as.factor(actor)), linewidth=1.15) +
   theme_bw(11) +
   xlab("Time") + ylab("Change in Pr. Attack") +
   scale_color_manual(values=c("navyblue", "orangered"),
                      name="Actor") + scale_linetype_manual(values= c(1, 2), name="Actor") +
-  geom_hline(yintercept=0,size=0.9) +
+  geom_hline(yintercept=0,linewidth=0.9) +
   theme(panel.grid.major.x = element_blank(),
         panel.grid.minor.x = element_blank()) +
   theme(legend.position=c(0.125, 0.8)) +

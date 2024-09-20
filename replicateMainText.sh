@@ -1,6 +1,7 @@
+cd Code/R4.4.1
 Rscript buildDataSets.r
 Rscript measurementModel.r
-Rscript firstStateEstimation.r
+Rscript firstStageEstimation.r
 Rscript secondStageEstimation.r
 Rscript graphAttackProbs.r
 Rscript fitNoCompetition.r

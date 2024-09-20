@@ -73,9 +73,9 @@ ggdata <-  data.frame(PrAttack = c(EQCP$prAH, EQCP$prAF),
 
 
 pccp <- ggplot(ggdata, aes(x=states, y=PrAttack, color=actor, linetype=actor)) +
-    geom_histogram(data=Obs, aes(x=states.discrete, y=..density..),
+    geom_histogram(data=Obs, aes(x=states.discrete, y=after_stat(density)),
                  inherit.aes=F, fill="grey", color="grey", alpha=.75)+
-            geom_line(size=1.5) + theme_bw(16) +
+            geom_line(linewidth=1.5) + theme_bw(16) +
             xlab("Relative Popularity (states)") + ylab("Pr. Attack") +
             scale_color_manual(values=c("navyblue", "orangered"),
                      name="Actor") + scale_linetype_manual(values= c(1, 2), name="Actor") +
@@ -106,7 +106,7 @@ ggdata <-  data.frame(PrAttack = c(EQCP$prAH[mainData$states.int], EQCP$prAF[mai
 ggdata$Variable <- factor(ggdata$Variable, levels = c( "Relative Popularity","Hamas Pr. Attack", "Fatah Pr. Attack"))
 
 pccptime2yd  <- ggplot(ggdata, aes(x=time, y=PrAttack, color=Variable, linetype=Variable, alpha=Variable)) +
-  geom_line(size=1.5) + theme_bw(12) +
+  geom_line(linewidth=1.5) + theme_bw(12) +
   xlab("Time") + ylab("Pr. Attack") + 
   scale_y_continuous(sec.axis = sec_axis(~.*(histate-lostate) + lostate, name = "Relative popularity")) + 
   scale_x_date(breaks=as.Date(paste(seq(from=1994,to=2018, by=4), "-02-01",sep="")),

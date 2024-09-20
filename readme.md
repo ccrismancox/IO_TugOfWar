@@ -111,7 +111,7 @@ From a fresh installation of Ubuntu 20.04.04, you will need to use the following
 ```bash
 bash pyopt_setup_python3.sh
 ```
-This step may take up to 30 minutes depending on network speed and you may be prompted to press "Enter" at one or more points in the process. As software is downloaded, updated, or installed you may notice various background notifications appearing.  These are normal and can be ignored.
+This step may take up to 30 minutes depending on network speed, and you may be prompted to press "Enter" at one or more points in the process. As software is downloaded, updated, or installed you may notice various background notifications appearing.  These are normal and can be ignored.
 
 5. Run the file `Rpackages.R`
 ```bash
@@ -123,7 +123,7 @@ Rscript Rpackages.R
 ## Order of replication
 
 Any file can be run and will produce the desired output as listed in its description.
-Two additional script files are provided to replicated the main paper and the appendix, respectively. 
+Two additional script files are provided to replicate the main paper and the appendix, respectively. 
 These call the scripts, in order, to produce the files in the Output folder.
 Once the above installation is complete, these can be run by opening the terminal in this folder and running
 ```bash

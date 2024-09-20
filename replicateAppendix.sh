@@ -1,3 +1,4 @@
+cd Code/R4.4.1
 Rscript buildDataSets_byAttackType.r
 Rscript counterfactual_beta.R
 Rscript counterfactual_kappa.R

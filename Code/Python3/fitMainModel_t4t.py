@@ -2,6 +2,7 @@
 Fitting the t4t alternative model
 Sept. 2024 
 """
+from genGiven import *
 from estFunctions_t4t import *
 from attackProbs import *
 import numpy as np

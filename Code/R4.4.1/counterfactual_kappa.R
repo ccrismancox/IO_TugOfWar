@@ -200,14 +200,14 @@ ggCF_together$CF <- rep(useLevel, each = dim(ggCF_Hkappa)[1])
 ggCF_together$CF<- factor(ggCF_together$CF, level=useLevel, ordered=T)
 
 plotCF_together <- ggplot(ggCF_together, aes(x=time, y=change, color=actor)) +
-  geom_path(size=1.05) +
+  geom_path(linewidth=1.05) +
   theme_bw(16) +
   xlab("Time") + ylab("Change in Pr. Attack") + 
   facet_wrap(~cfbt, labeller=label_parsed,nrow = 2)+
   scale_color_manual("Effect on",
                      values=c("navyblue", "orangered")) +
   scale_linetype_manual(values= c(1, 2), name="Actor") +
-  geom_hline(yintercept=0,size=0.75) +
+  geom_hline(yintercept=0,linewidth=0.75) +
   scale_x_date(breaks=as.Date(paste(seq(from=1994,to=2018, by=4), "-02-01",sep="")),
                labels = seq(from=1994,to=2018, by=4)) +
   theme(legend.position="bottom",
@@ -255,10 +255,10 @@ sATE.df <- data.frame(sATE= paste("Hamas: ", signif(sATE[1,], 2),"\nFatah: ",sig
 
 plotCF_together <- plotCF_together+
   geom_text(data=sATE.df, aes(x=ggCF_together$time[1], y=Inf,label=title, hjust=0,vjust=1.7),
-            size=4, parse = TRUE,
+            linewidth=4, parse = TRUE,
             color="Black")+
   geom_text(data=sATE.df, aes(x=ggCF_together$time[1], y=Inf,label=sATE, hjust=0,vjust=1.8),
-            size=4,
+            linewidth=4,
             color="Black")
 
 ggsave("../../Output/Figures/figureA4.pdf", plot = plotCF_together, 
