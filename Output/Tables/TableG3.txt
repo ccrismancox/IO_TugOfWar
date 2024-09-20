@@ -1,7 +1,0 @@
-Table: Sub-sample model fit
-
-|              |Era           |Obs |Clarke stat |Clarke $p$ value |LR stat |LR $p$ value |
-|:-------------|:-------------|:---|:-----------|:----------------|:-------|:------------|
-|Oslo          |Oslo          |81  |50          |$ < 0.05$        |80      |$ < 0.05$    |
-|2nd Intifada  |2nd Intifada  |64  |34          |0.27             |30      |$ < 0.05$    |
-|Post-election |Post-election |155 |98          |$ < 0.05$        |170     |$ < 0.05$    |
