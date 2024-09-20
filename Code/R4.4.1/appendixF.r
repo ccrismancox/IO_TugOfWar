@@ -19,7 +19,7 @@ start <- c(model.main$regtable$V1, model.main$v)
 B <- 500 
 
 ## parametric bootstrap
-workers <- 25
+workers <- floor(detectCores() *5/8)
 cl <- makeCluster(workers)
 registerDoParallel(cl)
 
