@@ -1,0 +1,35 @@
+
+\begin{table}[!htbp] \centering 
+  \caption{Regressing the state space on terrorist attacks} 
+  \label{tab:firststage} 
+\begin{tabular}{@{\extracolsep{5pt}}lD{.}{.}{-2} D{.}{.}{-2} } 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+ & \multicolumn{2}{c}{\textit{Dependent variable:}} \\ 
+\cline{2-3} 
+\\[-1.8ex] & \multicolumn{1}{c}{State} & \multicolumn{1}{c}{$\Delta$ State} \\ 
+\\[-1.8ex] & \multicolumn{1}{c}{(1)} & \multicolumn{1}{c}{(2)}\\ 
+\hline \\[-1.8ex] 
+ Hamas attack & -0.21 & -0.21 \\ 
+  &  & (0.04) \\ 
+  Fatah attacks & 1.12 & 1.04 \\ 
+  &  & (0.05) \\ 
+  Lag state & 1.00 &  \\ 
+  &  &  \\ 
+  $\Delta$ Lag state &  & 0.33 \\ 
+  &  & (0.04) \\ 
+  Hamas attacks $\times$ lag state & 0.01 & 0.002 \\ 
+  &  & (0.01) \\ 
+  Fatah attacks $\times$ lag state & 0.03 & 0.01 \\ 
+  &  & (0.01) \\ 
+  Constant & -0.02 & -0.01 \\ 
+  &  & (0.02) \\ 
+ \hline \\[-1.8ex] 
+$T$ & \multicolumn{1}{c}{299} & \multicolumn{1}{c}{298} \\ 
+adj. $R^2$ & \multicolumn{1}{c}{0.999} & \multicolumn{1}{c}{0.721} \\ 
+$\hat{\sigma}$ & \multicolumn{1}{c}{0.216} & \multicolumn{1}{c}{0.183} \\ 
+\hline 
+\hline \\[-1.8ex] 
+\multicolumn{3}{l}{\scriptsize\emph{Note:} $^*p<0.05$. Newey-West standard errors in parenthesis. No standard errors are reported in column 1 due to unit root.} \\ 
+\end{tabular} 
+\end{table} 

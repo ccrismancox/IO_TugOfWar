@@ -1,0 +1,54 @@
+
+\begin{sidewaystable}[!htbp] \centering 
+  \caption{Robustness checks for the first-stage model: Specification changes} 
+  \label{tab:firststage.app} 
+\begin{tabular}{@{\extracolsep{5pt}}lD{.}{.}{-2} D{.}{.}{-2} D{.}{.}{-2} D{.}{.}{-2} D{.}{.}{-2} D{.}{.}{-2} D{.}{.}{-2} D{.}{.}{-2} } 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+ & \multicolumn{8}{c}{\textit{Dependent variable:}} \\ 
+\cline{2-9} 
+\\[-1.8ex] & \multicolumn{8}{c}{$\Delta$ State} \\ 
+\\[-1.8ex] & \multicolumn{1}{c}{(1)} & \multicolumn{1}{c}{(2)} & \multicolumn{1}{c}{(3)} & \multicolumn{1}{c}{(4)} & \multicolumn{1}{c}{(5)} & \multicolumn{1}{c}{(6)} & \multicolumn{1}{c}{(7)} & \multicolumn{1}{c}{(8)}\\ 
+\hline \\[-1.8ex] 
+ Hamas attacks & -0.21 & -0.17 & -0.20 & -0.23 & -0.21 & -0.19 & -0.34 & -0.28 \\ 
+  & (0.03) & (0.08) & (0.04) & (0.03) & (0.02) & (0.02) & (0.05) & (0.05) \\ 
+  Hamas attacks $\times$ time &  & -0.0001 &  &  &  &  &  &  \\ 
+  &  & (0.0004) &  &  &  &  &  &  \\ 
+  Fatah attacks & 1.00 & 0.81 & 1.06 & 1.04 & 1.05 & 1.05 & 1.14 & 1.27 \\ 
+  & (0.08) & (0.18) & (0.05) & (0.04) & (0.04) & (0.03) & (0.10) & (0.15) \\ 
+  Fatah attacks $\times$ time &  & 0.003 &  &  &  &  &  &  \\ 
+  &  & (0.002) &  &  &  &  &  &  \\ 
+  $\Delta$ Lag state & 0.34 & 0.33 & 0.31 & 0.25 & 0.19 & 0.17 & 0.11 & 0.14 \\ 
+  & (0.04) & (0.05) & (0.04) & (0.04) & (0.04) & (0.04) & (0.04) & (0.04) \\ 
+  $\Delta$ unemployment &  &  & -0.23 & -0.12 & -0.08 & -0.06 & -0.07 & -0.15 \\ 
+  &  &  & (0.09) & (0.08) & (0.05) & (0.06) & (0.07) & (0.07) \\ 
+  $\Delta$ support for violence &  &  &  & -0.25 & -0.32 & -0.35 & -0.29 & -0.19 \\ 
+  &  &  &  & (0.06) & (0.05) & (0.05) & (0.06) & (0.05) \\ 
+  Time &  & 0.0004 &  &  &  &  &  &  \\ 
+  &  & (0.0002) &  &  &  &  &  &  \\ 
+  Second \emph{Intifada} &  &  &  &  & -0.17 & -0.17 & -0.18 & 0.43 \\ 
+  &  &  &  &  & (0.04) & (0.04) & (0.03) & (0.11) \\ 
+  Time since last election &  &  &  &  &  & -0.003 & -0.005 & -0.005 \\ 
+  &  &  &  &  &  & (0.001) & (0.001) & (0.001) \\ 
+  Palestinian fatalities by Israel &  &  &  &  &  &  & 0.01 & 0.02 \\ 
+  &  &  &  &  &  &  & (0.01) & (0.01) \\ 
+  Corruption &  &  &  &  &  &  &  & -0.48 \\ 
+  &  &  &  &  &  &  &  & (0.10) \\ 
+  Infant mortality &  &  &  &  &  &  &  & -0.04 \\ 
+  &  &  &  &  &  &  &  & (0.01) \\ 
+  Corruption $\times$ post-2006 election &  &  &  &  &  &  &  & 0.30 \\ 
+  &  &  &  &  &  &  &  & (0.16) \\ 
+  Infant mortality $\times$ post-2006 election &  &  &  &  &  &  &  & 0.02 \\ 
+  &  &  &  &  &  &  &  & (0.01) \\ 
+  Constant & -0.01 & -0.07 & -0.01 & 0.003 & 0.02 & 0.08 & 0.11 & 0.53 \\ 
+  & (0.02) & (0.05) & (0.02) & (0.02) & (0.02) & (0.03) & (0.04) & (0.16) \\ 
+ \hline \\[-1.8ex] 
+State-attack interactions & \multicolumn{1}{c}{No} & \multicolumn{1}{c}{Yes} & \multicolumn{1}{c}{Yes} & \multicolumn{1}{c}{Yes} & \multicolumn{1}{c}{Yes} & \multicolumn{1}{c}{Yes} & \multicolumn{1}{c}{Yes} & \multicolumn{1}{c}{Yes} \\ 
+$T$ & \multicolumn{1}{c}{298} & \multicolumn{1}{c}{298} & \multicolumn{1}{c}{298} & \multicolumn{1}{c}{298} & \multicolumn{1}{c}{298} & \multicolumn{1}{c}{298} & \multicolumn{1}{c}{212} & \multicolumn{1}{c}{200} \\ 
+adj. $R^2$ & \multicolumn{1}{c}{0.721} & \multicolumn{1}{c}{0.729} & \multicolumn{1}{c}{0.743} & \multicolumn{1}{c}{0.782} & \multicolumn{1}{c}{0.812} & \multicolumn{1}{c}{0.821} & \multicolumn{1}{c}{0.845} & \multicolumn{1}{c}{0.857} \\ 
+$\hat{\sigma}$ & \multicolumn{1}{c}{0.184} & \multicolumn{1}{c}{0.181} & \multicolumn{1}{c}{0.176} & \multicolumn{1}{c}{0.162} & \multicolumn{1}{c}{0.151} & \multicolumn{1}{c}{0.147} & \multicolumn{1}{c}{0.137} & \multicolumn{1}{c}{0.125} \\ 
+\hline 
+\hline \\[-1.8ex] 
+\multicolumn{9}{l}{\scriptsize\emph{Note:}  Newey-West standard errors in parenthesis.} \\ 
+\end{tabular} 
+\end{sidewaystable} 
