@@ -5,7 +5,7 @@
 ## A note for replicators
 Conducting constrained maximum likelihood estimation (CMLE)  requires specialized (open source) software that we are only able to run using the Ubuntu Linux operating system. 
 We provide detailed setup instructions below. 
-All results were produced on a computer using Ubuntu 22.04.4 (Focal Fossa) using R 4.4.1 ("Race for Your Life") and Python 3.10.12.
+All results were produced on a computer using Ubuntu 22.04.4 ("Jammy Jellyfish") using R 4.4.1 ("Race for Your Life") and Python 3.10.12.
 
 ## Replication package contents
 Files marked with (U) require Ubuntu, with the setup as described below.
