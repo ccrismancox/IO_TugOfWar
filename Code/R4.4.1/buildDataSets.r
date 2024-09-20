@@ -30,8 +30,7 @@ dat <- subset(dat, select=c(trustHamas,trustFatah,
                             date))
 
 ########## Attack data #############
-
-gtd <- fread("../../Data/gtd.csv")
+load("../../Data/gtd.rdata")
 gtd <- subset(gtd, iyear > 1992 & country %in% c(97,155))
 #fill using acosta, both groups attacked in 12/1993
 acosta <- fread("../../Data/acosta1993.csv")

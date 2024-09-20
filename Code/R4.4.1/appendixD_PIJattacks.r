@@ -12,7 +12,7 @@ library(ggplot2)
 
 ###############################################
 # Attack data
-gtd <- fread("../../Data/gtd.csv")
+load("../../Data/gtd.rdata")
 
 gtd <- subset(gtd, iyear > 1992 & country %in% c(97,155))
 

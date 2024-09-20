@@ -31,7 +31,7 @@ dat <- subset(dat, select=c(trustHamas,trustFatah,
 
 ###############################################
 # Attack data
-gtd <- fread("../../Data/gtd.csv")
+load("../../Data/gtd.rdata")
 gtd <- subset(gtd, iyear > 1992 & country %in% c(97,155))
 acosta <- fread("../../Data/acosta1993.csv")
 
@@ -46,12 +46,12 @@ mil.attack.codes <- c(3,4)
 nonstate.mil.attack <- c(12,17, 22)
 unknown <- c(20)
 soft <- c(5,8,10,14,15,18)
-soft.sub <- c(2:9, 11:12, 112, 99:102) 
-H1 <- gtd[gname %in% Hamas.names | gname2 %in% Hamas.names | gname3 %in% Hamas.names, 
+soft.sub <- c(2:9, 11:12, 112, 99:102)
+H1 <- gtd[gname %in% Hamas.names | gname2 %in% Hamas.names | gname3 %in% Hamas.names,
           list(iyear, imonth, nkill, targtype1, targsubtype1)]
 H1[,date:=as.yearmon(paste(iyear, "-", imonth, sep=""))]
 
-## This is new ## 
+## This is new ##
 H1[,mil.attacks := sum(targtype1 %in% c(gov.attack.codes,mil.attack.codes)), by=list(date)]
 H1[,civ.attacks := sum(targtype1 %in% civ.attack.codes), by=list(date)]
 H1[,not.civ.attacks := sum(!targtype1 %in% civ.attack.codes), by=list(date)]
@@ -73,7 +73,7 @@ H1 <- merge(H1, data.table(date=as.yearmon(seq(as.Date("1994/1/1"), as.Date("201
 H1[,attacks:=ifelse(is.na(attacks),0, attacks)]
 H1[,fatalities:=ifelse(is.na(fatalities),0, fatalities)]
 
-## This is new ## 
+## This is new ##
 H1[,mil.attacks:=ifelse(is.na(mil.attacks),0, mil.attacks)]
 H1[,civ.attacks:=ifelse(is.na(civ.attacks),0, civ.attacks)]
 H1[,not.civ.attacks:=ifelse(is.na(not.civ.attacks),0, not.civ.attacks)]
@@ -86,10 +86,10 @@ H1[,soft:=ifelse(is.na(soft),0, soft)]
 
 
 
-F1 <- gtd[gname %in% Fatah.names | gname2 %in% Fatah.names | gname3 %in% Fatah.names, 
+F1 <- gtd[gname %in% Fatah.names | gname2 %in% Fatah.names | gname3 %in% Fatah.names,
           list(iyear, imonth, nkill, targtype1,targsubtype1)]
 F1[,date:=as.yearmon(paste(iyear, "-", imonth, sep=""))]
-## This is new ## 
+## This is new ##
 F1[,mil.attacks := sum(targtype1 %in% c(gov.attack.codes,mil.attack.codes)), by=list(date)]
 F1[,civ.attacks := sum(targtype1 %in% civ.attack.codes), by=list(date)]
 F1[,not.civ.attacks := sum(!targtype1 %in% civ.attack.codes), by=list(date)]
@@ -110,7 +110,7 @@ F1 <- merge(F1, data.table(date=as.yearmon(seq(as.Date("1994/1/1"), as.Date("201
 F1[,attacks:=ifelse(is.na(attacks),0, attacks)]
 F1[,fatalities:=ifelse(is.na(fatalities),0, fatalities)]
 
-## This is new ## 
+## This is new ##
 F1[,mil.attacks:=ifelse(is.na(mil.attacks),0, mil.attacks)]
 F1[,civ.attacks:=ifelse(is.na(civ.attacks),0, civ.attacks)]
 F1[,not.civ.attacks:=ifelse(is.na(not.civ.attacks),0, not.civ.attacks)]
@@ -125,7 +125,7 @@ names(H1)[-1] <- c("Hattacks.mil", "Hattacks.civ", "Hattacks.notciv",
                    "Hkills.mil", "Hkills.civ", "Hkills.notciv",
                    "Hsoft",
                    "Hattacks", "Hkills")
-names(F1)[-1] <- c("Fattacks.mil", "Fattacks.civ", "Fattacks.notciv", 
+names(F1)[-1] <- c("Fattacks.mil", "Fattacks.civ", "Fattacks.notciv",
                    "Fkills.mil", "Fkills.civ", "Fkills.notciv",
                    "Fsoft",
                    "Fattacks", "Fkills")
