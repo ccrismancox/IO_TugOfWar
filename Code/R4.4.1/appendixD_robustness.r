@@ -209,7 +209,7 @@ cat(stargazer(mod.list.controls,
                                    "Infant mortality $\\times$ post-2006 election",
                                    "Constant")
               ),
-    file="../../Output/Tables/TableD3.tex", sep="\n")
+    file="../../Output/Tables/tableD3.tex", sep="\n")
 
 
 
@@ -270,7 +270,7 @@ attr(inters,"position") <- c(21)
 modelsummary(mod.list.measurement, 
              vcov="NeweyWest",
              stars=FALSE,
-             output="../../Output/Tables/TableD4.tex",
+             output="../../Output/Tables/tableD4.tex",
              fmt=num2str,
              escape=FALSE,
              note="\\\\footnotesize{\\\\emph{Note:} Newey-West standard errors in parenthesis}",

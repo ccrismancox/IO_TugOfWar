@@ -128,7 +128,7 @@ pd2time <- ggplot(ggdif2time) +
                labels = seq(from=1994,to=2018, by=4)) +
   theme(panel.grid.major.x = element_blank(),
         strip.text=element_text(size=10))
-ggsave("../../Output/Figures/Figure5.pdf", pd2time, width=7, height=4)
+ggsave("../../Output/Figures/figure5.pdf", pd2time, width=7, height=4)
 
 
 
@@ -163,7 +163,7 @@ colnames(sATE) <- c("Oslo era",
 
 
 cat(kable(sATE, digits=2, format="pipe"),
-    file="../../Output/Tables/Table4.txt",
+    file="../../Output/Tables/table4.txt",
     sep="\n")
 
 

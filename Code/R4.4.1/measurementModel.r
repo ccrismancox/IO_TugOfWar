@@ -35,7 +35,7 @@ stateDataPlot <- ggplot(plot.dat)+
   xlab("Date")+
     ylab("Percentage")+
     scale_x_date(date_breaks = "10 year", date_labels = "%Y")
-ggsave(stateDataPlot,file="../../Output/Figures/Figure1.pdf", height=2, width=4)
+ggsave(stateDataPlot,file="../../Output/Figures/figure1.pdf", height=2, width=4)
 
 CorMat <- cor(dat[,2:7], use="pairwise")
 rownames(CorMat) <- colnames(CorMat) <- c("Trust in Hamas", "Trust in Fatah",
@@ -44,7 +44,7 @@ rownames(CorMat) <- colnames(CorMat) <- c("Trust in Hamas", "Trust in Fatah",
 
 cat(kable(CorMat, format="pipe", digits=2,
           caption="Correlations among survey responses"),
-    file="../../Output/Tables/TableC2.txt", sep="\n")
+    file="../../Output/Tables/tableC2.txt", sep="\n")
 
 #' Build the first stage.
 use <- subset(dat, select=c(trustHamas,trustFatah,
@@ -126,7 +126,7 @@ cat(kable(marsOut,
       caption="ML estimates for the factor model", format="pipe",
       digits=2,
       row.names = FALSE, col.names=c("Equation", "Variable", "Estimate")),
-    file="../../Output/Tables/TableC3.txt", sep="\n")
+    file="../../Output/Tables/tableC3.txt", sep="\n")
 
 
 
@@ -181,7 +181,7 @@ state.plot <- ggplot(regData)+
   theme(plot.margin = unit(c(5.5, 15, 5.5, 5.5), "points"),
         axis.text.x = element_text(angle = -90))
 
-ggsave(state.plot, file="../../Output/Figures/Figure2.pdf", height=4, width=8)
+ggsave(state.plot, file="../../Output/Figures/figure2.pdf", height=4, width=8)
 
 save(regData, states, file="../../Data/measurement.rdata")
       

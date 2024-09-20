@@ -126,6 +126,6 @@ rownames(X) <- colnames(X) <- paste("Model", 1:8)
 
 cat(kable(X, digits=2,
           caption="Correlations across measurement model specifications"),
-    file="../../Output/Tables/TableC4.txt",
+    file="../../Output/Tables/tableC4.txt",
     sep="\n")
           

@@ -247,7 +247,7 @@ plotCF_together <- plotCF_together+
             size=3,
             color="Black") 
 
-ggsave("../../Output/Figures/Figure6.pdf", plot = plotCF_together,
+ggsave("../../Output/Figures/figure6.pdf", plot = plotCF_together,
        width = 7.75, height = 5.5, units = "in")
 
 

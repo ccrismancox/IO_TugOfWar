@@ -187,7 +187,7 @@ cat(kable(out,
           caption="In-sample model fit",
           digits=2,
           format="pipe"),
-    file="../../Output/Tables/TableG2.txt",
+    file="../../Output/Tables/tableG2.txt",
     sep="\n")
       
 
@@ -239,7 +239,7 @@ cat(kable(data.table(`Alternative model`=c("No competition", "Tit-for-tat"),
                      Statistic=paste(round(c(LRstat.noComp, Clarke.stat))),
                      `p value`=ifelse(c(full.pval, pC) < 0.01, "< 0.01", "> 0.01")),
           caption="Comparative model tests"),
-    file="../../Output/Tables/Table3.txt",
+    file="../../Output/Tables/table3.txt",
     sep="\n")
 
 
@@ -271,7 +271,7 @@ X[is.na(X)] <- "  "
 cat(kable(X,
           caption="Comparing outbidding to other theories.",
           format="pipe"),
-    file="../../Output/Tables/TableG1.txt",
+    file="../../Output/Tables/tableG1.txt",
     sep="\n"
 )
 
@@ -340,6 +340,6 @@ out <- cbind(Era=unique(eras), out)
 cat(kable(out,
           caption="Sub-sample model fit",
           format="pipe"),
-    file="../../Output/Tables/TableG3.txt",
+    file="../../Output/Tables/tableG3.txt",
     sep="\n")
 

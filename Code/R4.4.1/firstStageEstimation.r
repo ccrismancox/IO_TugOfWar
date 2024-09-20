@@ -103,7 +103,7 @@ cat( stargazer(mod.list,
                                     "Hamas attacks $\\times$ lag state",
                                     "Fatah attacks $\\times$ lag state",
                                     "Constant")),
-    file="../../Output/Tables/Table1.tex", sep="\n")
+    file="../../Output/Tables/table1.tex", sep="\n")
 regData[,Date:= (seq.Date(as.Date("1994-1-1"), as.Date("2018-12-1"), by="month"))]
 mainData <- regData[,list(Date,states, lag.states)]
 mainData$Hattacks <- ifelse(dat$Hattacks>0,1,0)

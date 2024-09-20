@@ -83,7 +83,7 @@ Files marked with (U) require Ubuntu, with the setup as described below.
 		- `counterfactual_kappa.R` Conducts counterfactual analysis on changes in the costs of terrorism ($\kappa$). Produces Figure A.4
 		- `counterfactual_kappa_discussion.R` Conducts counterfactual analysis on changes in the costs of terrorism ($\kappa$). Produces Table 5.
 		- `counterfactual_single_agent.R` Conducts the counterfactual comparisons with the single agent models. Produces Figure 5 and Table 4.
-		- `figure3.R` Produces Figure 3
+		- `graphAttackProbs.r` Produces Figure 3 and 4
 		- `firststageboot.r` Function for a parametric bootstrap on the first stage 
 		- `firstStageEstimation.r` Fit the first stage model. Produces Table 1
 		- `fitNoCompetition.r` (U) Fit the no competition model

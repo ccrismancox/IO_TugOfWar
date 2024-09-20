@@ -307,5 +307,5 @@ rownames(X) <- NULL
 
 cat(kable(X, format="pipe",
           caption="Average attack probabilities as kappa changes"),
-    file="../../Output/Tables/Table5.txt",
+    file="../../Output/Tables/table5.txt",
     sep="\n")

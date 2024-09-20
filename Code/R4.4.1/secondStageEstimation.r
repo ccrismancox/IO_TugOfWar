@@ -58,10 +58,10 @@ output[3:4, ] <- round(output[3:4,], 2)
 cat(kable(output, format = "pipe",
             col.names=c("Estimate", "Std. Error 1", "Std. Error 2"),
           caption="Payoff estimates"),
-    file="../../Output/Tables/Table2.txt", sep="\n")
+    file="../../Output/Tables/table2.txt", sep="\n")
 
-cat("T = ", nrow(regData), "\n",  file="../../Output/Tables/Table2.txt", sep="\t", append=TRUE)
-cat("LogLik = ", round(conv$V1[2],2), "\n",  file="../../Output/Tables/Table2.txt", sep="\t", append=TRUE)
+cat("T = ", nrow(regData), "\n",  file="../../Output/Tables/table2.txt", sep="\t", append=TRUE)
+cat("LogLik = ", round(conv$V1[2],2), "\n",  file="../../Output/Tables/table2.txt", sep="\t", append=TRUE)
 
 # Joint hypothesis that betas =0
 A <- rbind(c(1,0,0,0),

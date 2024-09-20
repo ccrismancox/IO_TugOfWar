@@ -2,7 +2,7 @@ Rscript buildDataSets.r
 Rscript measurementModel.r
 Rscript firstStateEstimation.r
 Rscript secondStageEstimation.r
-Rscript figure3.R
+Rscript graphAttackProbs.r
 Rscript fitNoCompetition.r
 Rscript secondStageEstimation_t4t.r
 Rscript modelFit.R

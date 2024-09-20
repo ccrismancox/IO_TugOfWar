@@ -87,7 +87,7 @@ pccp <- ggplot(ggdata, aes(x=states, y=PrAttack, color=actor, linetype=actor)) +
         legend.margin=margin(0,0,0,0),
         legend.box.margin=margin(-10,0,0,0))
 
-ggsave("../../Output/Figures/Figure4.pdf", pccp, width=8, height=4)
+ggsave("../../Output/Figures/figure4.pdf", pccp, width=8, height=4)
 
 ###############################################
 # Plot estimated attack probabilites as a function of the OBSERVED state WITH STATE
@@ -121,6 +121,6 @@ pccptime2yd  <- ggplot(ggdata, aes(x=time, y=PrAttack, color=Variable, linetype=
         panel.grid.minor.x = element_blank(),
         legend.margin=margin(0,0,0,0),
         legend.box.margin=margin(-10,0,0,0))
-ggsave("../../Output/Figures/Figure3.pdf", pccptime2yd, width=8, height=4.75)
+ggsave("../../Output/Figures/figure3.pdf", pccptime2yd, width=8, height=4.75)
 
 round(by(ggdata, ggdata$Variable, \(x){mean(x$PrAttack)}), 2)[-1]
