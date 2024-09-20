@@ -11,6 +11,7 @@
 rm(list=ls())
 library(data.table)
 library(vars)
+library(urca)
 library(knitr)
 library(lmtest)
 library(sandwich)
@@ -20,9 +21,6 @@ load("../../Data/measurement.rdata")
 load("../../Data/actionsSetup.Rdata")
 
 source("helperFunctions.r")
-source("gamma2trans.R")
-source("firststageboot.r")
-
 regData$Hattack <- as.numeric(dat$Hattacks>0)
 regData$Fattack <- as.numeric(dat$Fattacks>0)
 regData$Hattack.count <- (dat$Hattack)
@@ -37,19 +35,21 @@ regData[,lag.Hattack.count := shift(Hattack.count)]
 regData[,lag.Fattack.count := shift(Fattack.count)]
 regData[,lag.attacks := shift(attacks)]
 
+
+## deviations version mentioned in the text ##
 coeftest(glm(attacks~state.deviations, family=poisson, data=regData),
          NeweyWest)
 
-##### alternative approach#####
+##### VAR approach#####
+## look for stationarity
 coint_ca.joA <- ca.jo(regData[,c("diff.states", "Hattack", "Fattack")],
                       type = "trace",
                       spec = "transitory")
-summary(coint_ca.joA) # every null rejected so VAR is fine
+summary(coint_ca.joA) # every null rejected so VAR is fine with these variables
+## using BIC or SC as it's listed here
 VARselect( na.omit(regData[,c("diff.states", "Hattack", "Fattack")]), lag.max = 10)$selection
 
 V1 <- VAR( na.omit(regData[,c("diff.states", "Hattack", "Fattack")]), p =2)
-summary(V1)
-logLik(V1)
 
 
 
@@ -96,7 +96,8 @@ tab.out <- VAR.out[c(3:4, 9:10,
                      5:6, 11:12, 
                      1:2, 7:8,
                      (nrow(VAR.out)-1):nrow(VAR.out)),]
-cat(kable(VAR.out, format="pipe",
+cat(kable(VAR.out, format="pipe", digits=2,
           caption="VAR regression results"),
     file="../../Output/Tables/tableG4.txt", sep="\n")
+
 

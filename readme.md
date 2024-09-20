@@ -1,4 +1,4 @@
-# Replication instructions for ``Tug of War: The Heterogeneous Effects of Outbidding between Terrorist Groups''
+# Replication instructions for "Tug of War: The Heterogeneous Effects of Outbidding between Terrorist Groups"
 # Casey Crisman-Cox and Michael Gibilisco
 # Sept 2024
 

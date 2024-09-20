@@ -72,7 +72,7 @@ ggdata <-  data.frame(PrAttack = c(EQCP$prAH[mainData$states.int],
 
 size <- 1.5
 plotU <- ggplot(ggdata, aes(x=time, y=PrAttack, color=actor,linetype=actor)) +
-  geom_path(size=size) +
+  geom_path(linewidth=size) +
   theme_bw(16) + ylim(c(0,0.65)) + 
   xlab("Time") + ylab("Pr. Attack") +  
   scale_color_manual("Actor", values=c("navyblue", "orangered")) +
@@ -84,8 +84,8 @@ plotU <- ggplot(ggdata, aes(x=time, y=PrAttack, color=actor,linetype=actor)) +
         panel.grid.minor.x = element_blank(),
         legend.margin=margin(0,0,0,0),
         legend.box.margin=margin(-10,0,0,0)) + 
-  geom_hline(yintercept=unique(round(EQnb$prAH, digits=10)), linetype=2, color="orangered", size=size,alpha=0.4) + 
-  geom_hline(yintercept=unique(round(EQnb$prAF, digits=10)), linetype=1, color="navyblue", size=size,alpha=0.4) +
+  geom_hline(yintercept=unique(round(EQnb$prAH, digits=10)), linetype=2, color="orangered", linewidth=size,alpha=0.4) + 
+  geom_hline(yintercept=unique(round(EQnb$prAF, digits=10)), linetype=1, color="navyblue", linewidth=size,alpha=0.4) +
   annotate("text", x = as.Date("2016-09-01", "%Y-%m-%d"), y = 0.06, label = paste0("'Assuming'~beta[F]==",0),parse = TRUE) +
   annotate("text", x = as.Date("2016-09-01", "%Y-%m-%d"), y = 0.26, label = paste0("'Assuming'~beta[H]==",0),parse = TRUE)
 

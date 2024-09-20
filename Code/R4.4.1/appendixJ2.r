@@ -128,7 +128,7 @@ Y[2,] <- paste0("(", Y[2,], ")")
 Y <- c(Y)
 Y <- c(0.05, 0.025, "440", Y, num2str(-1*model.main$conv$V1[2]))
 tabOut <- cbind(X[,1], Y, X[,-1])
-
+colnames(tabOut) <- rownames(tabOut) <- NULL
 cat(kable(tabOut,
           caption="Estimates at different discretizations of tilde{s}"),
     file="../../Output/Tables/tableJ2.txt", sep="\n")

@@ -13,7 +13,7 @@ load("Results/firstStageOutput.Rdata")
 load("Results/mainModel.rdata")
 load("Results/mainStateActions.Rdata")
 load("Results/ChangingDeltas.rdata")
-
+source("helperFunctions.r")
 set.seed(1)
 Delta <- c(0,.9,.925,.95,.975, .99, .999,.9999)
 for(d in Delta){
@@ -67,7 +67,7 @@ X <- do.call(cbind.data.frame,X)
 X[c(2,4,6,8),] <-paste("(",unlist(X[c(2,4,6,8),]),")", sep="")
 X[10,] <- ifelse(X[9,]=="0", X[10,], paste(X[10,],"^*",sep=""))
 
-X[1:4,1] <- NA # Betas not Identified when delta =0
+X[1:4,1] <- " " # Betas not Identified when delta =0
 
 names(X) <- Delta
 X  <- X[-9,] # remove convergence codes
@@ -142,7 +142,7 @@ ggdata <-  data.frame(PrAttack = c(EQCP9999$prAH, EQCP9999$prAF,
 
 
 pccp_delta <- ggplot(ggdata, aes(x=states, y=PrAttack, color=actor, linetype=actor)) + 
-  geom_line(size=1.5) + theme_bw(18) +
+  geom_line(linewidth=1.5) + theme_bw(18) +
   facet_wrap(vars(delta), nrow=2) +
   xlab("Relative Popularity (States)") + ylab("Pr. Attack") + 
   scale_color_manual(values=c("navyblue", "orangered"),
@@ -153,4 +153,4 @@ pccp_delta <- ggplot(ggdata, aes(x=states, y=PrAttack, color=actor, linetype=act
         legend.text = element_text(size = 18),
         legend.key.width = unit(.75,"in"))
 
-ggsave("../../Output/Figure/figureI1.pdf" , width = 11, height= 8.5)  
+ggsave("../../Output/Figures/figureI1.pdf" , width = 11, height= 8.5)  
