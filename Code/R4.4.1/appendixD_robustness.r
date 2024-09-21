@@ -94,7 +94,6 @@ mod2t <- lm(diff.states ~ lag.Hattacks*ts + lag.Fattacks*ts +
               L.diff.states+
               lag.Hattacks:lag.states +lag.Fattacks:lag.states,
             data=regData)
-linearHypothesis(mod2t, c("lag.Hattacks:ts", "ts:lag.Fattacks"), vcov=NeweyWest)
 
 
 
@@ -679,51 +678,6 @@ covariate.labels = c("Attacks (count)",
                      "Post-2006 election",
                      "Constant")),
 file="../../Output/Tables/tableD7.tex", sep="\n")
-
-## 
-mod.anova <- list(mod4h, mod4i)
-ftests <- lapply(mod.anova, linearHypothesis,hypothesis.matrix = rbind(c(1,-1,0),c(0,1,-1)))
-stargazer(mod.anova,
-          no.space = TRUE,
-          omit.stat =  "all",
-          # float.env="sidewaystable",
-          notes = c("\\scriptsize\\emph{Note:}  Standard errors in parenthesis. $F$ statistic tests the hypothesis that all three means are equal for each actor."),
-          add.lines=list( c("$F$ stat.",
-                            paste("\\multicolumn{1}{c}{",
-                                  paste( sapply(ftests, \(m){
-                                    with(m, 
-                                         paste(num2str(F[2]), 
-                                               "($p ", ifelse(`Pr(>F)`[2] < 0.05,
-                                                              "< 0.05)$",
-                                                              "> 0.05)$" )))
-                                  })),
-                                  "}",sep=""))
-                          # c("$T$",
-                          #   paste("\\multicolumn{1}{c}{",
-                          #         sapply(mod.anova, \(m){nrow(m$model)}),
-                          #         "}",sep="")),
-                          # c("adj. $R^2$",
-                          #   paste("\\multicolumn{1}{c}{",
-                          #         num2str(sapply(mod.anova, \(m){summary(m)$adj.r.squared})),
-                          #         "}",sep=""))
-          ),
-          title="Mean fatalities/attack by era",
-          label="tab:anova",
-          dep.var.labels = c("\\begin{tabular}{c}Fatah\\\\fatalities/attack\\end{tabular}",
-                             "\\begin{tabular}{c}Hamas\\\\fatalities/attack\\end{tabular}"),
-          digits=2,
-          intercept.bottom=FALSE,
-          align=TRUE,
-
-
-
-
-
-
-
-
-
-
 
 
 

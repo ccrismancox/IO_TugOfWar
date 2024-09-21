@@ -8,14 +8,12 @@ rm(list=ls())
 library(stargazer)
 library(sandwich)
 library(zoo)
-library(margins)
 library(urca)
 library(data.table)
 library(stringr)
 library(doParallel)
 library(doRNG)
 library(parallel)
-library(car)
 library(moments)
 #'
 #' Build the data sets
@@ -34,19 +32,27 @@ regData[,Fattacks.count:=dat$lag.Fattacks]
 mod0 <- lm(states~lag.Hattacks + lag.Fattacks + lag.states+
              lag.Hattacks:lag.states+lag.Fattacks:lag.states, data=regData,
            x=T,y=T)
-summary(mod0)
 
 #' COINTEGRATION: need to reject the null of unit root in the residuals
-summary(ur.df(mod0$residuals)) # good
-summary(ur.pp(mod0$residuals)) # good
+cat("Do we reject the null of unit root in the residuals?\n")
+summary(ur.df(mod0$residuals)) 
+
+cat("Do we reject the null of normal residuals (KS test)?\n")
+ks.test(scale(mod0$resid), pnorm)$p.value < 0.05
+cat("Do we reject the null of normal gammas in any bootstrap iteration (JB test)?\n")
+jarque.test(mod0$resid)$p.value < 0.05
 
 bootOut <- firststageboot(mod0, regData)
 se0 <- sqrt(diag(bootOut))[1:6]
 names(se0) <- names(mod0$coef)
+
+cat("After the parametric bootstrap, do we find that gamma's are approximately normal?\n")
+cat("Do we reject the null of normal gammas in any bootstrap iteration (KS test)?\n")
 any(apply(bootOut, 2, \(x){ks.test(scale(x), pnorm)$p.val}) < 0.05)
+cat("Do we reject the null of normal gammas in any bootstrap iteration (JB test)?\n")
 any(apply(bootOut, 2, \(x){jarque.test(x)$p.val}) < 0.05)
-ks.test(scale(mod0$resid), pnorm)
-jarque.test(mod0$resid)
+
+
 
 #' ECM differences using the cointegration vector of 1
 regData[, diff.states := states-lag.states]
@@ -120,10 +126,6 @@ Trans <- gamma2trans(mod0$coef, summary(mod0)$sigma,
 mainData$states.discrete <- sapply(mainData$states,
                                    function(x){return(states[which.min((states-x)^2)])})
 
-# how many states are actually visited
-sum(states %in% mainData$states.discrete)
-
-
 
 save(mainData, file="Results/mainStateActions.Rdata")
 save(list=c("Trans", "mod0", "states", "bootOut", "regData"),
@@ -135,20 +137,27 @@ save(list=c("Trans", "mod0", "states", "bootOut", "regData"),
 #' 1. Are the combined estimates significant for each side at each state?
 #' 2. Does Fatah have an advantage at each state?
 
-M1 <- margins(mod1,
-              variables = c("lag.Hattacks", "lag.Fattacks"),
-              data=mod1$model,
-              at=data.frame(lag.states=states),
-              vcov=NeweyWest(mod1))
-mean(summary(M1)$p < 0.05)
-H1 <- rep(0, 23)
-for(i in 1:23){
-  k <- seq(-10, 12)[i]
-  H1[i] <-
-    linearHypothesis(mod1,
-                     paste("lag.Fattacks+", k,
-                           "*lag.Fattacks:lag.states+lag.Hattacks+",
-                           k,"lag.Hattacks:lag.states"), vcov=NeweyWest)$Pr[2]
-}
-table(H1 < 0.05) #we reject the null at no differnce at all these values of the states 
+
+
+
+marginalsF <- cbind(0,0, 1, 0, 0, states) %*%  mod1$coef
+marginalsH <- cbind(0,1,0,  0, states, 0) %*%  mod1$coef
+Vmod1 <-  NeweyWest(mod1)
+seMF <- sqrt(diag(cbind(0,0, 1, 0, 0, states) %*% Vmod1 %*% t(cbind(0,0, 1, 0, 0, states))))
+seMH <- sqrt(diag(cbind(0, 1,0, 0, states, 0) %*% Vmod1 %*% t(cbind(0, 1,0,  0, states, 0))))
+
+pF <- 2*pnorm(abs(marginalsF/seMF), lower=FALSE)
+pH <- 2*pnorm(abs(marginalsH/seMH), lower=FALSE)
+
+cat("At what percentage of the states can we reject the null that Fatah and Hamas are capable of moving the state space \n")
+colMeans(cbind(Fatah=pF, Hamas=pH) < 0.05) * 100
+
+
+A <- rbind(cbind(0,1, 1, 0, states, states))
+cancel <- (marginalsF + marginalsH)
+cancelSE <- sqrt(diag(A %*% Vmod1 %*% t(A)))
+p.cancel <- 2*pnorm(abs(cancel/cancelSE), lower=FALSE)
+cat("At what percentage of the states can we reject the null that Fatah and Hamas are equallty capable of moving the state space \n")
+mean(p.cancel< 0.05) * 100
+
 
