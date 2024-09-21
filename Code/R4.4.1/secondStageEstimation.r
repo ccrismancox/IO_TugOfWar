@@ -41,10 +41,7 @@ model.main <- list(regData=regData, Trans=Trans, states=states, params=py.params
                    conv=conv, v=v, regtable=regtable, regtable2=regtable2)
 
 
-startmod <- model.main
-
 save(list=c("model.main"), file="Results/mainModel.rdata")
-save(list=c("startmod"), file="Results/startingvalues.rdata")
 system("rm ipoptTEMP/ -r")
 
 rm(list=ls())

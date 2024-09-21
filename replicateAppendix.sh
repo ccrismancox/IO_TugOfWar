@@ -11,7 +11,7 @@ Rscript appendixD_aggregateDeaths.r
 Rscript appendixD_buildraindata.r
 Rscript appendixD_civilianOrNot.r
 Rscript appendixD_robustness.r
-#Rscript appendixF.r
+Rscript appendixF.r
 Rscript appendixG_VAR_comparison.r
 Rscript appendixH.r
 Rscript appendixI.r

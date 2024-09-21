@@ -11,15 +11,16 @@ source("firststageboot.r")
 load("Results/mainStateActions.Rdata")
 load("Results/firstStageOutput.Rdata")
 load("Results/mainModel.rdata")
+load("Results/startingvalues.rdata")
 
 states <- model.main$states
 firstStageData <- regData[, list(states, lag.Hattacks, lag.Fattacks,lag.states)]
 
-start <- c(model.main$regtable$V1, model.main$v)
+start <- c(startmod$regtable$V1, startmod$v)
 B <- 500 
 
 ## parametric bootstrap
-workers <- floor(detectCores() *5/8)
+workers <- floor(detectCores() *7/8)
 cl <- makeCluster(workers)
 registerDoParallel(cl)
 
@@ -73,11 +74,11 @@ bootOut <- foreach(b= 1:B, .combine = 'rbind',
   v <- read.csv(paste0("ipoptTEMP",b,"/v.csv"),header = F)[,1]
   system(paste0("rm ipoptTEMP",b,"/ -r"))  
 
-  c(regtable$V1, conv$V1, v)
+  c(regtable$V1, conv$V1)
   
 }
 stopCluster(cl)
-colnames(bootOut)[1:6] <- c("beta_Hamas", "beta_Fatah", "kappa_Hamas", "kappa_Fatah",
+colnames(bootOut) <- c("beta_Hamas", "beta_Fatah", "kappa_Hamas", "kappa_Fatah",
                        "Convergence","logLik")
 
 save(bootOut,file="Results/sensitivityOutput2ndStage.rdata")
@@ -87,7 +88,7 @@ save(bootOut,file="Results/sensitivityOutput2ndStage.rdata")
 rm(list=ls())
 load("Results/sensitivityOutput2ndStage.rdata")
 converged <- bootOut[bootOut[,"Convergence"]==0,]
-converged <- data.frame(converged[,1:6])
+converged <- data.frame(converged)
 
 pdf("../../Output/Figures/figureF1.pdf", height=6, width=11)
 par(mfrow=c(2,2), cex=.8, cex.lab=1.5, cex.main=1.5, cex.axis=1.5)

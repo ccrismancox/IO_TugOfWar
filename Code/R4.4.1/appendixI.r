@@ -13,6 +13,7 @@ load("Results/firstStageOutput.Rdata")
 load("Results/mainModel.rdata")
 load("Results/mainStateActions.Rdata")
 load("Results/ChangingDeltas.rdata")
+load("Results/startingvalues.rdata")
 source("helperFunctions.r")
 set.seed(1)
 Delta <- c(0,.9,.925,.95,.975, .99, .999,.9999)
@@ -23,8 +24,8 @@ for(d in Delta){
   regData <- mainData[,list(states, Hattacks, Fattacks, lag.states, states.discrete)]
   mod <- try(eval(as.name(paste("model.main.d", d,sep=""))), silent = TRUE)
   if("try-error" %in% class(mod)){
-    mod <- try(eval(as.name("model.main")))
-    start <- c(mod$regtable$V1,mod$v)
+    mod <- try(eval(as.name("startmod")))
+    start <- c(startmod$regtable$V1,startmod$v)
   }else{
     start <- c(mod$regtable$V1,mod$v$V1)
 

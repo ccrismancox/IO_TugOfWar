@@ -16,7 +16,7 @@ mag1 <- .13
 # packages i need
 library(rootSolve)
 library(Matrix)
-library(xtable)
+library(knitr))
 library(matrixStats)
 library(data.table)
 library(ggplot2)
