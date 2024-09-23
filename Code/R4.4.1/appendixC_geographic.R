@@ -17,29 +17,6 @@ cpsrGZ <- subset(read.csv("../../Data/cpsr_GAZA.csv"), year <= 2018)
 cpsr0 <- subset(read.csv("../../Data/cpsr.csv"), year <= 2018)
 
 
-## SAMPLE SIZES: descriptive statistics for JMCC
-tab <- rbind(c(summary(jmccNew$N[!(is.na(jmccNew$trust_1) & is.na(jmccNew$legis_1))])),
-             summary(jmccWB$N[!(is.na(jmccNew$trust_1) & is.na(jmccNew$legis_1))]), 
-             summary(jmccGZ$N[!(is.na(jmccNew$trust_1) & is.na(jmccNew$legis_1))]))
-tab <- round(tab, digits=1)
-rownames(tab) <- c("JMCC:All","JMCC:WB", "JMCC:GZ")
-print(tab)
-## proportion from west bank on average
-
-print(round(mean(jmccWB$N[!(is.na(jmccNew$trust_1) & is.na(jmccNew$legis_1))]/
-                          jmccNew$N[!(is.na(jmccNew$trust_1) & is.na(jmccNew$legis_1))])*100))
-
-
-
-## SAMPLE SIZES: descriptive statistics for PCPSR
-tab <- rbind(c(summary(cpsr0$size[!is.na(cpsr0$supportHamas)])),
-             summary(cpsrWB$size[!is.na(cpsr0$supportHamas)]), 
-             summary(cpsrGZ$size[!is.na(cpsr0$supportHamas)]))
-tab <- round(tab, digits=1)
-rownames(tab) <- c("PCPSR:All","PCPSR:WB", "PCPSR:GZ")
-tab
-summary(cpsrWB$size[!is.na(cpsr0$supportHamas)]/cpsr0$size[!is.na(cpsr0$supportHamas)]*100)
-
 
 
 ## Graphs
@@ -54,11 +31,11 @@ ggdat <- data.frame(y = c(jmcc0$trust_1, jmccWB$trust_1, jmccGZ$trust_1,
                           jmcc0$legis_2, jmccWB$legis_2, jmccGZ$legis_2),
                     x = rep(myx, 18),
                     Area = rep(rep(c("Both", "West Bank", "Gaza Strip"), each=dim(jmcc0)[1]),6),
-                    Actor = rep(c("Fatah", "Fatah", "Fatah", 
-                                  "Hamas", "Hamas", "Hamas", 
-                                  "Fatah", "Fatah", "Fatah", 
+                    Actor = rep(c("Fatah", "Fatah", "Fatah",
+                                  "Hamas", "Hamas", "Hamas",
+                                  "Fatah", "Fatah", "Fatah",
                                   "Hamas", "Hamas","Hamas",
-                                  "Fatah", "Fatah", "Fatah", 
+                                  "Fatah", "Fatah", "Fatah",
                                   "Hamas", "Hamas","Hamas"), each=dim(jmcc0)[1]),
                     measure = rep(rep(c("Trust","Support","Vote"),each=6), each = dim(jmcc0)[1]))
 ggdat <- ggdat[!is.na(ggdat$y),]
@@ -87,23 +64,23 @@ ggano$measure <- factor(ggano$measure, levels=c("Trust","Support","Vote"), order
 
 
 
-fig <- ggplot(ggdat, aes(x=x, y=y, color=Area,shape=Area)) + 
-  geom_line(linewidth=1.1) + geom_point(size=2) + facet_grid(measure~Actor) + theme_bw(18) + 
+fig <- ggplot(ggdat, aes(x=x, y=y, color=Area,shape=Area)) +
+  geom_line(linewidth=1.1) + geom_point(size=2) + facet_grid(measure~Actor) + theme_bw(18) +
   scale_color_manual(values=c("#fc8d62", "#66c2a5",  "#8da0cb")) +
   scale_x_date(breaks=as.Date(paste(seq(from=1994,to=2018, by=4), "-02-01",sep="")),
                labels = seq(from=1994,to=2018, by=4)) +
-  ylab("Percent respondents") + xlab("Date") + 
+  ylab("Percent respondents") + xlab("Date") +
   geom_text(data=ggano, aes(x=x,y=y,label=val),color="Black",size=3.5)+
   guides(shape = guide_legend(override.aes = list(size = 3))) +
   theme(legend.position = "bottom",
         legend.margin=margin(0,0,0,0),
         legend.box.margin=margin(-20,-20,-9,-20))
 
-ggsave("../../Output/Figures/figureC2.pdf", plot = fig, 
+ggsave("../../Output/Figures/figureC2.pdf", plot = fig,
        width = 7.75, height = 7, units = "in")
 
-  
 
-  
-  
+
+
+
 

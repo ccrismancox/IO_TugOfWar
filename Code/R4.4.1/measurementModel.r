@@ -3,15 +3,15 @@
 #' date: Sept. 2024
 #' title: Measurement model
 #' ---
-#' 
+#'
 #' In this file we produce the state variable and related figures and tables
-#' 
+#'
 #' Clear workspace and load packages:
 library(MARSS)
 library(data.table)
 library(ggplot2)
 library(knitr)
-library(zoo) 
+library(zoo)
 rm(list=ls())
 
 
@@ -20,7 +20,7 @@ d <- .05
 lower <- 0.025
 #' Check the factors that measure s
 plot.dat <- melt.data.table(dat[,1:7], id.vars = "date", variable.name = "Survey")
-plot.dat[, Survey := factor(Survey, 
+plot.dat[, Survey := factor(Survey,
                           levels=c("trustHamas", "trustFatah",
                                    "supportHamas","supportFatah",
                                    "legisHamas", "legisFatah"),
@@ -52,7 +52,7 @@ use <- subset(dat, select=c(trustHamas,trustFatah,
                             legisHamas, legisFatah))
 
 X1 <- data.frame(Constant=1,
-                 HA=as.numeric(dat$lag.Hattacks>0), 
+                 HA=as.numeric(dat$lag.Hattacks>0),
                  FA = as.numeric(dat$lag.Fattacks>0))
 useB <- "unconstrained" #\rho
 useR <- "identity" # variance of \xi
@@ -60,11 +60,11 @@ useQ <- "identity" # variance of \eta
 
 
 mod <-  list(Z=matrix(names(use)),
-             A="zero", 
-             R=useR, 
-             B=useB, 
+             A="zero",
+             R=useR,
+             B=useB,
              U="zero",
-             Q=useQ, 
+             Q=useQ,
              x0="zero",
              C="unconstrained",
              c = t(X1),
@@ -73,19 +73,19 @@ mod <-  list(Z=matrix(names(use)),
 cntl.list = list(maxit=10000, minit=500, abstol = 1e-5, conv.test.slope.tol = 0.05)
 #' Fit the measurement model
 mars <- MARSS(t(scale(use)), model=mod, control=cntl.list, silent=T)
-regData <- data.table(date=dat$date, 
+regData <- data.table(date=dat$date,
                       states = mars$states[1,],
                       lag.Hattacks = mod$c["HA",],
                       lag.Fattacks = mod$c["FA",],
                       Hkills = dat$Hkills, Fkills=dat$Fkills)
-#' MARSS latent variable is not sign identified so let's make sure that it moves 
+#' MARSS latent variable is not sign identified so let's make sure that it moves
 #' in the way it should. Observation 153 is the 2006
 if(sign(regData$states[153])==1){
   d <-d
 
   bounds <- quantile( -mars$states[1,], c(lower, 1-lower))
   states <- seq(from=bounds[1], to=bounds[2], by=d)
-  
+
   G <- expand.grid(states, c(0,1), c(0,1))
   names(G) = c("state", "aH", "aF")
   G <- G[order(G$state, G$aH),]
@@ -96,10 +96,10 @@ if(sign(regData$states[153])==1){
   mars$par$U <- -1*mars$par$U
 }else{
   d <- d
-  
+
   bounds <- quantile( mars$states[1,], c(lower, 1-lower))
   states <- seq(from=bounds[1], to=bounds[2], by=d)
-  
+
   G <- expand.grid(states, c(0,1), c(0,1))
   names(G) = c("state", "aH", "aF")
   G <- G[order(G$state, G$aH),]
@@ -130,17 +130,24 @@ cat(kable(marsOut,
 
 
 
-#states mentioned in paper
-regData[which.max(regData$states)]
-regData[which.min(regData$states)]
-summary(regData$states)
-sd(regData$states)
+## states and stats mentioned in paper
+cat("When is the state space most friendly to Hamas?\n")
+regData[which.min(regData$states)]$date
+cat("When is the state space most friendly to Fatah?\n")
+regData[which.max(regData$states)]$date
+
+cat("What's the mean, median, and IQR of the state space\n")
+round(summary(regData$states), 2)
+cat("What's st. dev. of the state space\n")
+round(sd(regData$states),2)
 
 
-#interpretation
-lm(I(dat$trustFatah-dat$trustHamas)~regData$states)$coef[2] #map onto trust 
-lm(I(dat$supportFatah-dat$supportHamas)~regData$states)$coef[2] #map onto support
-lm(I(dat$legisFatah-dat$legisHamas)~regData$states)$coef[2] #map onto vote
+##interpretation
+cat("How does the state map back onto the trust, support, and vote measures?\n")
+print(round(c(trust=lm(I(dat$trustFatah-dat$trustHamas)~regData$states)$coef[2], #map onto trust
+        support=lm(I(dat$supportFatah-dat$supportHamas)~regData$states)$coef[2], #map onto support
+        vote=lm(I(dat$legisFatah-dat$legisHamas)~regData$states)$coef[2]),1 #map onto vote
+      ))
 
 state.plot <- ggplot(regData)+
   geom_line(aes(y=states, x=as.Date(date)))+
@@ -184,4 +191,54 @@ state.plot <- ggplot(regData)+
 ggsave(state.plot, file="../../Output/Figures/figure2.pdf", height=4, width=8)
 
 save(regData, states, file="../../Data/measurement.rdata")
-      
+
+
+
+
+
+
+
+rm(list=ls())
+
+## LOAD DATA
+jmcc0 <- subset(read.csv("../../Data/jmcc.csv"), year <= 2018)
+jmccWB <- subset(read.csv("../../Data/jmcc_WB.csv"), year <= 2018)
+jmccGZ <- subset(read.csv("../../Data/jmcc_GAZA.csv"), year <= 2018)
+jmccNew <- subset(read.csv("../../Data/jmcc_2023.csv"), year <= 2018)
+
+cpsrWB <- subset(read.csv("../../Data/cpsr_WB.csv"), year <= 2018)
+cpsrGZ <- subset(read.csv("../../Data/cpsr_GAZA.csv"), year <= 2018)
+cpsr0 <- subset(read.csv("../../Data/cpsr.csv"), year <= 2018)
+
+
+## SAMPLE SIZES: descriptive statistics for JMCC
+tab <- rbind(c(summary(jmccNew$N[!(is.na(jmccNew$trust_1) & is.na(jmccNew$legis_1))])),
+             summary(jmccWB$N[!(is.na(jmccNew$trust_1) & is.na(jmccNew$legis_1))]),
+             summary(jmccGZ$N[!(is.na(jmccNew$trust_1) & is.na(jmccNew$legis_1))]))
+tab <- round(tab)
+rownames(tab) <- c("JMCC:All","JMCC:WB", "JMCC:GZ")
+print(tab)
+## proportion from west bank on average
+cat("How many from the West Bank on average?",
+    round(mean(jmccWB$N[!(is.na(jmccNew$trust_1) & is.na(jmccNew$legis_1))]/
+               jmccNew$N[!(is.na(jmccNew$trust_1) & is.na(jmccNew$legis_1))])*100),
+    "%\n")
+
+
+
+## SAMPLE SIZES: descriptive statistics for PCPSR
+tab <- rbind(c(summary(cpsr0$size[!is.na(cpsr0$supportHamas)])),
+             summary(cpsrWB$size[!is.na(cpsr0$supportHamas)]),
+             summary(cpsrGZ$size[!is.na(cpsr0$supportHamas)]))
+tab <- round(tab)
+rownames(tab) <- c("PCPSR:All","PCPSR:WB", "PCPSR:GZ")
+print(tab)
+cat("How many from the West Bank on average?\n",
+    round(mean(cpsrWB$size[!is.na(cpsr0$supportHamas)]/
+               cpsr0$size[!is.na(cpsr0$supportHamas)]*100, na.rm=TRUE)),
+    "%\n")
+
+cat("How many from the West Bank min/max?\n",
+    round(quantile(cpsrWB$size[!is.na(cpsr0$supportHamas)]/
+               cpsr0$size[!is.na(cpsr0$supportHamas)]*100, c(0, 1), na.rm=TRUE)),
+    "%\n")
