@@ -17,10 +17,14 @@ sudo apt -y  install r-base-dev
 mkdir -p ~/R/x86_64-pc-linux-gnu-library/4.4
 sudo mkdir /etc/apt/keyrings/
 
-gpg --keyserver keyserver.ubuntu.com --recv-key E298A3A825C0D65DFD57CBB651716619E084DAB9
-gpg -a --export E298A3A825C0D65DFD57CBB651716619E084DAB9 --output R.gpg
+mkdir -p ~/R/x86_64-pc-linux-gnu-library/4.4
+sudo mkdir -p /etc/apt/keyrings/
+wget -O ./R.asc "http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xe298a3a825c0d65dfd57cbb651716619e084dab9"
+gpg --no-default-keyring --keyring ./temp.gpg --import R.asc
+gpg --no-default-keyring --keyring ./temp.gpg --export --output R.gpg
 sudo mv R.gpg /etc/apt/keyrings
-sudo echo "deb [signed-by=/etc/apt/keyrings/R.gpg] https://cloud.r-project.org/bin/linux/ubutnu jammay-cran40"| sudo tee -a  /etc/apt/sources.list
+sudo echo "deb [signed-by=/etc/apt/keyrings/R.gpg] https://cloud.r-project.org/bin/linux/ubuntu jammy-cran40/"| sudo tee -a  /etc/apt/sources.list
+
 sudo apt update 
 sudo apt -y upgrade 
 
