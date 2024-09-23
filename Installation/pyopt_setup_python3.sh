@@ -55,7 +55,8 @@ sudo ldconfig
 
 
 #use this line for project/package specific R dependencies like curl xml ssl and cmake 
-sudo apt -y install  libcurl4-gnutls-dev libxml2-dev libssl-dev cmake libudunits2-dev 
+sudo apt -y install libcurl4-gnutls-dev libxml2-dev libssl-dev cmake
+sudo apt -y install libudunits2-dev libgdal-dev netcdf-bin #for spatial
 cd $REPDIR
 # For replications insert R package building here
 
