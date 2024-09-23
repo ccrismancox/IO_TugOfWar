@@ -15,9 +15,6 @@ sudo apt -y install openmpi-bin openmpi-doc libopenmpi-dev
 sudo apt -y  install r-base-dev
 
 mkdir -p ~/R/x86_64-pc-linux-gnu-library/4.4
-sudo mkdir /etc/apt/keyrings/
-
-mkdir -p ~/R/x86_64-pc-linux-gnu-library/4.4
 sudo mkdir -p /etc/apt/keyrings/
 wget -O ./R.asc "http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xe298a3a825c0d65dfd57cbb651716619e084dab9"
 gpg --no-default-keyring --keyring ./temp.gpg --import R.asc
