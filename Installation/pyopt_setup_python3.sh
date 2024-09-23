@@ -19,6 +19,8 @@ sudo mkdir -p /etc/apt/keyrings/
 wget -O ./R.asc "http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xe298a3a825c0d65dfd57cbb651716619e084dab9"
 gpg --no-default-keyring --keyring ./temp.gpg --import R.asc
 gpg --no-default-keyring --keyring ./temp.gpg --export --output R.gpg
+rm R.asc
+rm temp.gpg
 sudo mv R.gpg /etc/apt/keyrings
 sudo echo "deb [signed-by=/etc/apt/keyrings/R.gpg] https://cloud.r-project.org/bin/linux/ubuntu jammy-cran40/"| sudo tee -a  /etc/apt/sources.list
 

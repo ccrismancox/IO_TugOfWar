@@ -12,8 +12,6 @@ from time import time
 import scipy.sparse as sps
 import adolc 
 import pyipopt
-import matplotlib.pyplot as plt
-import pickle as pk
 from numpy.linalg import inv
 import scipy.stats as stats
 import argparse
