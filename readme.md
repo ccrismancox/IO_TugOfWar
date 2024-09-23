@@ -5,7 +5,7 @@
 ## A note for replicators
 Conducting constrained maximum likelihood estimation (CMLE)  requires specialized (open source) software that we are only able to run using the Ubuntu Linux operating system. 
 We provide detailed setup instructions below. 
-All results were produced on a computer using Ubuntu 20.04.04 (Focal Fossa) using R 4.4.1 ("Race for Your Life") and Python 3.10.12.
+All results were produced on a computer using Ubuntu 22.04.4 (Jammy Jellyfish)) using R 4.4.1 ("Race for Your Life") and Python 3.10.12.
 
 ## Replication package contents
 Files marked with (U) require Ubuntu, with the setup as described below.
@@ -19,7 +19,7 @@ Files marked with (U) require Ubuntu, with the setup as described below.
 	- `replicateAppendix.sh` (U) Reproduces all results in the Appendix using the code files below in order. Tables and Figures are
       produced and placed in the Output folder
 - Installation
-    - `pyopt_setup_python3.sh` (U)  A bash script designed to be run on a fresh installation of Ubuntu 20.04.04.  This will install all the necessary outside software to replicate the results. (Internet connection is required)
+    - `pyopt_setup_python3.sh` (U)  A bash script designed to be run on a fresh installation of Ubuntu 22.04.04.  This will install all the necessary outside software to replicate the results. (Internet connection is required)
     - `Rpackages.r` An R script that installs all the `R` packages used here with the versions used here.
 - Data: These are both the original data used in the analysis as well as the merged and complete versions used in the analysis.
     - `acosta1993.csv` Acosta and Ramos' (2017) data to supplement missing data from the Global Terrorism Database (GTD).
@@ -33,7 +33,7 @@ Files marked with (U) require Ubuntu, with the setup as described below.
 	- `gadm41_PSE.gpkg` Spatial administrative lines file used to assess the location of the West Bank and Gaza Strip for rainfall data.
 	- `gtd.csv` Terrorist attacks data from the GTD.
 	- `jmcc.csv` Survey data from JMCC
-    - `jmcc_2003.csv` Survey data from JMCC, with additional details collected later in the analysis
+    - `jmcc_2023.csv` Survey data from JMCC, with additional details collected later in the analysis
 	- `jmcc_GAZA.csv` Survey data from JMCC, disaggregated to just the Gaza Strip
 	- `jmcc_WB.csv` Survey data from JMCC, disaggregated to just the West Bank
 	- `measurement.rdata` The results of the measurement model that produces the latent state variable $\tilde{s}^t$. Produced by `measurementModel.r`, below
@@ -65,7 +65,6 @@ Files marked with (U) require Ubuntu, with the setup as described below.
 		- `appendixC_geographic.R` Considers the geographical differences in the survey responses. Produces Figure C.2
 		- `appendixD_aggregateDeaths.r` Aggregates Palestinian fatalities from  B'Tselem. Creates `PalestinianDeaths.rdata`
 		- `appendixD_buildraindata.r` Downloads rainfall data (1.2GB) from GPCC and produces the measures of extreme rainfall in the Palestinian Territories. Creates `rainData.rdata`
-		- `appendixD_civilianOrNot.r` Fits the civilian and non-civilian models in Table D.4
 		- `appendixD_latentMeasures.r` 	Fits the latent measurement model for unemployment status and attitudes towards violence. Creates`ExtraFactors.rdata`.
 		- `appendixD_PIJattacks.r` Aggregates PIJ attacks. Produces `otherattacks.rdata` 
 		- `appendixD_robustness.r` Fits the robustness checks in Appendix D along with the sensitivity analysis. Produces Tables D.1--7 and Figure D.1.
@@ -100,9 +99,9 @@ Files marked with (U) require Ubuntu, with the setup as described below.
     - Tables. A folder containing all the produced tables in text format
 	
 
-## Ubuntu 20.04.04 setup 
+## Ubuntu 22.04.4 setup 
 
-From a fresh installation of Ubuntu 20.04.04, you will need to use the following steps to prepare the replication environment.
+From a fresh installation of Ubuntu 22.04.4, you will need to use the following steps to prepare the replication environment.
 
 1. Download the replication package 
 2. Extract the replication package to the desired location (`${REPDIR}`)
@@ -111,7 +110,7 @@ From a fresh installation of Ubuntu 20.04.04, you will need to use the following
 ```bash
 bash pyopt_setup_python3.sh
 ```
-This step may take up to 30 minutes depending on network speed and you may be prompted to press "Enter" at one or more points in the process. As software is downloaded, updated, or installed you may notice various background notifications appearing.  These are normal and can be ignored.
+This step may take up an hour depending on network speed and you may be prompted to press "Enter" at one or more points in the process. As software is downloaded, updated, or installed you may notice various background notifications appearing.  These are normal and can be ignored.  A known bug sometimes appears where the installation hangs on "Pregenerating ConTeXt MarkIV format. This may take some time..." If you find yourself here for more than five minutes, press "Enter" 4--5 times and wait about another minute. This will often work to "unstick" it (see [this link](https://askubuntu.com/questions/956006/pregenerating-context-markiv-format-this-may-take-some-time-takes-forever)).)
 
 5. Run the file `Rpackages.R`
 ```bash

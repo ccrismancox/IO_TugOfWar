@@ -95,7 +95,7 @@ mod2t <- lm(diff.states ~ lag.Hattacks*ts + lag.Fattacks*ts +
               lag.Hattacks:lag.states +lag.Fattacks:lag.states,
             data=regData)
 
-
+linearHypothesis(mod2t,c("lag.Hattacks:ts","ts:lag.Fattacks"), vcov=NeweyWest)
 
 
 #' Robustness to covariates
@@ -140,8 +140,9 @@ mod2g <- lm(diff.states ~ lag.Hattacks + lag.Fattacks + second.int
             + infant+infant:post.election
             +lag.Hattacks:lag.states +
               lag.Fattacks:lag.states, data=regData)
-deltaMethod(mod2g, "infant+`post.election:infant`", vcov=NeweyWest)
+cat("What are the effects post 2006?\n")
 deltaMethod(mod2g, "corruption+`corruption:post.election`", vcov=NeweyWest)
+deltaMethod(mod2g, "infant+`post.election:infant`", vcov=NeweyWest)
 
 
 
@@ -213,8 +214,6 @@ cat(stargazer(mod.list.controls,
 
 
 
-
-
 #' Robustness to action measures
 mod3a <- lm(diff.states ~ Hattacks.count + Fattacks.count
             +  second.int+L.diff.emp+L.diff.violence+timesinceelection+
@@ -234,10 +233,6 @@ mod3d <- lm(diff.states ~ Hkill.attack  + Fkill.attack  +  second.int+L.diff.emp
               Hkill.attack:lag.states + Fkill.attack:lag.states, data=regData)
 
 
-
-
-
-
 ### attack targets/types
 regData$lag.Hattacks.mil <- (dat.Civs$lag.Hattacks.mil >0)*1
 regData$lag.Fattacks.mil <- (dat.Civs$lag.Fattacks.mil >0)*1
@@ -255,6 +250,14 @@ mod0.civ <- lm(diff.states~lag.Hattacks.civ + lag.Fattacks.civ + second.int +
                    L.diff.emp + L.diff.violence + timesinceelection + L.diff.states + 
                    lag.Hattacks.civ:lag.states + lag.Fattacks.civ:lag.states, data=regData,
                x=T,y=T)
+
+
+
+
+
+
+
+
 
 mod.list.measurement <- list(mod3a, mod3b, mod3c, mod3d, mod0.civ, mod0.notciv)
 se.list.measurement <- lapply(mod.list.measurement, function(x){sqrt(diag(NeweyWest(x)))})
@@ -299,6 +302,31 @@ add_rows=inters)
 
 
 
+
+
+for(i in 1:length(mod.list.measurement)){
+    mod <- mod.list.measurement[[i]]
+    V <- NeweyWest(mod)
+    strF <- ifelse(i==3 | i==4, "Fkill", "Fatt")
+    strH <- ifelse(i==3 | i==4, "Hkill", "Hatt")
+    Fidx <- grep(strF,names(mod$coefficients))
+    Hidx <- grep(strH,names(mod$coefficients))
+    X <-  matrix(0, ncol=length(mod$coef), nrow=440)
+    colnames(X) <- names(mod$coefficients)  
+    X[,Fidx[1]] <- 1; X[,Fidx[2]] <- states
+    X[,Hidx[1]] <- 1; X[,Hidx[2]] <- states
+    cancel <- X %*%  mod$coef
+    cancelSE <- sqrt(diag(X %*% V %*% t(X)))
+    p.cancel <- 2*pnorm(abs(cancel/cancelSE), lower=FALSE)
+    reject <- mean(p.cancel< 0.1) * 100
+    cat("At what percentage of the states can we reject the null that Fatah and Hamas are equallty capable of moving the state space in model", i, "of Table D.4\n")
+    print(reject)
+    if(reject < 100){
+      cat("In model ", i, "of Table D.4, we fail to reject the null of equally effective at states less than\n")
+      print(max(states[which(p.cancel>0.1) ]))
+    }
+}
+  
 
 
 
@@ -602,128 +630,34 @@ print(max(round(rbind(D5b[1:4,], D5d[1:4,], D5e[1:4,]), 1)[,3])) # first stage F
 
 
 
-## question does fatality/attack change over time? (Appendix D.5)
-dat$ts <- 1:300
-mod4a <- lm(Fkills0~Fattacks*ts, data=dat)
-mod4b <- lm(Hkills0~Hattacks*ts, data=dat)
-
-dummies <- with(regData[-c(1:12),], olso.era+2*second.int +3*(1-olso.era-second.int))
-dat2 <- cbind(dat, dummies)
-mod4c <- lm(Fkills0~Fattacks*factor(dummies), data=dat2)
-head(sort(hatvalues(mod4c), decreasing=TRUE))
-head(sort(cooks.distance(mod4c), decreasing=TRUE))
-mod4d <- lm(Fkills0~Fattacks*factor(dummies), data=dat2[-162])
-mod4e <- lm(Hkills0~Hattacks*factor(dummies), data=dat2)
-
-
-## hypothesis that all three eras are equal
-linearHypothesis(mod4e,
-                 c("Hattacks:factor(dummies)2=Hattacks:factor(dummies)3",
-                   "Hattacks:factor(dummies)3=0"),
-                 vcov=NeweyWest)
-linearHypothesis(mod4c,
-                 c("Fattacks:factor(dummies)2=Fattacks:factor(dummies)3",
-                   "Fattacks:factor(dummies)3=0"),
-                 vcov=NeweyWest)
-
-
-
-
-mod.list.time <- list(mod4a, mod4c, mod4d, mod4b, mod4e )
-##Rename all to "fattacks" for ease of tabling
-mod.list.time <- lapply(mod.list.time, \(x){names(x$coefficients)<-gsub(x=names(x$coef), "Hattacks", "Fattacks");return(x)})
-se.list.time <- lapply(mod.list.time, function(x){sqrt(diag(NeweyWest(x)))})
-
-
-cat(stargazer(mod.list.time, 
-              se=se.list.time,
-              no.space = TRUE,
-              omit.stat =  "all",
-              float.env="sidewaystable",
-              notes = c("\\scriptsize\\emph{Note:}  Newey-West standard errors in parenthesis"),
-              add.lines=list( c("Actor",
-                                paste("\\multicolumn{1}{c}{",
-                                      rep(c("Fatah","Hamas"),c(3,2)),
-                                      "}",sep="")),
-                             c("Excluding June 2007 (Battle of Gaza)",
-                               paste("\\multicolumn{1}{c}{",
-                                     ifelse(sapply(mod.list.time, \(x){nrow(x$model)==300}), "No", "Yes"),
-                               "}",sep="")),
-              c("$T$",
-                paste("\\multicolumn{1}{c}{",
-                      sapply(mod.list.time, \(m){nrow(m$model)}),
-                "}",sep="")),
-    c("adj. $R^2$",
-      paste("\\multicolumn{1}{c}{",
-            num2str(sapply(mod.list.time, \(m){summary(m)$adj.r.squared})),
-      "}",sep=""))
-),
-title="Average fatalities per attacks by time",
-label="tab:firststage.time",
-dep.var.labels = rep(c("Fatalities"), length(mod.list.time)),
-digits=2,
-order=c("Fattacks"),
-align=TRUE,
-header=FALSE,
-notes.append = FALSE,
-star.cutoffs = c(NA),
-notes.label = "",
-notes.align = "l",
-covariate.labels = c("Attacks (count)",
-                     "Attacks $\\times$ time",
-                     "Fattacks:factor(dummies)2"="Attacks $\\times$ Second \\emph{Intifada} -- Election",
-                     "Fattacks:factor(dummies)3"="Attacks $\\times$ Post-2006 election",
-                     "Time", 
-                     "Second \\emph{Intifada} -- Election",
-                     "Post-2006 election",
-                     "Constant")),
-file="../../Output/Tables/tableD7.tex", sep="\n")
-
-
-
-
 
 ##### sensitivity D3 ##### 
 
 
 mod.sen <- mod2e
-q <- 1+mod.sen$coefficients["lag.Hattacks"]/mod.sen$coefficients["lag.Fattacks"]
 
+#Percentage change needed for symmetry
+q <- 1+mod.sen$coefficients["lag.Hattacks"]/mod.sen$coefficients["lag.Fattacks"]
 q2 <- 1+abs(mod.sen$coefficients["lag.Fattacks"]/mod.sen$coefficients["lag.Hattacks"])
 
-rsq.partial(mod.sen)
+
+## For reference; what are best predictors of lagged attacks?
+lm.f <- update(mod.sen, lag.Fattacks~.-lag.Fattacks-lag.Fattacks:lag.states-lag.Hattacks:lag.states)
+lm.h <- update(mod.sen, lag.Hattacks~.-lag.Hattacks-lag.Fattacks:lag.states-lag.Hattacks:lag.states)
+sort(lm.f$coef, decreasing = TRUE)
+sort(lm.h$coef, decreasing = TRUE)
+
 sen1 <- sensemakr(model = mod.sen,
                   treatment = "lag.Fattacks",
                   q=q)
-summary(sen1)
-## unobserved covariates would need to explain 71% of the 
-## residual variable in both Fattacks and popularity
-## 68% for the 95% CI to contain symmetry 
-
 sen2 <- sensemakr(model = mod.sen,
                   treatment = "lag.Hattacks",
                   q=q2)
-summary(sen2)
-## unobserved covariates would need to explain 94% of the 
-## residual variable in both Fattacks and popularity
-## 94% for the 95% CI to contain symmetry 
-
 senF0 <- sensemakr(model = mod.sen,
                    treatment = c("lag.Fattacks"))
-summary(senF0)
-## unobserved covariates would need to explain 77% of the 
-## residual variable in both Fattacks and popularity
-## 75% for the 95% CI to contain 0 
 senH0 <- sensemakr(model = mod.sen,
                    treatment = c("lag.Hattacks"))
-summary(senH0)
-## unobserved covariates would need to explain 45% of the 
-## residual variable in both Fattacks and popularity
-## 39% for the 95% CI to contain symmetry 
 
-
-lm.f <- update(mod.sen, lag.Fattacks~.-lag.Fattacks-lag.Fattacks:lag.states-lag.Hattacks:lag.states)
-lm.h <- update(mod.sen, lag.Hattacks~.-lag.Hattacks-lag.Fattacks:lag.states-lag.Hattacks:lag.states)
 sen.stats <- list("Fatah.symm"=sen1, 
                   "Fatah.null"=senF0, 
                   "Hamas.symm"=sen2, 
@@ -743,16 +677,11 @@ rownames(sen.out) <- c("RV-symmetry",
 colnames(sen.out) <- paste0("\\multicolumn{1}{c}{",
                             c("Fatah", "Hamas"),
                             "}")
-sort(partial_r2(mod.sen),decreasing = T)[1:2]
+partial_r2(mod.sen)["lag.Hattacks"]
+sort(partial_r2(lm.h),decreasing = TRUE)[1]
 
 
-# For my reference, this is partial R^2, the amount of variance 
-# explained uniquely by x
-# SSresid <- sum(mod.sen$residuals^2)
-# SSresid.F <- sum(update(mod.sen, .~ .-lag.Fattacks)$resid^2)
-# (SSresid.F-SSresid)/SSresid.F
-
-cat(kable(sen.out,         
+cat(kable(sen.out, digits=2,
              caption="Robustness values and sensitivity of gamma_{i,1}."),
      file="../../Output/Tables/tableD6.txt", sep="\n")
 
@@ -826,4 +755,87 @@ sensitivity.coefH <- ggplot(adj.coef2, aes(x = Eff.Hamas, y = Eff.Popularity, z=
 pdf("../../Output/Figures/figureD1.pdf", width=11.5, height=5)
 grid.arrange(sensitivity.coef, sensitivity.coefH, nrow=1)
 dev.off()
+
+
+
+
+
+## question does fatality/attack change over time? (Appendix D.5)
+dat$ts <- 1:300
+mod4a <- lm(Fkills0~Fattacks*ts, data=dat)
+mod4b <- lm(Hkills0~Hattacks*ts, data=dat)
+
+dummies <- with(regData[-c(1:12),], olso.era+2*second.int +3*(1-olso.era-second.int))
+dat2 <- cbind(dat, dummies)
+mod4c <- lm(Fkills0~Fattacks*factor(dummies), data=dat2)
+head(sort(hatvalues(mod4c), decreasing=TRUE))
+head(sort(cooks.distance(mod4c), decreasing=TRUE))
+mod4d <- lm(Fkills0~Fattacks*factor(dummies), data=dat2[-162])
+mod4e <- lm(Hkills0~Hattacks*factor(dummies), data=dat2)
+
+
+## hypothesis that all three eras are equal
+linearHypothesis(mod4e,
+                 c("Hattacks:factor(dummies)2=Hattacks:factor(dummies)3",
+                   "Hattacks:factor(dummies)3=0"),
+                 vcov=NeweyWest)
+linearHypothesis(mod4c,
+                 c("Fattacks:factor(dummies)2=Fattacks:factor(dummies)3",
+                   "Fattacks:factor(dummies)3=0"),
+                 vcov=NeweyWest)
+
+
+
+
+mod.list.time <- list(mod4a, mod4c, mod4d, mod4b, mod4e )
+##Rename all to "fattacks" for ease of tabling
+mod.list.time <- lapply(mod.list.time, \(x){names(x$coefficients)<-gsub(x=names(x$coef), "Hattacks", "Fattacks");return(x)})
+se.list.time <- lapply(mod.list.time, function(x){sqrt(diag(NeweyWest(x)))})
+
+
+cat(stargazer(mod.list.time, 
+              se=se.list.time,
+              no.space = TRUE,
+              omit.stat =  "all",
+              float.env="sidewaystable",
+              notes = c("\\scriptsize\\emph{Note:}  Newey-West standard errors in parenthesis"),
+              add.lines=list( c("Actor",
+                                paste("\\multicolumn{1}{c}{",
+                                      rep(c("Fatah","Hamas"),c(3,2)),
+                                      "}",sep="")),
+                              c("Excluding June 2007 (Battle of Gaza)",
+                                paste("\\multicolumn{1}{c}{",
+                                      ifelse(sapply(mod.list.time, \(x){nrow(x$model)==300}), "No", "Yes"),
+                                      "}",sep="")),
+                              c("$T$",
+                                paste("\\multicolumn{1}{c}{",
+                                      sapply(mod.list.time, \(m){nrow(m$model)}),
+                                      "}",sep="")),
+                              c("adj. $R^2$",
+                                paste("\\multicolumn{1}{c}{",
+                                      num2str(sapply(mod.list.time, \(m){summary(m)$adj.r.squared})),
+                                      "}",sep=""))
+              ),
+              title="Average fatalities per attacks by time",
+              label="tab:firststage.time",
+              dep.var.labels = rep(c("Fatalities"), length(mod.list.time)),
+              digits=2,
+              order=c("Fattacks"),
+              align=TRUE,
+              header=FALSE,
+              notes.append = FALSE,
+              star.cutoffs = c(NA),
+              notes.label = "",
+              notes.align = "l",
+              covariate.labels = c("Attacks (count)",
+                                   "Attacks $\\times$ time",
+                                   "Fattacks:factor(dummies)2"="Attacks $\\times$ Second \\emph{Intifada} -- Election",
+                                   "Fattacks:factor(dummies)3"="Attacks $\\times$ Post-2006 election",
+                                   "Time", 
+                                   "Second \\emph{Intifada} -- Election",
+                                   "Post-2006 election",
+                                   "Constant")),
+    file="../../Output/Tables/tableD7.tex", sep="\n")
+
+
 
