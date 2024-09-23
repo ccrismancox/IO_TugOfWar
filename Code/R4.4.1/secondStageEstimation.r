@@ -13,7 +13,7 @@ load("Results/firstStageOutput.Rdata")
 load("Results/startingvalues.rdata")
 start <- c(startmod$regtable$V1, startmod$v)
 
-py.params <- data.table(delta=.999, 
+py.params <- data.table(delta=.999,
                         nkappa=2, nbeta=2)
 regData <- mainData[,.(states, Hattacks, Fattacks, lag.states, states.discrete)]
 
@@ -37,7 +37,7 @@ V2 <- read.csv("ipoptTEMP/VCOV2.csv",header = F)
 
 
 model.main <- list(regData=regData, Trans=Trans, states=states, params=py.params,
-                   V1=V2[1:4, 1:4], V2=V2[1:4, 1:4], 
+                   V1=V2[1:4, 1:4], V2=V2[1:4, 1:4],
                    conv=conv, v=v, regtable=regtable, regtable2=regtable2)
 
 
@@ -67,4 +67,5 @@ b <- c(0,0)
 theta <- c(regtable$V1)
 V2 <- as.matrix(V2)[1:4, 1:4]
 wald.stat <- t(A %*% theta -b) %*% solve(A %*% V2 %*% t(A)) %*% (A %*% theta -b)
-pchisq(wald.stat, df=2, lower=FALSE)
+cat("Do we reject the null hypothesis that beta_H=beta_F=0?\n")
+pchisq(wald.stat, df=2, lower=FALSE)< 0.05

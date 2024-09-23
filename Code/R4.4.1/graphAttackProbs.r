@@ -44,13 +44,13 @@ rownames(G) <- c()
 nG <- dim(G)[1]
 
 # does everything work?
-thetaStar = list(betaH = thetaEst[1], # hamas state payoff 
+thetaStar = list(betaH = thetaEst[1], # hamas state payoff
                  betaF = thetaEst[2], # fatah state payoff
                  kappaH = c(thetaEst[3], 0), # hamas cost of attack
                  kappaF = c(thetaEst[4], 0), # fatah cost of attack
-                 delta=delta)  
+                 delta=delta)
 
-
+cat("Checks to make sure that everything works as expected\n")
 max(abs(PSI(vEst, thetaStar, Trans, G) - vEst)) < 1e-8
 max(abs(Trans - gamma2trans(gammaStar, sigmaStar, states, discretize=F,d = .05, bound=0.025))) < 1e-10
 max(abs(PSI(vEst, thetaStar, gamma2trans(gammaStar, sigmaStar, states, discretize=F,d = .05, bound=0.025), G) - vEst)) < 1e-8
@@ -101,16 +101,16 @@ vF <- log(colSums(exp(matrix(vEst[(2*length(states)+1):(4*length(states))],  nco
 
 ggdata <-  data.frame(PrAttack = c(EQCP$prAH[mainData$states.int], EQCP$prAF[mainData$states.int],
                                    (mainData$states-lostate)/(histate-lostate)),
-                      time = as.Date(rep(mainData$Date,3), "%Y-%m-%d"), 
+                      time = as.Date(rep(mainData$Date,3), "%Y-%m-%d"),
                       Variable = rep(c("Hamas Pr. Attack", "Fatah Pr. Attack", "Relative Popularity"), each = Tperiod))
 ggdata$Variable <- factor(ggdata$Variable, levels = c( "Relative Popularity","Hamas Pr. Attack", "Fatah Pr. Attack"))
 
 pccptime2yd  <- ggplot(ggdata, aes(x=time, y=PrAttack, color=Variable, linetype=Variable, alpha=Variable)) +
   geom_line(linewidth=1.5) + theme_bw(12) +
-  xlab("Time") + ylab("Pr. Attack") + 
-  scale_y_continuous(sec.axis = sec_axis(~.*(histate-lostate) + lostate, name = "Relative popularity")) + 
+  xlab("Time") + ylab("Pr. Attack") +
+  scale_y_continuous(sec.axis = sec_axis(~.*(histate-lostate) + lostate, name = "Relative popularity")) +
   scale_x_date(breaks=as.Date(paste(seq(from=1994,to=2018, by=4), "-02-01",sep="")),
-               labels = seq(from=1994,to=2018, by=4)) +  
+               labels = seq(from=1994,to=2018, by=4)) +
       scale_color_manual(values=c("grey50", "orangered","navyblue" ),name="Variable")  +
       scale_alpha_manual(values=c(.8,1,1))+
       scale_linetype_manual(values= c(3,2,1), name="Variable") +
@@ -123,4 +123,6 @@ pccptime2yd  <- ggplot(ggdata, aes(x=time, y=PrAttack, color=Variable, linetype=
         legend.box.margin=margin(-10,0,0,0))
 ggsave("../../Output/Figures/figure3.pdf", pccptime2yd, width=8, height=4.75)
 
+
+cat("Average attack probabilities by actor\n")
 round(by(ggdata, ggdata$Variable, \(x){mean(x$PrAttack)}), 2)[-1]

@@ -34,9 +34,9 @@ mod0 <- lm(states~lag.Hattacks + lag.Fattacks + lag.states+
            x=T,y=T)
 
 #' COINTEGRATION: need to reject the null of unit root in the residuals
-cat("Do we reject the null of unit root in the residuals?\n")
-summary(ur.df(mod0$residuals)) 
-
+cat("Do we reject the null of unit root in the residuals (i.e., we have cointegration)?\n")
+df.test <- summary(ur.df(mod0$residuals))
+cat(ifelse(abs(drop(df.test@teststat)) > abs( df.test@cval[2]), TRUE, FALSE), "\n")
 cat("Do we reject the null of normal residuals (KS test)?\n")
 ks.test(scale(mod0$resid), pnorm)$p.value < 0.05
 cat("Do we reject the null of normal gammas in any bootstrap iteration (JB test)?\n")
@@ -58,9 +58,15 @@ any(apply(bootOut, 2, \(x){jarque.test(x)$p.val}) < 0.05)
 regData[, diff.states := states-lag.states]
 regData[,L.diff.states := shift(diff.states)]
 
-#' Test for stationarity in the differenced variable
-summary(ur.df(na.omit(regData$diff.states))) #good
-summary(ur.pp(na.omit(regData$diff.states))) #good
+
+#' Test for stationarity in the independent variables
+cat("Testing for stationarity in the independent variables\n")
+df.test <- function(x){
+    dickey <-summary(ur.df(na.omit(x)))
+    return(ifelse(abs(drop(dickey@teststat)) > abs(dickey@cval[2]), TRUE, FALSE))
+}
+
+print(regData[, lapply(.SD, df.test), .SDcols=c("lag.Hattacks", "lag.Fattacks", "L.diff.states")])
 
 #' ECM
 mod1 <- lm(diff.states ~ lag.Hattacks + lag.Fattacks + L.diff.states + lag.Hattacks:lag.states +
@@ -129,7 +135,7 @@ mainData$states.discrete <- sapply(mainData$states,
 
 save(mainData, file="Results/mainStateActions.Rdata")
 save(list=c("Trans", "mod0", "states", "bootOut", "regData"),
-     file="Results/firstStageOutput.Rdata")  
+     file="Results/firstStageOutput.Rdata")
 
 
 #' For the ECM we consider two sets of hypothesis tests:
