@@ -1,11 +1,11 @@
-# Replication instructions for "Tug of War: The Heterogeneous Effects of Outbidding between Terrorist Groups"
+# Replication instructions for ``Tug of War: The Heterogeneous Effects of Outbidding between Terrorist Groups''
 # Casey Crisman-Cox and Michael Gibilisco
 # Sept 2024
 
 ## A note for replicators
 Conducting constrained maximum likelihood estimation (CMLE)  requires specialized (open source) software that we are only able to run using the Ubuntu Linux operating system. 
 We provide detailed setup instructions below. 
-All results were produced on a computer using Ubuntu 22.04.4 ("Jammy Jellyfish") using R 4.4.1 ("Race for Your Life") and Python 3.10.12.
+All results were produced on a computer using Ubuntu 20.04.04 (Focal Fossa) using R 4.4.1 ("Race for Your Life") and Python 3.10.12.
 
 ## Replication package contents
 Files marked with (U) require Ubuntu, with the setup as described below.
@@ -19,7 +19,7 @@ Files marked with (U) require Ubuntu, with the setup as described below.
 	- `replicateAppendix.sh` (U) Reproduces all results in the Appendix using the code files below in order. Tables and Figures are
       produced and placed in the Output folder
 - Installation
-    - `pyopt_setup_python3.sh` (U)  A bash script designed to be run on a fresh installation of Ubuntu 22.04.4.  This will install all the necessary outside software to replicate the results. (Internet connection is required)
+    - `pyopt_setup_python3.sh` (U)  A bash script designed to be run on a fresh installation of Ubuntu 20.04.04.  This will install all the necessary outside software to replicate the results. (Internet connection is required)
     - `Rpackages.r` An R script that installs all the `R` packages used here with the versions used here.
 - Data: These are both the original data used in the analysis as well as the merged and complete versions used in the analysis.
     - `acosta1993.csv` Acosta and Ramos' (2017) data to supplement missing data from the Global Terrorism Database (GTD).
@@ -83,7 +83,7 @@ Files marked with (U) require Ubuntu, with the setup as described below.
 		- `counterfactual_kappa.R` Conducts counterfactual analysis on changes in the costs of terrorism ($\kappa$). Produces Figure A.4
 		- `counterfactual_kappa_discussion.R` Conducts counterfactual analysis on changes in the costs of terrorism ($\kappa$). Produces Table 5.
 		- `counterfactual_single_agent.R` Conducts the counterfactual comparisons with the single agent models. Produces Figure 5 and Table 4.
-		- `graphAttackProbs.r` Produces Figure 3 and 4
+		- `figure3.R` Produces Figure 3
 		- `firststageboot.r` Function for a parametric bootstrap on the first stage 
 		- `firstStageEstimation.r` Fit the first stage model. Produces Table 1
 		- `fitNoCompetition.r` (U) Fit the no competition model
@@ -100,9 +100,9 @@ Files marked with (U) require Ubuntu, with the setup as described below.
     - Tables. A folder containing all the produced tables in text format
 	
 
-## Ubuntu 22.04.4 setup 
+## Ubuntu 20.04.04 setup 
 
-From a fresh installation of Ubuntu 22.04.4, you will need to use the following steps to prepare the replication environment. [The iso image can be obtained here](https://cdimage.ubuntu.com/jammy/daily-live/20240216.1/jammy-desktop-amd64.iso).
+From a fresh installation of Ubuntu 20.04.04, you will need to use the following steps to prepare the replication environment.
 
 1. Download the replication package 
 2. Extract the replication package to the desired location (`${REPDIR}`)
@@ -111,7 +111,7 @@ From a fresh installation of Ubuntu 22.04.4, you will need to use the following 
 ```bash
 bash pyopt_setup_python3.sh
 ```
-This step may take up to 30 minutes depending on network speed, and you may be prompted to press "Enter" at one or more points in the process. As software is downloaded, updated, or installed you may notice various background notifications appearing.  These are normal and can be ignored.
+This step may take up to 30 minutes depending on network speed and you may be prompted to press "Enter" at one or more points in the process. As software is downloaded, updated, or installed you may notice various background notifications appearing.  These are normal and can be ignored.
 
 5. Run the file `Rpackages.R`
 ```bash
@@ -123,7 +123,7 @@ Rscript Rpackages.R
 ## Order of replication
 
 Any file can be run and will produce the desired output as listed in its description.
-Two additional script files are provided to replicate the main paper and the appendix, respectively. 
+Two additional script files are provided to replicated the main paper and the appendix, respectively. 
 These call the scripts, in order, to produce the files in the Output folder.
 Once the above installation is complete, these can be run by opening the terminal in this folder and running
 ```bash

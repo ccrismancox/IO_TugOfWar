@@ -1,3 +1,4 @@
+.libPaths(unique(c("~/R/x86_64-pc-linux-gnu-library/4.4",.libPaths())))
 install.packages("remotes")
 library(remotes)
 install_version("numDeriv", "2016.8-1.1")
