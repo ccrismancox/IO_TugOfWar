@@ -153,7 +153,7 @@ cat("At what percentage of the states can we reject the null that Fatah and Hama
 colMeans(cbind(Fatah=pF, Hamas=pH) < 0.05) * 100
 
 
-A <- rbind(cbind(0,1, 1, 0, states, states))
+A <- cbind(0,1, 1, 0, states, states)
 cancel <- (marginalsF + marginalsH)
 cancelSE <- sqrt(diag(A %*% Vmod1 %*% t(A)))
 p.cancel <- 2*pnorm(abs(cancel/cancelSE), lower=FALSE)

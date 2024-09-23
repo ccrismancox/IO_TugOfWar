@@ -47,7 +47,7 @@ dat[,`:=`(pp_sup = supp_1 %+na% supp_2, # support peace process
 
 dat.employ <- subset(dat, select=c(unemp, unemp_respondent,
                                    unemp_cpsr, 
-                                  unemp_pcbs))
+                                   unemp_pcbs))
 
 dat.violence <- subset(dat, select=c(bination_1, bination_2, bination_3, bination_4,
                                      pp_sup, pp_opp,
@@ -65,39 +65,56 @@ cntl.listA = list(maxit=2500, minit=250, abstol = 1e-5, conv.test.slope.tol = 0.
 cntl.listB = list(maxit=25000, minit=1000, abstol = 1e-5, conv.test.slope.tol = 0.1)
 
 
+
+#### In text remarks
+cat("Minimum observed support for violence generally is",
+    min(dat.violence$armedattacks, na.rm=TRUE),
+    "percent\n")
+
+cat("Median and IQRs for the different attack targets \n")
+round(dat.violence[, lapply(.SD, quantile, c(0.5, .25, .75), na.rm=TRUE),
+             .SDcols = c("armedattacks_soldiers", 
+                         "armedattacks_settlers",
+                         "armedattacks_civilians")]
+)
+
+
+
+
+
 ####################################################
 # unemployment
 
 dyn_mod_uemp <- list(Z=matrix(names(dat.employ)),
-                 A="zero", 
-                 R="identity", 
-                 B="unconstrained",
-                 U="zero",
-                 Q="identity", 
-                 x0="zero",
-                 V0=matrix(3,1,1),
-                 tinitx=1)
+                     A="zero", 
+                     R="identity", 
+                     B="unconstrained",
+                     U="zero",
+                     Q="identity", 
+                     x0="zero",
+                     V0=matrix(3,1,1),
+                     tinitx=1)
 cntl.list = list(maxit=10000, minit=2000, abstol = 1e-5, conv.test.slope.tol = 0.05)
 dyn_mars_uemp <- MARSS(t(scale(dat.employ)), 
-                  model=dyn_mod_uemp,
-                  control=cntl.list, silent=T)
+                       model=dyn_mod_uemp,
+                       control=cntl.list, silent=T)
 
 ####################################################
 # violence 
 
 dyn_mod_violence1D <- list(Z=matrix(names(dat.violence)),
-                A="zero", 
-                R="identity", 
-                B="unconstrained", 
-                U="zero",
-                Q="identity",
-                x0="zero",
-                V0=matrix(3,1,1),
-                tinitx=1)
+                           A="zero", 
+                           R="identity", 
+                           B="unconstrained", 
+                           U="zero",
+                           Q="identity",
+                           x0="zero",
+                           V0=matrix(3,1,1),
+                           tinitx=1)
 
 dyn_mars_violence1D <- MARSS(t(scale(dat.violence)), 
-                       model=dyn_mod_violence1D,
-                       control=cntl.list, silent=T)
+                             model=dyn_mod_violence1D,
+                             control=cntl.list, silent=T)
 
 
 
@@ -111,7 +128,7 @@ marsOut$Variable <- c("Self reported unemployment rate (JMCC)",
 
 marsOut <- marsOut[  ,c("Variable","V1")]
 cat(kable(marsOut, row.names=FALSE, col.names=c("Variable", "Est."),
-            caption="ML estimates for latent unemployment conditions",
+          caption="ML estimates for latent unemployment conditions",
           digits=2, format="pipe"),
     file="../../Output/Tables/tableD2.txt",
     sep="\n")
@@ -144,11 +161,11 @@ marsOut$Variable <- c("\\% Supporting two-state solution",
                       "\\% Support armed attacks against civilians",
                       "\\% Support armed attacks against soliders",
                       "\\% Support armed attacks against settlers")
-                      
-                      
+
+
 marsOut <- marsOut[  ,c("Variable","V1")]
 cat(kable(marsOut, row.names=FALSE, col.names=c("Variable", "Est."),
-            caption="ML estimates for latent support for violence",
+          caption="ML estimates for latent support for violence",
           digits=2, format="pipe"),
     file="../../Output/Tables/tableD1.txt",
     sep="\n")
@@ -156,13 +173,13 @@ cat(kable(marsOut, row.names=FALSE, col.names=c("Variable", "Est."),
 
 ## move it into a data frame for merging
 gg.extra <- data.frame(ts = 1:dim(dat)[1],
-                      month = dat$month,
-                      year = dat$year,
-                      date = as.yearmon(1994 + seq(0, dim(dat)[1]-1)/12),
-                      employStates = c(dyn_mars_uemp$states),
-                      emplySE = c(dyn_mars_uemp$states.se),
-                      violence1DStates =  c(dyn_mars_violence1D$states[1,]),
-                      violence1DSE = c(dyn_mars_violence1D$states.se[1,]))
+                       month = dat$month,
+                       year = dat$year,
+                       date = as.yearmon(1994 + seq(0, dim(dat)[1]-1)/12),
+                       employStates = c(dyn_mars_uemp$states),
+                       emplySE = c(dyn_mars_uemp$states.se),
+                       violence1DStates =  c(dyn_mars_violence1D$states[1,]),
+                       violence1DSE = c(dyn_mars_violence1D$states.se[1,]))
 
 
 save(gg.extra,  file="../../Data/ExtraFactors.rdata")
