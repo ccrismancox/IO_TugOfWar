@@ -148,7 +148,7 @@ or
 nohup bash replicateAppendix.sh &
 ```
 respectively.
-Note the use of `nohup` allows you to let these run in the background for as long as needed. This can be useful if you're replicating this on a remote device.
+Note the use of `nohup` allows you to let these run in the background for as long as needed. This can be useful if you're replicating this on a remote device. Tables and Figures will be exported to the correct folders and any on-screen text will be collected within the file `nohup.out`.
 Alternatively, the command 
 ```bash
 nohup bash replicateAll.sh &
