@@ -1,7 +1,6 @@
 '''
 Code to fit the model with changing deltas
 '''
-from genModel import *
 from genGiven import *
 from estFunctions import *
 from attackProbs import *
