@@ -172,9 +172,12 @@ ggsave("../../Output/Figures/figureB3.pdf" , height = 2.5, plot = pIDall, width=
 ggsave("../../Output/Figures/figureB2.pdf" , height = 2.5, plot = pEQall, width= 6)
 
 ## correlations mentioned in the appendix
-cor(EQCP1$prAH, EQCP1$prAF)
-cor(EQCP3$prAH, EQCP3$prAF)
-cor(EQCPsym$prAH, EQCPsym$prAF)
+cat("Correlations between choice probs in \n")
+cat("Hamas dominant eq.", round(cor(EQCP1$prAH, EQCP1$prAF), 2), "\n")
+cat("Fatah dominant eq.", round(cor(EQCP3$prAH, EQCP3$prAF), 2), "\n")
+cat("Sym. dominant eq.", round(cor(EQCPsym$prAH, EQCPsym$prAF), 2), "\n")
+
+
 
 
 
