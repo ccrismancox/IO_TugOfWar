@@ -5,7 +5,7 @@
 ## A note for replicators
 Conducting constrained maximum likelihood estimation (CMLE)  requires specialized (open source) software that we are only able to run using the Ubuntu Linux operating system. 
 We provide detailed setup instructions below. 
-All results were produced on a computer using Ubuntu 22.04.4 (Jammy Jellyfish)) using R 4.4.1 ("Race for Your Life") and Python 3.10.12.
+All results were produced on a computer using Ubuntu 20.04.6 (Focal Fossa) using R 4.4.1 ("Race for Your Life") and Python 3.8.10.
 
 ## Replication package contents
 Files marked with (U) require Ubuntu, with the setup as described below.
@@ -19,12 +19,12 @@ Files marked with (U) require Ubuntu, with the setup as described below.
 	- `replicateAppendix.sh` (U) Reproduces all results in the Appendix using the code files below in order. Tables and Figures are
       produced and placed in the Output folder
 - Installation
-    - `pyopt_setup_python3.sh` (U)  A bash script designed to be run on a fresh installation of Ubuntu 22.04.04.  This will install all the necessary outside software to replicate the results. (Internet connection is required)
+    - `pyopt_setup_python3.sh` (U)  A bash script designed to be run on a fresh installation of Ubuntu 20.04.6.  This will install all the necessary outside software to replicate the results. (Internet connection is required)
     - `Rpackages.r` An R script that installs all the `R` packages used here with the versions used here.
 - Data: These are both the original data used in the analysis as well as the merged and complete versions used in the analysis.
     - `acosta1993.csv` Acosta and Ramos' (2017) data to supplement missing data from the Global Terrorism Database (GTD).
 	- `actionsSetup.Rdata` Produced by `buildDataSets.r`, below, aggregates the GTD data to monthly level. This produces the main measurement of the actions
-	- `actionsSetup_byAttackType.Rdata` Produced by ` buildDataSets_byAttackType.r`, below, aggregates terrorism data by attack type.
+	- `actionsSetup_byAttackType.Rdata` Contains terrorism data for each group, disaggregated by attack targets. Produced by ` buildDataSets_byAttackType.r`, below.
 	- `corruption_WBG.csv` World Bank attitudes towards corruption data for the Palestinian Territories.
 	- `cpsr.csv` Survey data from CPSR/PCPSR.
 	- `cpsr_GAZA.csv` Survey data from CPSR/PCPSR, disaggregated to just the Gaza Strip
@@ -60,7 +60,7 @@ Files marked with (U) require Ubuntu, with the setup as described below.
 	- R4.4.1
 		- Results: A folder of results that are saved and used along the way
 		- `appendixB.R` The numerical examples in Appendix B. Produces Figures B.1--4
-		- `appendixB_equilibiraSearch.R` Searches for different solutions to the numerical example.
+		- `appendixB_equilibiraSearch.R` Searches for different solutions to the numerical example. We do not recommend actually running this.
 		- `appendixC_alternatives.r` Consider alternatives to the main measurement model. Produces Tables C.3--4
 		- `appendixC_geographic.R` Considers the geographical differences in the survey responses. Produces Figure C.2
 		- `appendixD_aggregateDeaths.r` Aggregates Palestinian fatalities from  B'Tselem. Creates `PalestinianDeaths.rdata`
@@ -99,9 +99,19 @@ Files marked with (U) require Ubuntu, with the setup as described below.
     - Tables. A folder containing all the produced tables in text format
 	
 
-## Ubuntu 22.04.4 setup 
+## Ubuntu 20.04.6 setup 
+The software setup currently uses Ubuntu 20.04.6. To install operating system 
 
-From a fresh installation of Ubuntu 22.04.4, you will need to use the following steps to prepare the replication environment.
+1. Download iso file and use it to create a "bootable" flash drive
+    - [The iso image can be obtained at this link](https://releases.ubuntu.com/focal/ubuntu-20.04.6-desktop-amd64.iso).
+2. Insert the flash drive and power on the computer
+    - Enter the machine's boot menu by pressing the appropriate key repeatedly  (the button to activate the boot menu varies with computer make and models -- common keys include F12 (DELL, Most ACERs),   F8 (Most ASUS), ESC (HP and some ASUS).
+4. Select the option to boot from the flash drive USB
+5. You may try using the "live" testing version that does not install the operating system. We have not tested it with this package, but believe it should work. You may also select "install." WARNING: this will require you to format all or part of your hard drive so don't do it if you don't want that.
+6.  Download the replication package  (scroll your cursor to the upper left corner where it says "Activities" and then select the firefox icon to access the internet)
+
+## Replication
+From a fresh installation of Ubuntu 20.04.6, you will need to use the following steps to prepare the replication environment.
 
 1. Download the replication package 
 2. Extract the replication package to the desired location (`${REPDIR}`)
@@ -110,7 +120,9 @@ From a fresh installation of Ubuntu 22.04.4, you will need to use the following 
 ```bash
 bash pyopt_setup_python3.sh
 ```
-This step may take up an hour depending on network speed and you may be prompted to press "Enter" at one or more points in the process. As software is downloaded, updated, or installed you may notice various background notifications appearing.  These are normal and can be ignored.  A known bug sometimes appears where the installation hangs on "Pregenerating ConTeXt MarkIV format. This may take some time..." If you find yourself here for more than five minutes, press "Enter" 4--5 times and wait about another minute. This will often work to "unstick" it (see [this link](https://askubuntu.com/questions/956006/pregenerating-context-markiv-format-this-may-take-some-time-takes-forever)).)
+This step may take up an hour depending on network speed and you may be prompted to press "Enter" at one or more points in the process. As software is downloaded, updated, or installed you may notice various background notifications appearing.  These are normal and can be ignored.  
+
+A known bug sometimes appears where the installation hangs on "Pregenerating ConTeXt MarkIV format. This may take some time..." If you find yourself here for more than five minutes, press "Enter" 4--5 times and wait about another minute. This will often work to "unstick" it (see [this link](https://askubuntu.com/questions/956006/pregenerating-context-markiv-format-this-may-take-some-time-takes-forever)).
 
 5. Run the file `Rpackages.R`
 ```bash
