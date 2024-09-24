@@ -154,5 +154,4 @@ Alternatively, the command
 nohup bash replicateAll.sh &
 ```
 will run both of the above order.
-Finally, note that some files produce results for both the main
-text and the appendix (e.g., some of Appendix G is actually produced by `modelFit.r`).
+Finally, note that some of code files in the main text replication file also produce results for the appendix (e.g., some of Appendix G is actually produced by `modelFit.r`).
