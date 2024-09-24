@@ -149,7 +149,7 @@ Trans.symm <- Trans
 
 
 pEQall <- ggplot(ggAll, aes(x=states, y=PrAttack, color=actor, linetype=actor)) + 
-    geom_line(size=1.25) + facet_grid(cols=vars(EQ)) + 
+    geom_line(linewidth=1.25) + facet_grid(cols=vars(EQ)) + 
   theme_bw(11) + xlab("Relative Popularity (states)") + ylab("Pr. Attack") + theme(legend.position=c(0.91, 0.8)) +
   scale_color_manual(values=c("navyblue", "orangered"),
   name="Actor") + scale_linetype_manual(values= c(1, 2), name="Actor") +
@@ -157,7 +157,7 @@ pEQall <- ggplot(ggAll, aes(x=states, y=PrAttack, color=actor, linetype=actor)) 
         legend.title=element_text(size=rel(0.8)),
         legend.key.size = unit(0.5, 'lines')) + 
   theme(legend.background = element_rect(fill="white",
-                                         size=0.5, linetype="solid", 
+                                         linewidth=0.5, linetype="solid", 
                                          colour ="grey50"))
 
 pIDall <- ggplot(subset(ggAll, actor=="Hamas"),  aes(x=states, y=id)) + 
@@ -264,7 +264,7 @@ ggCF_Hbeta$eq <- factor(rep(c("Symmetric Eq.","Hamas-Dominant Eq.", "Fatah-Domin
                         level =  c("Fatah-Dominant Eq.", "Symmetric Eq.", "Hamas-Dominant Eq."), ordered=T)
 
 pe <- ggplot(ggCF_Hbeta, aes(x=states, y=prattack, color=cfb)) +
-  geom_path(size=1.2) + theme_bw(11) + theme(legend.position="bottom") +
+  geom_path(linewidth=1.2) + theme_bw(11) + theme(legend.position="bottom") +
   theme(legend.margin=margin(-6,0,0,0), legend.box.margin=margin(-6,0,0,0))+
   xlab("Relative Popularity (states)") + ylab("Pr. Attack") + facet_grid(rows = vars(actor), cols=vars(eq)) +
   scale_color_manual(values=c("#fd8d3c", "#e6550d", "#a63603" ),
@@ -326,7 +326,7 @@ ggdata <- data.frame(PrAttack =c(EQCPhamas$prAH, EQCPfatah$prAF),
                      states = rep(states,2),
                      actor = rep(c("Hamas's Single Agent Problem", "Fatah's Single Agent Problem"), each = length(states)))
 
-pSAP <- ggplot(ggdata, aes(x=states, y=PrAttack)) + geom_line(size=1.25) + theme_bw(11) +
+pSAP <- ggplot(ggdata, aes(x=states, y=PrAttack)) + geom_line(linewidth=1.25) + theme_bw(11) +
   xlab("Relative Popularity (states)") + ylab("Pr. Attack")  + 
   facet_grid(cols=vars(actor)) + ylim(c(0.095, 0.71))
 

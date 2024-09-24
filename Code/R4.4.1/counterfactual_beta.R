@@ -255,10 +255,10 @@ sATE.df <- data.frame(sATE= paste("Hamas: ", signif(sATE[1,], 2),"\nFatah: ",sig
 
 plotCF_together <- plotCF_together+
   geom_text(data=sATE.df, aes(x=ggCF_together$time[1], y=Inf,label=title, hjust=0,vjust=1.7),
-            linewidth=4, parse = TRUE,
+            size=4, parse = TRUE,
             color="Black") +
   geom_text(data=sATE.df, aes(x=ggCF_together$time[1], y=Inf,label=sATE, hjust=0,vjust=1.8),
-            linewidth=4,
+            size=4,
             color="Black")
 
 ggsave("../../Output/Figures/figureA3.pdf", plot = plotCF_together,
