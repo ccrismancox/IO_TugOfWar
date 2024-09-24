@@ -180,7 +180,7 @@ state.plot <- ggplot(regData)+
   annotate("text", x = as.Date("2014-6-30"), y =5 , label = "Unity gov't formed",
            hjust=0, size=3, angle=-90, vjust=.1) +
   geom_vline(aes(xintercept=as.Date("2016-2-1")), linetype="dotted", alpha=.3)+
-  annotate("text", x = as.Date("2016-2-29"), y =4 , label = "Tensions increase\nover Gaza",
+  annotate("text", x = as.Date("2016-2-29"), y =4.5 , label = "Tensions increase\nover Gaza",
            hjust=0, size=3, angle=-90, vjust=.5) +
   theme_bw(14)+
   ylab("Relative popularity (states)")+
