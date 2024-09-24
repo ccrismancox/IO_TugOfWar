@@ -9,7 +9,7 @@ sudo apt -y install python3-dev  git
 sudo apt -y install python-dev-is-python3
 sudo apt -y install texlive-full
 sudo apt -y install gfortran automake shtool libtool
-sudo apt -y install python3-scipy python3-pandas python3-sympy python3-nose spyder3
+sudo apt -y install python3-scipy python3-pandas python3-sympy python3-nose spyder3 python3-pip
 sudo apt -y install subversion swig
 sudo apt -y install openmpi-bin openmpi-doc libopenmpi-dev
 sudo apt -y  install r-base-dev
