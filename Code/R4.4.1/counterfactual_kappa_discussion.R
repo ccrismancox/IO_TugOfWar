@@ -45,9 +45,9 @@ percentages <- c((thetaEst[3] - mag0)/thetaEst[3] -1 ,
                  (thetaEst[4] - mag0)/thetaEst[4] -1 ,
                  1- (thetaEst[3] + mag1)/thetaEst[3]  ,
                  1- (thetaEst[4] + mag1)/thetaEst[4] )*100
-                
+
 ## mentioned in paper
-cat("This magnitude represents a \n",
+cat("These change in kappa represents a \n",
     round(percentages[1]), "% increase in Hamas' costs\n",
     round(percentages[2]), "% increase in Fatah's costs\n",
     round(percentages[3]),"% decrease in Hamas' costs\n",
@@ -108,7 +108,7 @@ for (i in 2:length(steps0)){
                   jactype="fullusr",
                   maxiter = 400,
                   jacfunc = function(V){PsiDer(V, theta, Trans, G)-diag(length(V))})
- 
+
   vCF0[,i] <- EQ$root
 }
 
@@ -128,7 +128,7 @@ for (i in 2:length(steps1)){
                   jactype="fullusr",
                   maxiter = 400,
                   jacfunc = function(V){PsiDer(V, theta, Trans, G)-diag(length(V))})
- 
+
 
   vCF1[,i] <- EQ$root
 }
@@ -160,7 +160,7 @@ for (i in 2:length(steps0)){
                   jactype="fullusr",
                   maxiter = 400,
                   jacfunc = function(V){PsiDer(V, theta, Trans, G)-diag(length(V))})
- 
+
   vCF0[,i] <- EQ$root
 }
 
@@ -183,7 +183,7 @@ for (i in 2:length(steps1)){
                   jactype="fullusr",
                   maxiter = 400,
                   jacfunc = function(V){PsiDer(V, theta, Trans, G)-diag(length(V))})
- 
+
 
   vCF1[,i] <- EQ$root
 }
@@ -233,7 +233,7 @@ for (i in 2:length(steps1F)){
   JV <- PsiDer(vCF1[,i-1], theta, Trans, G)-diag(length(vCF1[,i-1]))
   JKF <-  matrix(c(rep(0, length(states)*2), rep(c(0,1), length(states))), ncol=1)
   JKH <- matrix(c(rep(c(0,1), length(states)), rep(0, length(states)*2)), ncol=1)
-  
+
   predicted <- vCF1[,i-1] +
     as.numeric((steps1H[i] - steps1H[i-1]) * (solve(-JV, JKH))) +
     as.numeric((steps1F[i] - steps1F[i-1]) * (solve(-JV, JKH)))
@@ -245,7 +245,7 @@ for (i in 2:length(steps1F)){
                   jactype="fullusr",
                   maxiter = 400,
                   jacfunc = function(V){as.matrix(PsiDer(V, theta, Trans, G)-Diagonal(length(V)))})
- 
+
 
   vCF1[,i] <- EQ$root
 }
@@ -289,9 +289,9 @@ Either <- EQall[actor=="Hamas", !c("state", "actor")] + EQall[actor=="Fatah", !c
 
 Either[, `:=`(actor= "Either", state=unique(EQall$state))]
 EQall <- merge(EQall, Either, all=TRUE)
-X0 <- EQall[, .(Baseline=mean(base), 
+X0 <- EQall[, .(Baseline=mean(base),
          Costly.Hamas = mean(H0), Costly.Fatah=mean(F0), Costly.both=mean(Both0),
-         Easier.Hamas = mean(H1), Easier.Fatah = mean(F1),Easier.both= mean(Both1)), 
+         Easier.Hamas = mean(H1), Easier.Fatah = mean(F1),Easier.both= mean(Both1)),
       by=actor]
 X <- t(X0[,!c("actor")])
 colnames(X) <- X0$actor

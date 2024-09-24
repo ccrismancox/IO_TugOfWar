@@ -49,7 +49,7 @@ thetaStar = list(betaH = thetaEst[1], # hamas state payoff
              kappaH = c(thetaEst[3], 0), # hamas cost of attack
              kappaF = c(thetaEst[4], 0), # fatah cost of attack
              delta=delta)
-
+cat("Checks to make sure that everything works as expected\n")
 max(abs(PSI(vEst, thetaStar, Trans, G) - vEst)) < 1e-8
 max(abs(Trans - gamma2trans(gammaStar, sigmaStar, states, discretize=F,d = .05, bound=0.025))) < 1e-10
 max(abs(PSI(vEst, thetaStar, gamma2trans(gammaStar, sigmaStar, states, discretize=F,d = .05, bound=0.025), G) - vEst)) < 1e-8
@@ -116,7 +116,7 @@ pd2time <- ggplot(ggdif2time) +
         legend.title=element_text(size=rel(0.9)),
         legend.key.width = unit(.5, 'inches')) +
   theme(legend.background = element_rect(fill="white",
-                                         size=0.5, linetype="solid",
+                                         linewidth=0.5, linetype="solid",
                                          colour ="grey50")) +
   geom_vline(aes(xintercept=as.Date("2000-09-28")), linetype="dotted", alpha=.3)+
   annotate("text", x = as.Date("2000-09-28"), y = 0.21, label = "2nd Intifada",
@@ -169,32 +169,31 @@ cat(kable(sATE, digits=2, format="pipe"),
 
 #######################################
 ## substantive effects mentioned in text
+cat("Effects mentioned in text\n")
 ## Fatah uses 34% more violence b/c of competition
+cat("Fatah uses,",
 round(mean((EQCP$prAF[mainData$states.int] -
-            EQCPFSA$prAF[mainData$states.int])/EQCPFSA$prAF[mainData$states.int]),3)*100
+            EQCPFSA$prAF[mainData$states.int])/EQCPFSA$prAF[mainData$states.int]),3)*100,
+"% more violence b/c of competition\n")
 ## Hamas uses 37% more violence b/c of competition
+cat("Hamas uses,",
 round(mean((EQCP$prAH[mainData$states.int] -
-            EQCPHSA$prAH[mainData$states.int])/ EQCPHSA$prAH[mainData$states.int]), 3)*100
+            EQCPHSA$prAH[mainData$states.int])/ EQCPHSA$prAH[mainData$states.int]), 3)*100,
+"% more violence b/c of competition\n")
 
 
 
+##During Oslo
+cat("Percentage change from counterfactual to real world in the Pr. Hamas attacks is",
+    round(mean((EQCP$prAH[mainData$states.int][1:81] -EQCPHSA$prAH[mainData$states.int][1:81])/ EQCPHSA$prAH[mainData$states.int][1:81])*100,1), "\n")
 
-# During the Oslo lull, Hamas would use 5% more violence absent competition from Fatah
-round(mean(EQCPHSA$prAH[mainData$states.int[1:81]] / EQCP$prAH[mainData$states.int[1:81]])   -1, 3)*100
-
-
-
-# Hamas  used 4-5% less violence during Oslo lull than if it thought Fatah would never attack.
-mean((EQCP$prAH[mainData$states.int][1:81] -EQCPHSA$prAH[mainData$states.int][1:81])/ EQCPHSA$prAH[mainData$states.int][1:81])
-
-
-
+a
 ### largest effect size with more violence in counterfactual
-m <-  max(EQCPHSA$prAH[mainData$states.int[1:81]]/EQCP$prAH[mainData$states.int[1:81]]) 
-round(100*(m-1),1) # max percentage change about 9
-round(sum(mainData$Hattacks[1:81]) * (m-1), 2) #change in # of months w/ Hammas terrorism
-
-
+m <-  max(EQCPHSA$prAH[mainData$states.int[1:81]]/EQCP$prAH[mainData$states.int[1:81]])
+cat("The maximum effect on Hamas during Oslo era is a", round(100*(m-1),1), "% increase in Hamas violence if Fatah never attacks\n")
+cat("Substantively, this is",
+    round(sum(mainData$Hattacks[1:81]) * (m-1), 2),
+    "fewer months\n")
 
 
 ggdif2 <- data.frame(change = c(EQCP$prAH - EQCPHSA$prAH,
@@ -203,18 +202,18 @@ ggdif2 <- data.frame(change = c(EQCP$prAH - EQCPHSA$prAH,
                      actor = rep(c("Hamas", "Fatah"),each=length(states)))
 
 pd2states <- ggplot(ggdif2) +
-  geom_line(aes(y=change, x=states, color = as.factor(actor), linetype = as.factor(actor)), size=1.15) +
+  geom_line(aes(y=change, x=states, color = as.factor(actor), linetype = as.factor(actor)), linewidth=1.15) +
   theme_bw(16) +
   xlab("Relative Popularity (states)") + ylab("Change in Pr. Attack") +
   scale_color_manual(values=c("navyblue", "orangered"),
                      name="Actor") + scale_linetype_manual(values= c(1, 2), name="Actor") +
   geom_rug(data = mainData, aes(x = states.discrete), inherit.aes=F, color="grey50") +
-  geom_hline(yintercept=0,size=0.9) +
+  geom_hline(yintercept=0,linewidth=0.9) +
   theme(legend.position=c(0.85, 0.8)) +
   theme(legend.text=element_text(size=rel(0.6)),
         legend.title=element_text(size=rel(0.8)),
         legend.key.width = unit(.5, 'inches')) +
   theme(legend.background = element_rect(fill="white",
-                                         size=0.5, linetype="solid",
+                                         linewidth=0.5, linetype="solid",
                                          colour ="grey50"))
 ggsave("../../Output/Figures/figureA2.pdf", pd2states, width=7, height=4)

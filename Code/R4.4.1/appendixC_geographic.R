@@ -65,17 +65,16 @@ ggano$measure <- factor(ggano$measure, levels=c("Trust","Support","Vote"), order
 
 
 fig <- ggplot(ggdat, aes(x=x, y=y, color=Area,shape=Area)) +
-  geom_line(linewidth=1.1) + geom_point(size=2) + facet_grid(measure~Actor) + theme_bw(18) +
-  scale_color_manual(values=c("#fc8d62", "#66c2a5",  "#8da0cb")) +
-  scale_x_date(breaks=as.Date(paste(seq(from=1994,to=2018, by=4), "-02-01",sep="")),
-               labels = seq(from=1994,to=2018, by=4)) +
-  ylab("Percent respondents") + xlab("Date") +
-  geom_text(data=ggano, aes(x=x,y=y,label=val),color="Black",size=3.5)+
-  guides(shape = guide_legend(override.aes = list(size = 3))) +
-  theme(legend.position = "bottom",
-        legend.margin=margin(0,0,0,0),
-        legend.box.margin=margin(-20,-20,-9,-20))
-
+    geom_line(linewidth=1.1) + geom_point(size=2) + facet_grid(measure~Actor) + theme_bw(18) +
+    scale_color_manual(values=c("#fc8d62", "#66c2a5",  "#8da0cb")) +
+    scale_x_date(breaks=as.Date(paste(seq(from=1994,to=2018, by=4), "-02-01",sep="")),
+                 labels = seq(from=1994,to=2018, by=4)) +
+    ylab("Percent respondents") + xlab("Date") +
+    geom_text(data=ggano, aes(x=x,y=y,label=val),color="Black",size=3.5, inherit.aes=FALSE)+
+    guides(shape = guide_legend(override.aes = list(size = 3))) +
+    theme(legend.position = "bottom",
+          legend.margin=margin(0,0,0,0),
+          legend.box.margin=margin(-20,-20,-9,-20))
 ggsave("../../Output/Figures/figureC2.pdf", plot = fig,
        width = 7.75, height = 7, units = "in")
 

@@ -28,7 +28,7 @@ model.main$regData$ts <- 1:300
 state.probs <- cbind(data.table(states=model.main$states),
                      AttackProbs(model.main$v))
 stateProbs <- merge(model.main$regData,
-                    state.probs, by.y="states", by.x="states.discrete", 
+                    state.probs, by.y="states", by.x="states.discrete",
                     all.y=FALSE, all.x=TRUE)
 stateProbs <- stateProbs[order(ts)]
 ECP.main <- colMeans(with(stateProbs,
@@ -58,8 +58,8 @@ ECP.main2.byEras <- c(by(with(stateProbs,
 model.main.t4t$regData$ts <- 1:300
 state.probs <- cbind(data.table(states=model.main.t4t$states),
                      AttackProbs(model.main.t4t$v))
-stateProbs <- merge(model.main.t4t$regData, state.probs, 
-                    by.y="states", by.x="states.discrete", 
+stateProbs <- merge(model.main.t4t$regData, state.probs,
+                    by.y="states", by.x="states.discrete",
                     all.y=FALSE, all.x=TRUE)
 stateProbs <- stateProbs[order(ts)]
 ECP.t4t <- colMeans(with(stateProbs,
@@ -92,7 +92,7 @@ Pout <- AttackProbs(noCompModel$v)
 state.probs <- data.table(cbind(states,Pout))
 
 stateProbsNoComp <- merge(mainData, state.probs,
-                          by.y="states", by.x="states.discrete",  
+                          by.y="states", by.x="states.discrete",
                           all.y=FALSE, all.x=TRUE, sort=FALSE)
 ECP.NoComp <- colMeans(with(stateProbsNoComp,
                             cbind(Hattacks, Fattacks)*cbind(prAH, prAF)+
@@ -120,15 +120,15 @@ ECP.NoComp2.byEras <- c(by(with(stateProbsNoComp,
 # LR test
 ## What we have is not the full likelihood
 partial.Likelihood.main <- -model.main$conv$V1[2]
-partial.Likelihood.noComp <- -noCompModel$conv$V1[2] 
+partial.Likelihood.noComp <- -noCompModel$conv$V1[2]
 
 ## So we need to include the gamma term
 gamma2likelihood_term <- function(Z, gamma, sigma0, Y, given,states, sum=TRUE){
   mu <- Z %*% gamma
   pr <- pr0 <- pr1 <- rep(1, 300)
   d <- diff(states)[3]/2
-  
-  
+
+
   for(i in 1:299){
     hi <- pnorm((Y[2:nrow(Y)]$states.discrete[i]+d-mu[i])/sigma0)
     lo <- pnorm((Y[2:nrow(Y)]$states.discrete[i]-d-mu[i])/sigma0)
@@ -144,13 +144,13 @@ gamma2likelihood_term <- function(Z, gamma, sigma0, Y, given,states, sum=TRUE){
   }else{
     return(log(trans))
   }
-  
+
 }
 
 
 
 
-Z <- with(mainData, cbind(1,Hattacks, Fattacks, states.discrete, 
+Z <- with(mainData, cbind(1,Hattacks, Fattacks, states.discrete,
                           Hattacks*states.discrete, Fattacks*states.discrete))
 Y <- mainData[,c("states.discrete", "Hattacks", "Fattacks")]
 gamma <- mod0$coefficients
@@ -189,14 +189,14 @@ cat(kable(out,
           format="pipe"),
     file="../../Output/Tables/tableG2.txt",
     sep="\n")
-      
+
 
 
 
 
 ## Comparing t4t to the main man
 LL_pointwise <- function(p, mod){
-  
+
   state.probs <- cbind(data.table(states=mod$states),
                        data.table(prAH=p[1:length(mod$states)],
                                   prAF=p[(length(mod$states)+1):length(p)]))
@@ -204,7 +204,7 @@ LL_pointwise <- function(p, mod){
   stateProbs <- merge(mod$regData,
                       state.probs, by.y="states", by.x="states.discrete", all.y=FALSE, all.x=TRUE,
                       sort=FALSE)
-  
+
   return( log(with(stateProbs,
                    (Hattacks*Fattacks) * (prAH*prAF)+
                      ((1-Hattacks)*Fattacks) * ((1-prAH)*prAF)+
@@ -221,13 +221,13 @@ point.wise <- LL_pointwise(p1, model.main)-LL_pointwise(p2, model.main.t4t)
 
 
 ## Excess kurtosis is kurtosis -3; positive values are leptokurtic and speak well for the Clarke test
-kurtosis(point.wise) -3 
-skewness(point.wise) #skew in -1 to 1 is good too (not skewed )
+cat("Excess kurtosis, we want this to be positive,", round(kurtosis(point.wise) -3,1),"\n")
+cat("Skew, we want this to be between -1 and 1,", round(skewness(point.wise),1),"\n")
 
 
 ## Clarke test with the null the alternative hypothesis that model 1 is better
 Clarke.stat <- sum(point.wise>0)
-pC <- pbinom(Clarke.stat, size=300, prob = .5, lower=FALSE ) 
+pC <- pbinom(Clarke.stat, size=300, prob = .5, lower=FALSE )
 
 
 
@@ -236,7 +236,7 @@ pC <- pbinom(Clarke.stat, size=300, prob = .5, lower=FALSE )
 cat(kable(data.table(`Alternative model`=c("No competition", "Tit-for-tat"),
                      Test=c("Likelihood ratio", "Clarke's test"),
                      `Null distribution`=c("chi^2(6)", "Binomial(300, 0.5)"),
-                     Statistic=paste(round(c(LRstat.noComp, Clarke.stat))),
+                     Statistic=paste(c(round(LRstat.noComp,1), round(Clarke.stat))),
                      `p value`=ifelse(c(full.pval, pC) < 0.01, "< 0.01", "> 0.01")),
           caption="Comparative model tests"),
     file="../../Output/Tables/table3.txt",
@@ -246,7 +246,7 @@ cat(kable(data.table(`Alternative model`=c("No competition", "Tit-for-tat"),
 
 
 X <- num2str(cbind(t(rbind(model.main$regtable[1:2,1:2],
-                           matrix(NA, 2,2), 
+                           matrix(NA, 2,2),
                            model.main$regtable[3:4,1:2])),
                    t(rbind(matrix(NA, 4,2), noCompModel$regtable[,1:2])),
                    t(rbind(matrix(NA, 2,2), model.main.t4t$regtable[,1:2]))
@@ -254,9 +254,9 @@ X <- num2str(cbind(t(rbind(model.main$regtable[1:2,1:2],
 X[X==" NA"] <- NA
 X[2,] <- ifelse(!is.na(X[2,]),paste0("(",X[2,], ")"),NA)
 X <- matrix(X, ncol=3)
-X <- rbind(X, num2str(-c(model.main$conv$V1[2], 
+X <- rbind(X, num2str(-c(model.main$conv$V1[2],
                          noCompModel$conv$V1[2],
-                         model.main.t4t$conv$V1[2])), 
+                         model.main.t4t$conv$V1[2])),
            c(300,300,300))
 X <- cbind(c(rbind(c("beta_H","beta_F",
                      "tau_H", "tau_F",
@@ -264,7 +264,7 @@ X <- cbind(c(rbind(c("beta_H","beta_F",
              "LL", "T"),
            X)
 colnames(X) <- c(" ",
-                 "Outbidding (main model)", 
+                 "Outbidding (main model)",
                  "No-competition",
                  "Tit-for-tat")
 X[is.na(X)] <- "  "
@@ -277,13 +277,13 @@ cat(kable(X,
 
 
 
-######### The Eras Tour  ###### 
+######### The Eras Tour  ######
 ## comparing to t4t
 clark.byEras <- do.call(rbind,
-                        by(point.wise, eras, 
+                        by(point.wise, eras,
                            \(x){c(length(x),sum(x>0),
                                   pbinom(sum(x>0),
-                                         size=length(x), 
+                                         size=length(x),
                                          prob = .5, lower=FALSE ))}))
 
 
@@ -299,7 +299,7 @@ p2 <- unlist(AttackProbs(noCompModel$v))
 
 
 #### add in the first stage
-Z <- with(mainData, cbind(1,Hattacks, Fattacks, states.discrete, 
+Z <- with(mainData, cbind(1,Hattacks, Fattacks, states.discrete,
                           Hattacks*states.discrete, Fattacks*states.discrete))
 Y <- mainData[,c("states.discrete", "Hattacks", "Fattacks")]
 gamma <- mod0$coefficients
@@ -326,7 +326,7 @@ erasLL.noComp <- by(FULL.Likelihood.NoComp, eras, sum)
 LRstat.noComp<- c(-2*(erasLL.noComp-erasLL))
 full.pval <-    c(pchisq(LRstat.noComp, lower=FALSE, df=6))
 
-## eras table 
+## eras table
 out <- cbind.data.frame(clark.byEras, LRstat.noComp, full.pval)
 colnames(out) <- c("Obs", "Clarke stat", "Clarke $p$ value", "LR stat", "LR $p$ value")
 out[,c(1)] <- paste(round(out[,c(1)] ))
