@@ -18,8 +18,10 @@ Files marked with (U) require Ubuntu, with the setup as described below.
       produced and placed in the Output folder.
 	- `replicateAppendix.sh` (U) Reproduces all results in the Appendix using the code files below in order. Tables and Figures are
       produced and placed in the Output folder
+	- `replicateAll.sh` (U) Runs both of the above replication scripts in order.
 - Installation
-    - `pyopt_setup_python3.sh` (U)  A bash script designed to be run on a fresh installation of Ubuntu 20.04.6.  This will install all the necessary outside software to replicate the results. (Internet connection is required)
+    - `pyopt_setup_python3.sh` (U)  A bash script designed to be run on a fresh installation of Ubuntu 20.04.6. It should also work on the live version or on existing Ubuntu 20.04.6 installations, but this is not tested.
+	This file  will install all the necessary outside software to replicate the results (Internet connection is required).
     - `Rpackages.r` An R script that installs all the `R` packages used here with the versions used here.
 - Data: These are both the original data used in the analysis as well as the merged and complete versions used in the analysis.
     - `acosta1993.csv` Acosta and Ramos' (2017) data to supplement missing data from the Global Terrorism Database (GTD).
@@ -31,7 +33,7 @@ Files marked with (U) require Ubuntu, with the setup as described below.
 	- `cpsr_WB.csv` Survey data from CPSR/PCPSR, disaggregated to just the West Bank
 	- `ExtraFactors.rdata` Output from the latent measurement model for unemployment status and attitudes towards violence. Produced by `appendixD_latentMeasures.r`, below.
 	- `gadm41_PSE.gpkg` Spatial administrative lines file used to assess the location of the West Bank and Gaza Strip for rainfall data.
-	- `gtd.csv` Terrorist attacks data from the GTD.
+	- `gtd.rdata` Terrorist attacks data from the GTD.
 	- `jmcc.csv` Survey data from JMCC
     - `jmcc_2023.csv` Survey data from JMCC, with additional details collected later in the analysis
 	- `jmcc_GAZA.csv` Survey data from JMCC, disaggregated to just the Gaza Strip
@@ -57,8 +59,9 @@ Files marked with (U) require Ubuntu, with the setup as described below.
 		- `fitSensitivity.py` Fit the main model, but designed for parallel use
 		- `genGiven.py` Helper function for the estimation functions
 		- `usaParam.py` Generate utilities from parameter and data
+		- `usaParam_t4t.py` Generate utilities from parameter and data for the tit-for-tat model
 	- R4.4.1
-		- Results: A folder of results that are saved and used along the way
+		- Results: A folder of results that are saved and used along the way, but are not directly included in the paper or appendix.
 		- `appendixB.R` The numerical examples in Appendix B. Produces Figures B.1--4
 		- `appendixB_equilibiraSearch.R` Searches for different solutions to the numerical example. We do not recommend actually running this.
 		- `appendixC_alternatives.r` Consider alternatives to the main measurement model. Produces Tables C.3--4
@@ -82,11 +85,11 @@ Files marked with (U) require Ubuntu, with the setup as described below.
 		- `counterfactual_kappa.R` Conducts counterfactual analysis on changes in the costs of terrorism ($\kappa$). Produces Figure A.4
 		- `counterfactual_kappa_discussion.R` Conducts counterfactual analysis on changes in the costs of terrorism ($\kappa$). Produces Table 5.
 		- `counterfactual_single_agent.R` Conducts the counterfactual comparisons with the single agent models. Produces Figure 5 and Table 4.
-		- `figure3.R` Produces Figure 3
 		- `firststageboot.r` Function for a parametric bootstrap on the first stage 
 		- `firstStageEstimation.r` Fit the first stage model. Produces Table 1
 		- `fitNoCompetition.r` (U) Fit the no competition model
 		- `gamma2trans.R` Function to produce the Markov transition matrix from the first-stage results
+		- `graphAttackProbs.R` Produces Figures 3 and 4
 		- `helperFunctions.r` Various helper functions
 		- `helper_functions_t4t.R` Various helper functions for the tit-for-tat model
 		- `liml.r` Functions for limited information maximum likelihood estimators (LIML) for IV regression
@@ -108,7 +111,7 @@ The software setup currently uses Ubuntu 20.04.6. To install operating system
     - Enter the machine's boot menu by pressing the appropriate key repeatedly  (the button to activate the boot menu varies with computer make and models -- common keys include F12 (DELL, Most ACERs),   F8 (Most ASUS), ESC (HP and some ASUS).
 4. Select the option to boot from the flash drive USB
 5. You may try using the "live" testing version that does not install the operating system. We have not tested it with this package, but believe it should work. You may also select "install." WARNING: this will require you to format all or part of your hard drive so don't do it if you don't want that.
-6.  Download the replication package  (scroll your cursor to the upper left corner where it says "Activities" and then select the firefox icon to access the internet)
+6.  Download the replication package  (scroll your cursor to the upper left corner where it says "Activities" and then select the Firefox icon to access the internet)
 
 ## Replication
 From a fresh installation of Ubuntu 20.04.6, you will need to use the following steps to prepare the replication environment.
@@ -134,7 +137,7 @@ Rscript Rpackages.R
 ## Order of replication
 
 Any file can be run and will produce the desired output as listed in its description.
-Two additional script files are provided to replicated the main paper and the appendix, respectively. 
+Two additional script files are provided to replicate the main paper and the appendix, respectively. 
 These call the scripts, in order, to produce the files in the Output folder.
 Once the above installation is complete, these can be run by opening the terminal in this folder and running
 ```bash
@@ -146,5 +149,10 @@ nohup bash replicateAppendix.sh &
 ```
 respectively.
 Note the use of `nohup` allows you to let these run in the background for as long as needed. This can be useful if you're replicating this on a remote device.
-Additionally, note that some files produce results for both the main
-text and the appendix. 
+Alternatively, the command 
+```bash
+nohup bash replicateAll.sh &
+```
+will run both of the above order.
+Finally, note that some files produce results for both the main
+text and the appendix (e.g., some of Appendix G is actually produced by `modelFit.r`).

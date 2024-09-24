@@ -11,4 +11,4 @@ palDeaths <- palDeaths[, "date"]
 palDeaths[, date := as.yearmon(as.Date(date))]
 palDeaths <- palDeaths[, .N, by=date]
 setnames(palDeaths, "N", "deaths")
-save(palDeaths, file="PalestinianDeaths.rdata")
+save(palDeaths, file="../../Data/PalestinianDeaths.rdata")
