@@ -42,15 +42,7 @@ for(i in 1:nrow(grid)){
     start <- runif(4+length(states)*4)
 
   }
-  
-  if(length(mod$v) < 4*length(states)){
-    start.v <- matrix(mod$v, ncol=2)
-    vF <- lm(start.v[,1] ~rep(mod$states, each=2)+rep(0:1, length(mod$states)))$coef %*% t(cbind(1, rep(states, each=2), 0:1))
-    vH <- lm(start.v[,2] ~rep(mod$states, each=2)+rep(0:1, length(mod$states)))$coef %*% t(cbind(1, rep(states, each=2), 0:1))
-    start.v <- c(vF, vH)
-    start <- c(mod$regtable$V1, start.v)
-  }
-  
+
   
   py.params <- data.table(delta=.999, 
                           nkappa=2, nbeta=2,
@@ -58,7 +50,7 @@ for(i in 1:nrow(grid)){
                           maxit=1000)
   regData <- mainData[,.(states, Hattacks, Fattacks, lag.states, states.discrete)]
 
-  system("mkdir -p ~/ipoptTEMP")
+  system("mkdir -p ipoptTEMP")
   write.csv(regData, file="ipoptTEMP/regData.csv",row.names = F)
   write.csv(Trans, file="ipoptTEMP/trans.csv",row.names = F)
   write.csv(states, file="ipoptTEMP/statespace.csv",row.names = F)

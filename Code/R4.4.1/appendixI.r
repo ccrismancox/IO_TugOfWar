@@ -45,7 +45,6 @@ for(d in Delta){
   conv <- read.csv(paste("ipoptTEMP_delta/convergence.csv", sep=""),header = F)
   
   v <- read.csv(paste("ipoptTEMP_delta/v.csv", sep=""),header = F)
-  print(paste("Delta:",d))
   assign(
     paste("model.main.d", d, sep=""),
     list(regData=regData, Trans=Trans, states=states, params=py.params,
@@ -55,6 +54,12 @@ for(d in Delta){
   system("rm ipoptTEMP_delta/ -r")
   
 }
+
+rm(list=ls())
+load("Results/ChangingDeltas.rdata")
+source("helperFunctions.r")
+Delta <- c(0,.9,.925,.95,.975, .99, .999,.9999)
+
 
 #### table #### 
 X <- lapply(Delta, function(d){
@@ -120,10 +125,10 @@ EQCP9 <- AttackProbs(vEstd0.9)
 DHab  <- abs(EQCP999$prAH - EQCP99$prAH)
 DFab  <- abs(EQCP999$prAF - EQCP99$prAF)
 
-mean(DHab)
-mean(DFab)
-max(DHab)
-max(DFab)
+cat("Average difference in choice probs for Hamas", round(100*mean(DHab),1), "percentage points\n")
+cat("Average difference in choice probs for Fatah", round(100*mean(DFab),1), "percentage points\n")
+cat("Max difference in choice probs for Hamas", round(100*max(DHab),1), "percentage points\n")
+cat("Max difference in choice probs for Fatah", round(100*max(DFab),1), "percentage points\n")
 
 
 # figure
