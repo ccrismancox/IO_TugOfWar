@@ -36,7 +36,7 @@ for(i in 1:nrow(grid)){
   mainData$states.discrete <- sapply(mainData$states, 
                                      function(x){return(states[which.min((states-x)^2)])})
   
-   mod <- try(eval(as.name(paste("model.main.d", d, "_bound", bound, sep=""))), silent = TRUE)
+  mod <- try(eval(as.name(paste("model.main.d", d, "_bound", bound, sep=""))), silent = TRUE)
   if(!"try-error" %in% class(mod)){
     start <- c(mod$regtable$V1,mod$v)
   }else{
@@ -57,7 +57,10 @@ for(i in 1:nrow(grid)){
   write.csv(c(mod0$coef, summary(mod0)$sigma), file="ipoptTEMP/gamma.csv",row.names = F)
   write.csv(bootOut, file="ipoptTEMP/V1.csv",row.names = F)
   
-  system("python ../Python3/fitMainModel.py", ignore.stdout = FALSE)
+  cat("IPOPT running, please wait"\n)
+  system(paste("python ../Python3/fitMainModel.py"), ignore.stdout = TRUE)
+  cat("IPOPT complete\n")
+
   
   regtable <- read.csv("ipoptTEMP/regtable.csv",header = F)
   conv <- read.csv("ipoptTEMP/convergence.csv",header = F)

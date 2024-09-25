@@ -49,7 +49,9 @@ if("try-error" %in% class(start)){
 write.csv(start, file=paste("ipoptTEMP/start.csv", sep=""),row.names = F)
 write.csv(regData, file=paste("ipoptTEMP/regData.csv", sep=""),row.names = F)
 
-system(paste("python ../Python3/fitMainModel.py"), ignore.stdout = FALSE)
+cat("IPOPT running, please wait"\n)
+system(paste("python ../Python3/fitMainModel.py"), ignore.stdout = TRUE)
+cat("IPOPT complete\n")
 
 regtable <- read.csv(paste("ipoptTEMP/regtable.csv", sep=""),header = F)
 conv <- read.csv(paste("ipoptTEMP/convergence.csv", sep=""),header = F)
@@ -75,7 +77,10 @@ if("try-error" %in% class(start)){
 write.csv(start, file=paste("ipoptTEMP/start.csv", sep=""),row.names = F)
 write.csv(regData, file=paste("ipoptTEMP/regData.csv", sep=""),row.names = F)
 
-system(paste("python ../Python3/fitMainModel.py"), ignore.stdout = FALSE)
+cat("IPOPT running, please wait"\n)
+system(paste("python ../Python3/fitMainModel.py"), ignore.stdout = TRUE)
+cat("IPOPT complete\n")
+
 
 regtable <- read.csv(paste("ipoptTEMP/regtable.csv", sep=""),header = F)
 conv <- read.csv(paste("ipoptTEMP/convergence.csv", sep=""),header = F)
@@ -101,7 +106,9 @@ if("try-error" %in% class(start)){
 write.csv(start, file=paste("ipoptTEMP/start.csv", sep=""),row.names = F)
 write.csv(regData, file=paste("ipoptTEMP/regData.csv", sep=""),row.names = F)
 
-system(paste("python ../Python3/fitMainModel.py"), ignore.stdout = FALSE)
+cat("IPOPT running, please wait"\n)
+system(paste("python ../Python3/fitMainModel.py"), ignore.stdout = TRUE)
+cat("IPOPT complete\n")
 
 regtable <- read.csv(paste("ipoptTEMP/regtable.csv", sep=""),header = F)
 conv <- read.csv(paste("ipoptTEMP/convergence.csv", sep=""),header = F)
@@ -127,7 +134,10 @@ if("try-error" %in% class(start)){
 write.csv(start, file=paste("ipoptTEMP/start.csv", sep=""),row.names = F)
 write.csv(regData, file=paste("ipoptTEMP/regData.csv", sep=""),row.names = F)
 
-system(paste("python ../Python3/fitMainModel.py"), ignore.stdout = FALSE)
+cat("IPOPT running, please wait"\n)
+system(paste("python ../Python3/fitMainModel.py"), ignore.stdout = TRUE)
+cat("IPOPT complete\n")
+
 
 regtable <- read.csv(paste("ipoptTEMP/regtable.csv", sep=""),header = F)
 conv <- read.csv(paste("ipoptTEMP/convergence.csv", sep=""),header = F)
@@ -329,7 +339,10 @@ if("try-error" %in% class(start)){
 write.csv(start, file=paste("ipoptTEMP/start.csv", sep=""),row.names = F)
 write.csv(regData, file=paste("ipoptTEMP/regData.csv", sep=""),row.names = F)
 
-system(paste("python ../Python3/fitMainModel.py"), ignore.stdout = FALSE)
+cat("IPOPT running, please wait"\n)
+system(paste("python ../Python3/fitMainModel.py"), ignore.stdout = TRUE)
+cat("IPOPT complete\n")
+
 
 regtable <- read.csv(paste("ipoptTEMP/regtable.csv", sep=""),header = F)
 conv <- read.csv(paste("ipoptTEMP/convergence.csv", sep=""),header = F)
@@ -356,7 +369,10 @@ if("try-error" %in% class(start)){
 write.csv(start, file=paste("ipoptTEMP/start.csv", sep=""),row.names = F)
 write.csv(regData, file=paste("ipoptTEMP/regData.csv", sep=""),row.names = F)
 
-system(paste("python ../Python3/fitMainModel.py"), ignore.stdout = FALSE)
+cat("IPOPT running, please wait"\n)
+system(paste("python ../Python3/fitMainModel.py"), ignore.stdout = TRUE)
+cat("IPOPT complete\n")
+
 
 regtable <- read.csv(paste("ipoptTEMP/regtable.csv", sep=""),header = F)
 conv <- read.csv(paste("ipoptTEMP/convergence.csv", sep=""),header = F)

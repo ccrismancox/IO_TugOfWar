@@ -38,8 +38,10 @@ for(d in Delta){
   write.csv(start, file=paste("ipoptTEMP_delta/start.csv", sep=""),row.names = F)
   write.csv(c(mod0$coef, summary(mod0)$sigma), file=paste("ipoptTEMP_delta/gamma.csv", sep=""),row.names = F)
   write.csv(bootOut, file=paste("ipoptTEMP_delta/V1.csv", sep=""),row.names = F)
-  
-  system(paste("python ../Python3/fitChangingDeltas.py"), ignore.stdout = FALSE)
+
+  cat("IPOPT running, please wait"\n)  
+  system(paste("python ../Python3/fitChangingDeltas.py"), ignore.stdout = TRUE)
+  cat("IPOPT complete\n")
   
   regtable <- read.csv(paste("ipoptTEMP_delta/regtable.csv", sep=""),header = F)
   conv <- read.csv(paste("ipoptTEMP_delta/convergence.csv", sep=""),header = F)
