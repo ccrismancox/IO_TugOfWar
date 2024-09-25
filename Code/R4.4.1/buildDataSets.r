@@ -94,5 +94,6 @@ figureA1 <- ggplot(attackHist )+
 ggsave(figureA1, file="../../Output/Figures/figureA1.pdf", height=4, width=5)
 
 
+cat("Summary stats on Fatah and Hamas attacks/per month\n")
 print(summary(dat[,.(Fattacks, Hattacks)]))
 save(dat, file="../../Data/actionsSetup.Rdata")

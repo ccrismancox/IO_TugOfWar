@@ -5,6 +5,7 @@ library(exactextractr)
 library(data.table)
 library(ncdf4)
 rm(list=ls())
+
 palestine1 <- st_read("../../Data/gadm41_PSE.gpkg", layer = "ADM_ADM_1")
 palestine0 <- st_read("../../Data/gadm41_PSE.gpkg", layer = "ADM_ADM_0")
 
@@ -12,7 +13,8 @@ palestine0 <- st_read("../../Data/gadm41_PSE.gpkg", layer = "ADM_ADM_0")
 gaza <- subset(palestine1, NAME_1=="Gaza")
 westbank <- subset(palestine1, NAME_1=="West Bank") 
 
-## using the URL here because the file is 1.2 Gigs. If you have trouble getting it we can share directly.
+ 
+## Using the URL here because the file is 1.2 Gigs. If you have trouble getting it we can share directly.
 options(timeout = max(500, getOption("timeout")))
 url <- "https://www.psl.noaa.gov/thredds/fileServer/Datasets/gpcc/full_v2020/precip.mon.total.0.25x0.25.v2020.nc"
 download.file(url, destfile="./raindata.nc")

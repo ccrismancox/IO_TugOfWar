@@ -28,7 +28,7 @@ plot.dat[, Survey := factor(Survey,
                                    "Support for Hamas", "Support for Fatah",
                                    "Vote for Hamas", "Vote for Fatah"))]
 plot.dat[, Survey := paste(Survey, " (N = ", length(na.omit(value)), ")", sep=""), by=Survey]
-stateDataPlot <- ggplot(plot.dat)+
+stateDataPlot <- ggplot(na.omit(plot.dat))+
   geom_point(aes(x=as.Date(date),y=value),size=.5)+
   facet_wrap(~Survey,dir='v', nrow=2)+
   theme_bw(8)+
