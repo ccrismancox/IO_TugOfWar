@@ -1,14 +1,14 @@
 #' ---
 #' author: Casey Crisman-Cox and Mike Gibilisco
 #' date: March 2022
-#' title: Build the survey and action data
+#' title: Build the data on PIJ attacks 
 #' ---
-#' Clear workspace and load packages:
-rm(list=ls())
 library(data.table)
 library(stringr)
 library(zoo)
 library(ggplot2)
+rm(list=ls())
+
 
 ###############################################
 # Attack data

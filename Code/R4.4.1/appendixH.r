@@ -1,16 +1,17 @@
 #' ---
 #' author: Casey Crisman-Cox and Mike Gibilisco
-#' date: 10 April 2020
-#' title: Second stage main output
+#' date: Sept 2024
+#' title: Second stage robustness to time windows
 #' output: pdf_document
 #' ---
-rm(list=ls())
+
 library(data.table)
 library(stringr)
 library(knitr)
 library(numDeriv)
 library(Matrix)
 library(zoo)
+rm(list=ls())
 load("Results/firstStageOutput.Rdata")
 load("Results/mainStateActions.Rdata")
 load("Results/mainModel.rdata")

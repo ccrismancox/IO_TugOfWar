@@ -1,9 +1,15 @@
-rm(list=ls())
+#' ---
+#' author: Casey Crisman-Cox and Mike Gibilisco
+#' date: Sept 2024
+#' title:  Interpreting betas
+#' ---
+
 
 ######################################
 # packages i need
 library(ggplot2)
 library(rootSolve)
+rm(list=ls())
 source("helperFunctions.r")
 source("gamma2trans.R")
 ###############################################

@@ -3,9 +3,6 @@
 #' date: Sept 2024
 #' title: First stage robustness checks
 #' ---
-#' Clear workspace and load packages:
-
-rm(list=ls())
 library(stargazer)
 library(sandwich)
 library(zoo)
@@ -23,9 +20,10 @@ library(knitr)
 library(tipr)
 library(ggplot2)
 library(modelsummary)
-#'
-#' Build the data sets
-#'
+
+rm(list=ls())
+
+#### load the data ####
 load("../../Data/measurement.rdata")
 load("../../Data/actionsSetup.Rdata")
 load("../../Data/PalestinianDeaths.rdata")
@@ -35,7 +33,8 @@ load("../../Data/actionsSetup_byAttackType.Rdata")
 ## For additional controls
 corrupt <- fread("../../Data/corruption_WBG.csv",header = TRUE)
 mortal <- fread("../../Data/mortality_WB.csv",header = TRUE)
-
+corrupt[,(colnames(corrupt)[-1]) := lapply(.SD, as.numeric), .SDcols=colnames(corrupt)[-1]]
+mortal[,(colnames(mortal)[-1]) := lapply(.SD, as.numeric), .SDcols=colnames(mortal)[-1]]
 
 ## For the IV ## 
 load("../../Data/rainData.rdata") 
@@ -94,7 +93,7 @@ mod2t <- lm(diff.states ~ lag.Hattacks*ts + lag.Fattacks*ts +
               L.diff.states+
               lag.Hattacks:lag.states +lag.Fattacks:lag.states,
             data=regData)
-
+cat("Can we reject the null that the time trends here are 0?\n")
 linearHypothesis(mod2t,c("lag.Hattacks:ts","ts:lag.Fattacks"), vcov=NeweyWest)
 
 
@@ -155,32 +154,29 @@ deltaMethod(mod2g, "infant+`post.election:infant`", vcov=NeweyWest)
 
 mod.list.controls <- list(mod2a, mod2t,mod2b, mod2c, mod2d, mod2e, mod2f, mod2g)
 se.list.controls <- lapply(mod.list.controls, function(x){sqrt(diag(NeweyWest(x)))})
-cat(stargazer(mod.list.controls,
-              se=se.list.controls, float.env="sidewaystable",
+tabD3 <- capture.output(stargazer(mod.list.controls,
+              se=se.list.controls,
               no.space = TRUE,
               omit.stat =  "all",
-              notes = c("\\scriptsize\\emph{Note:}  Newey-West standard errors in parenthesis."),
+              notes = c("Note:  Newey-West standard errors in parenthesis."),
               add.lines=list( c("State-attack interactions",
-                                paste("\\multicolumn{1}{c}{",
-                                      ifelse(sapply(mod.list.controls, function(x){any(str_detect(names(x$coef), ":"))}),
+                                paste(ifelse(sapply(mod.list.controls,
+                                                    function(x){any(str_detect(names(x$coef), ":"))}),
                                              "Yes", "No"),
-                                      "}",sep="")),
-                             c("$T$",
-                               paste("\\multicolumn{1}{c}{",
-                                     sapply(mod.list.controls, function(m){nrow(m$model)}),
-                                     "}",sep="")),
-                             c("adj. $R^2$",
-                               paste("\\multicolumn{1}{c}{",
-                                     sapply(mod.list.controls, function(m){formatC(summary(m)$adj.r.squared,digits=3, format="f")}),
-                                     "}",sep="")),
-                             c("$\\hat{\\sigma}$",
-                               paste("\\multicolumn{1}{c}{",
-                                     sapply(mod.list.controls, function(m){formatC(summary(m)$sigma,digits=3, format="f")}),
-                                     "}",sep=""))
+                                      sep="")),
+                             c("T",
+                               paste( sapply(mod.list.controls, function(m){nrow(m$model)}),
+                                     sep="")),
+                             c("adj. R2",
+                               paste(sapply(mod.list.controls, function(m){formatC(summary(m)$adj.r.squared,digits=3, format="f")}),
+                                     sep="")),
+                             c("sigma",
+                               paste(sapply(mod.list.controls, function(m){formatC(summary(m)$sigma,digits=3, format="f")}),
+                                     sep=""))
                              ),
               title="Robustness checks for the first-stage model: Specification changes",
               label="tab:firststage.app",
-              dep.var.labels = c("$\\Delta$ State"),
+              dep.var.labels = c("Delta State"),
               digits=2,
               align=TRUE,
               omit=c(":lag.states"),
@@ -193,23 +189,22 @@ cat(stargazer(mod.list.controls,
                       "L.diff.emp",
                       "L.diff.violence"),
               covariate.labels = c("Hamas attacks",
-                                   "Hamas attacks $\\times$ time",
+                                   "Hamas attacks x time",
                                    "Fatah attacks",
-                                   "Fatah attacks $\\times$ time",
-                                   "$\\Delta$ Lag state",
-                                   "$\\Delta$ unemployment",
-                                   "$\\Delta$ support for violence",
+                                   "Fatah attacks x time",
+                                   "Delta Lag state",
+                                   "Delta unemployment",
+                                   "Delta support for violence",
                                    "Time",
-                                   "Second \\emph{Intifada}",
+                                   "Second Intifada",
                                    "Time since last election",
                                    "Palestinian fatalities by Israel",
                                    "Corruption",
                                    "Infant mortality",
-                                   "Corruption $\\times$ post-2006 election",
-                                   "Infant mortality $\\times$ post-2006 election",
-                                   "Constant")
-              ),
-    file="../../Output/Tables/tableD3.tex", sep="\n")
+                                   "Corruption x post-2006 election",
+                                   "Infant mortality x post-2006 election",
+                                   "Constant"),
+         out="../../Output/Tables/tableD3.txt"))
 
 
 
@@ -262,7 +257,7 @@ mod0.civ <- lm(diff.states~lag.Hattacks.civ + lag.Fattacks.civ + second.int +
 mod.list.measurement <- list(mod3a, mod3b, mod3c, mod3d, mod0.civ, mod0.notciv)
 se.list.measurement <- lapply(mod.list.measurement, function(x){sqrt(diag(NeweyWest(x)))})
 names(mod.list.measurement) <- names(se.list.measurement) <- c("Counts",
-                                                               "Binary \\& fatalities",
+                                                               "Binary & fatalities",
                                                                "Fatalities",
                                                                "Fatalities/attack",
                                                                "Civilian targets",
@@ -272,11 +267,11 @@ attr(inters,"position") <- c(21)
 modelsummary(mod.list.measurement, 
              vcov="NeweyWest",
              stars=FALSE,
-             output="../../Output/Tables/tableD4.tex",
+             output="../../Output/Tables/tableD4.txt",
              fmt=num2str,
              escape=FALSE,
-             note="\\\\footnotesize{\\\\emph{Note:} Newey-West standard errors in parenthesis}",
-             title=c("Robustness checks for the first-stage model: Measurement changes\\label{tab:firststage.app2}"),
+             note="Newey-West standard errors in parenthesis",
+             title=c("Robustness checks for the first-stage model: Measurement changes"),
              coef_map= c("Hattacks.count" ="Hamas attacks",
                          "Fattacks.count" ="Fatah attacks",
                          "lag.Hattacks"="Hamas attacks",
@@ -289,15 +284,15 @@ modelsummary(mod.list.measurement,
                          "lag.Fattacks.civ"="Fatah attacks",
                          "lag.Fattacks.notciv"="Fatah attacks",
                          "lag.Hattacks.notciv"="Hamas attacks",
-                         "second.int"= "Second \\emph{Intifada}",
-                         "L.diff.emp"="$\\Delta$ unemployment",
-                         "L.diff.violence"="$\\Delta$ support for violence",
+                         "second.int"= "Second Intifada",
+                         "L.diff.emp"="Delta unemployment",
+                         "L.diff.violence"="Delta support for violence",
                          "timesinceelection"="Time since late election",
-                         "L.diff.states"="$\\Delta$ Lag state",
+                         "L.diff.states"="Delta Lag state",
                          "(Intercept)"="Constant"),
-             gof_map=list(list("raw"="nobs", "clean"="$T$", "fmt"=\(x){round(x)}),
-             list("raw"="adj.r.squared", "clean"="adj. $R^2$", "fmt"=\(x){round(x,2)}),
-list("raw"="rmse", "clean"="$\\hat{\\sigma}$", "fmt"=\(x){round(x,2)})),
+             gof_map=list(list("raw"="nobs", "clean"="T", "fmt"=\(x){round(x)}),
+             list("raw"="adj.r.squared", "clean"="adj. R2", "fmt"=\(x){round(x,2)}),
+list("raw"="rmse", "clean"="sigma", "fmt"=\(x){round(x,2)})),
 add_rows=inters)
 
 
@@ -560,48 +555,38 @@ mod.list.structure <- list(mod5A, mod5B, mod5C, mod5D, mod5E)
 se.list.structure <- list(mod5a$coef.table[,2], mod5b$coef.table[,2],
                           mod5c$coef.table[,2], mod5d$coef.table[,2],
                           mod5e$coef.table[,2])
-cat(stargazer(mod.list.structure,
+tabD5 <- capture.output(stargazer(mod.list.structure,
               se=se.list.structure,
               no.space = TRUE,
               omit.stat =  "all",
-              notes = c("\\scriptsize\\emph{Note:} Bekker's robust standard errors (IV models) "),
+              notes = c("Note: Bekker's robust standard errors (IV models) "),
               add.lines=list( c("Interactions",
-                                paste("\\multicolumn{1}{c}{",
-                                      rep(c("Yes"),5),
-                                      "}",sep="")),
+                                paste(rep(c("Yes"),5),sep="")),
                              c("Controls",
-                               paste("\\multicolumn{1}{c}{",
-                                     c("No", "No","Yes", "Yes", "Yes"),
-                                     "}",sep="")),
+                               paste(c("No", "No","Yes", "Yes", "Yes"),sep="")),
                              c("$T$",
-                               paste("\\multicolumn{1}{c}{",
-                                     sapply(mod.list.structure, function(m){nrow(m$model)}),
-                                     "}",sep="")),
-                             c("$\\hat{\\sigma}$",
-                               paste("\\multicolumn{1}{c}{",
-                                     formatC(c(sigma5a, sigma5b, sigma5c, sigma5d, sigma5e),digits=3, format="f"),
-                                     "}",sep="")),
+                               paste(sapply(mod.list.structure, function(m){nrow(m$model)}),sep="")),
+                             c("sigma$",
+                               paste(formatC(c(sigma5a, sigma5b, sigma5c, sigma5d, sigma5e),digits=3, format="f"),
+                                     sep="")),
                              c("Cragg and Donald statistic",
-                               paste("\\multicolumn{1}{c}{",
-                                     c(formatC(c(CD5a$cd_stat, CD5b$cd_stat,
-                                                 CD5c$cd_stat, CD5d$cd_stat, CD5e$cd_stat),digits=3, format="f")),
-                                     "}",sep="")),
+                               paste(c(formatC(c(CD5a$cd_stat, CD5b$cd_stat,
+                                                 CD5c$cd_stat, CD5d$cd_stat, CD5e$cd_stat),digits=3, format="f"))
+                                    ,sep="")),
                              c("Number of instruments",
-                               paste("\\multicolumn{1}{c}{",
-                                     sapply(mod.list.structure, function(m){length(m$instruments)}),
-                                     "}",sep="")),
-                             c("Sargan-Hansen $p$ value",
-                               paste("\\multicolumn{1}{c}{",
-                                     c("",
+                               paste(sapply(mod.list.structure, function(m){length(m$instruments)}),
+                                     sep="")),
+                             c("Sargan-Hansen p value",
+                               paste(c("",
                                        formatC(shpb,digits=3, format="f"),
                                        "",
                                        formatC(shpd,digits=3, format="f"),
                                        formatC(shpe,digits=3, format="f")),
-                                     "}",sep=""))
+                                     sep=""))
                              ),
               title="Robustness checks for the first-stage model: Time effects and endogeneity",
               label="tab:firststage.app3",
-              dep.var.labels = c("$\\Delta$ State"),
+              dep.var.labels = c("Delta State"),
               digits=2,
               order=c("lag.Hattacks", "lag.Fattacks"),
               align=TRUE,
@@ -613,8 +598,8 @@ cat(stargazer(mod.list.structure,
               notes.align = "l",
               covariate.labels = c("Hamas attacks",
                                    "Fatah attacks",
-                                   "Constant")),
-    file="../../Output/Tables/tableD5.tex", sep="\n")
+                                   "Constant"),
+              out="../../Output/Tables/tableD5.txt"))
 
 print(min(round(rbind(D5a[1:4,], D5c[1:4,]), 1)[,3])) # first stage F; rainfall only
 print(max(round(rbind(D5a[1:4,], D5c[1:4,]), 1)[,3])) # first stage F; over ID 
@@ -699,12 +684,12 @@ for(i in 1:nrow(grid)){
 
 adj.coef$actor <- "Adjusted~estimate~of~gamma[list(F,1)]"
 sensitivity.coef <- ggplot(adj.coef, aes(x = Eff.Fatah, y = Eff.Popularity, z=adj.est)) +
-  geom_contour2(aes(color=cut(..level.., c(-Inf, -.1,.2, Inf)),
+  geom_contour2(aes(color=cut(after_stat(level), c(-Inf, -.1,.2, Inf)),
                     label=after_stat(level),
                     label_color="black",
-                    linetype = cut(..level.., c(-Inf, -.1, 0,.2, Inf))),
+                    linetype = cut(after_stat(level), c(-Inf, -.1, 0,.2, Inf))),
                 breaks=seq(-.4,2.6, by=.2), 
-                size=1.3,
+                linewidth=1.3,
                 label_size=5, 
                 skip=0)+
   scale_color_manual(values=c("navyblue", "orangered", "navyblue")) +
@@ -735,12 +720,12 @@ for(i in 1:nrow(grid2)){
 
 adj.coef2$actor <- "Adjusted~estimate~of~gamma[list(H,1)]"
 sensitivity.coefH <- ggplot(adj.coef2, aes(x = Eff.Hamas, y = Eff.Popularity, z=adj.est)) +
-  geom_contour2(aes(color=cut(..level.., c(-Inf,-1.1, -.9, -.1, 0,Inf)),
+  geom_contour2(aes(color=cut(after_stat(level), c(-Inf,-1.1, -.9, -.1, 0,Inf)),
                     label=after_stat(level),
                     label_color="black",
-                    linetype = cut(..level.., c(-Inf, -1.1,-.9,-.1, 0, Inf))),
+                    linetype = cut(after_stat(level), c(-Inf, -1.1,-.9,-.1, 0, Inf))),
                 breaks=seq(-1.6,1.4, by=.2), 
-                size=1.3,
+                linewidth=1.3,
                 label_size=5, 
                 skip=0)+
   scale_linetype_manual(values=c("solid", "dashed", "solid", "dotted", "solid"))+
@@ -752,9 +737,8 @@ sensitivity.coefH <- ggplot(adj.coef2, aes(x = Eff.Hamas, y = Eff.Popularity, z=
   theme(axis.text.y=element_blank(), 
         axis.ticks.y=element_blank())+
   facet_wrap(~actor,labeller = label_parsed)
-pdf("../../Output/Figures/figureD1.pdf", width=11.5, height=5)
-grid.arrange(sensitivity.coef, sensitivity.coefH, nrow=1)
-dev.off()
+figD1 <- arrangeGrob(sensitivity.coef, sensitivity.coefH, nrow=1, ncol=2)
+ggsave(figD1, file="../../Output/Figures/figureD1.pdf", width=11.5, height=5)
 
 
 
@@ -775,6 +759,7 @@ mod4e <- lm(Hkills0~Hattacks*factor(dummies), data=dat2)
 
 
 ## hypothesis that all three eras are equal
+cat("Testing the hypotheses that all three eras are equal\n")
 linearHypothesis(mod4e,
                  c("Hattacks:factor(dummies)2=Hattacks:factor(dummies)3",
                    "Hattacks:factor(dummies)3=0"),
@@ -793,49 +778,44 @@ mod.list.time <- lapply(mod.list.time, \(x){names(x$coefficients)<-gsub(x=names(
 se.list.time <- lapply(mod.list.time, function(x){sqrt(diag(NeweyWest(x)))})
 
 
-cat(stargazer(mod.list.time, 
-              se=se.list.time,
-              no.space = TRUE,
-              omit.stat =  "all",
-              float.env="sidewaystable",
-              notes = c("\\scriptsize\\emph{Note:}  Newey-West standard errors in parenthesis"),
-              add.lines=list( c("Actor",
-                                paste("\\multicolumn{1}{c}{",
-                                      rep(c("Fatah","Hamas"),c(3,2)),
-                                      "}",sep="")),
-                              c("Excluding June 2007 (Battle of Gaza)",
-                                paste("\\multicolumn{1}{c}{",
-                                      ifelse(sapply(mod.list.time, \(x){nrow(x$model)==300}), "No", "Yes"),
-                                      "}",sep="")),
-                              c("$T$",
-                                paste("\\multicolumn{1}{c}{",
-                                      sapply(mod.list.time, \(m){nrow(m$model)}),
-                                      "}",sep="")),
-                              c("adj. $R^2$",
-                                paste("\\multicolumn{1}{c}{",
-                                      num2str(sapply(mod.list.time, \(m){summary(m)$adj.r.squared})),
-                                      "}",sep=""))
-              ),
-              title="Average fatalities per attacks by time",
-              label="tab:firststage.time",
-              dep.var.labels = rep(c("Fatalities"), length(mod.list.time)),
-              digits=2,
-              order=c("Fattacks"),
-              align=TRUE,
-              header=FALSE,
-              notes.append = FALSE,
-              star.cutoffs = c(NA),
-              notes.label = "",
-              notes.align = "l",
-              covariate.labels = c("Attacks (count)",
-                                   "Attacks $\\times$ time",
-                                   "Fattacks:factor(dummies)2"="Attacks $\\times$ Second \\emph{Intifada} -- Election",
-                                   "Fattacks:factor(dummies)3"="Attacks $\\times$ Post-2006 election",
-                                   "Time", 
-                                   "Second \\emph{Intifada} -- Election",
-                                   "Post-2006 election",
-                                   "Constant")),
-    file="../../Output/Tables/tableD7.tex", sep="\n")
+tabd7 <- capture.output(stargazer(mod.list.time, 
+                                  se=se.list.time,
+                                  no.space = TRUE,
+                                  omit.stat =  "all",
+                                  notes = c("Note:  Newey-West standard errors in parenthesis"),
+                                  add.lines=list(c("Actor",
+                                                    paste(rep(c("Fatah","Hamas"),c(3,2)),sep="")),
+                                                 c("Excluding June 2007 (Battle of Gaza)",
+                                                   paste(ifelse(sapply(mod.list.time,
+                                                                       \(x){nrow(x$model)==300}
+                                                                       ),
+                                                         "No", "Yes"),
+                                                  sep="")),
+                                  c("T",
+                                    paste(sapply(mod.list.time, \(m){nrow(m$model)}),
+                                    sep="")),
+                        c("adj. R2",
+                          paste(num2str(sapply(mod.list.time, \(m){summary(m)$adj.r.squared})),
+                          sep=""))),
+title="Average fatalities per attacks by time",
+dep.var.labels = rep(c("Fatalities"), length(mod.list.time)),
+digits=2,
+order=c("Fattacks"),
+align=TRUE,
+header=FALSE,
+notes.append = FALSE,
+star.cutoffs = c(NA),
+notes.label = "",
+notes.align = "l",
+covariate.labels = c("Attacks (count)",
+                     "Attacks x time",
+                     "Fattacks:factor(dummies)2"="Attacks x Second Intifada -- Election",
+                     "Fattacks:factor(dummies)3"="Attacks x Post-2006 election",
+                     "Time", 
+                     "Second Intifada -- Election",
+                     "Post-2006 election",
+                     "Constant"),
+out="../../Output/Tables/tableD7.txt"))
 
 
 

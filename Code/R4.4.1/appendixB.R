@@ -4,14 +4,15 @@
 #' title: Numerical example
 #' ---
 
-rm(list=ls())
-
 ######################################
 # packages i need
 library("matrixStats")
 library("ggplot2")
 library("rootSolve")
 library("Matrix")
+
+rm(list=ls())
+
 source("helperFunctions.r")
 source("gamma2trans.R")
 ######################################

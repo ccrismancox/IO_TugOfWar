@@ -4,14 +4,15 @@
 #' title: Measurement model robustness
 #' ---
 #' 
-#' Clear workspace and load packages:
-rm(list=ls())
 
 library(MARSS)
 library(data.table)
 library(ggplot2)
 library(knitr)
-library(zoo) #for working with year-months
+library(zoo) 
+
+rm(list=ls())
+
 load("../../Data/actionsSetup.Rdata")
 
 

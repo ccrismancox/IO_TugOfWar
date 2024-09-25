@@ -3,14 +3,6 @@
 #' date: Sept 2024
 #' title: Counterfactual on beta
 #' ---
-rm(list=ls())
-
-###############################################
-# SET magnitude
-
-magnitude <- 0.1
-nstep <- 5
-
 
 ######################################
 # packages i need
@@ -18,8 +10,16 @@ library(matrixStats)
 library(ggplot2)
 library(rootSolve)
 library(Matrix)
+rm(list=ls())
 source("gamma2trans.R")
 source("helperFunctions.r")
+
+###############################################
+# SET magnitude
+
+magnitude <- 0.1
+nstep <- 5
+
 
 ###############################################
 # results

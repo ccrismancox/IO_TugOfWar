@@ -3,10 +3,11 @@
 #' date: Sept 2024
 #' title: Model fit
 #' ---
-rm(list=ls())
+
 library(data.table)
 library(knitr)
 library(moments)
+rm(list=ls())
 load("Results/mainStateActions.Rdata")
 load("Results/firstStageOutput.Rdata")
 source("gamma2trans.R")

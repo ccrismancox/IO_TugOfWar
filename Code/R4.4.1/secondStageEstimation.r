@@ -3,9 +3,10 @@
 #' date: Sept. 2024
 #' title: Second stage main output and time limits
 #' ---
-rm(list=ls())
+
 library(data.table)
 library(knitr)
+rm(list=ls())
 load("Results/mainStateActions.Rdata")
 load("Results/firstStageOutput.Rdata")
 

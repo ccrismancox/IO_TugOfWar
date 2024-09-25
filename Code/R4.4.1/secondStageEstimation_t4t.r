@@ -3,10 +3,11 @@
 #' date: Sept 2024
 #' title: Fit the tit for tat model
 #' ---
-rm(list=ls())
+
 library(data.table)
 library(moments)
 library(knitr)
+rm(list=ls())
 load("Results/mainStateActions.Rdata")
 load("../../Data/measurement.rdata")
 

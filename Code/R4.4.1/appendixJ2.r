@@ -3,12 +3,12 @@
 #' date: Sept 2024
 #' title:  Appendix J part 2
 #' ---
-rm(list=ls())
+
 library(data.table)
 library(stringr)
 library(knitr)
 library(ggplot2)
-
+rm(list=ls())
 load("Results/mainStateActions.Rdata")
 load("Results/firstStageOutput.Rdata")
 load("Results/MARSSoutput.rdata")

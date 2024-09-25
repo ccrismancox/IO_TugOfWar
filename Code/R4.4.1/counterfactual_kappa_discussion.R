@@ -2,14 +2,7 @@
 #' author: Casey Crisman-Cox and Mike Gibilisco
 #' date: Sept 2024
 #' title: Counterfactual on kappa
-#' ---x
-rm(list=ls())
-
-###############################################
-# SET absolute change
-
-mag0 <- .13
-mag1 <- .13
+#' ---
 
 
 ######################################
@@ -22,9 +15,16 @@ library(data.table)
 library(ggplot2)
 library(sandwich)
 library(lmtest)
+rm(list=ls())
 ######################################
 source("gamma2trans.R")
 source("helperFunctions.r")
+
+###############################################
+# SET absolute change
+
+mag0 <- .13
+mag1 <- .13
 ###############################################
 # results
 load("Results/firstStageOutput.Rdata")

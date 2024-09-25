@@ -3,12 +3,6 @@
 #' date: Sept 2024
 #' title: Counterfactual on gamma
 #' ---
-rm(list=ls())
-###############################################
-# SET magnitude
-
-magnitude <- 0.01
-nstep <- 5
 
 ######################################
 # packages i need
@@ -17,8 +11,14 @@ library("ggplot2")
 library("rootSolve")
 library("Matrix")
 library(knitr)
+rm(list=ls())
 source("gamma2trans.R")
 source("helperFunctions.r")
+###############################################
+# SET magnitude
+
+magnitude <- 0.01
+nstep <- 5
 ###############################################
 # results
 load("Results/firstStageOutput.Rdata")

@@ -4,9 +4,7 @@
 #' title: Numerical example searching for equilibria
 #' ---
 
-#### DO NOT RUN UNLESS NEEDED
-
-rm(list=ls())
+#### DO NOT RUN UNLESS NEEDED #### 
 
 ######################################
 # packages i need
@@ -15,6 +13,9 @@ library("doParallel")
 library("doRNG")
 library("rootSolve")
 library("Matrix")
+
+rm(list=ls())
+
 source("helperFunctions.r")
 source("gamma2trans.R")
 ###############################################

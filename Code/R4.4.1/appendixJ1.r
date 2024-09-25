@@ -2,12 +2,12 @@
 #' author: Casey Crisman-Cox and Mike Gibilisco
 #' date: Sept 2024
 #' title: Changes to the discretization part 1
-#' output: pdf_document
 #' ---
-rm(list=ls())
+
 library(data.table)
 library(stringr)
 library(knitr)
+rm(list=ls())
 load("Results/mainStateActions.Rdata")
 load("Results/firstStageOutput.Rdata")
 load("Results/MARSSoutput.rdata")

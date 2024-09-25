@@ -3,13 +3,13 @@
 #' date: Sept 2024
 #' title: Build the survey and action by attack types
 #' ---
-#' Clear workspace and load packages:
-rm(list=ls())
+
+
 library(data.table)
 library(stringr)
 library(zoo)
 library(ggplot2)
-
+rm(list=ls())
 ########## Survey data ##########
 JMCC <- fread("../../Data/jmcc.csv")
 CPSR <- fread("../../Data/cpsr.csv")

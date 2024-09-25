@@ -3,7 +3,6 @@
 #' date: Sept 2024
 #' title: Single agent counterfactual
 #' ---
-rm(list=ls())
 
 ######################################
 # packages and functions
@@ -12,6 +11,7 @@ library("ggplot2")
 library("rootSolve")
 library("Matrix")
 library(knitr)
+rm(list=ls())
 source("helperFunctions.r")
 source("gamma2trans.R")
 # ######################################
@@ -187,7 +187,7 @@ round(mean((EQCP$prAH[mainData$states.int] -
 cat("Percentage change from counterfactual to real world in the Pr. Hamas attacks is",
     round(mean((EQCP$prAH[mainData$states.int][1:81] -EQCPHSA$prAH[mainData$states.int][1:81])/ EQCPHSA$prAH[mainData$states.int][1:81])*100,1), "\n")
 
-a
+
 ### largest effect size with more violence in counterfactual
 m <-  max(EQCPHSA$prAH[mainData$states.int[1:81]]/EQCP$prAH[mainData$states.int[1:81]])
 cat("The maximum effect on Hamas during Oslo era is a", round(100*(m-1),1), "% increase in Hamas violence if Fatah never attacks\n")

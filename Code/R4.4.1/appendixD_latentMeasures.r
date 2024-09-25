@@ -3,10 +3,6 @@
 #' date: Sept. 2024
 #' title: Measurement models for latent attitudes toward violence and umeployment
 #' ---
-#' 
-#' 
-#' Clear workspace and load packages:
-rm(list=ls())
 
 ######################################
 # stuff i need
@@ -15,6 +11,8 @@ library(MARSS)
 library(data.table)
 library(knitr)
 library(zoo)
+rm(list=ls())
+
 ###############################################
 # data
 JMCC <- fread("../../Data/jmcc.csv")

@@ -1,14 +1,9 @@
 #' ---
 #' author: Casey Crisman-Cox and Mike Gibilisco
-#' date: 3 Feb 2022
-#' title: First stage regressions
-#' header-includes:
-#'     - \usepackage{rotating}
-#'     - \usepackage{dcolumn}
-#' output: pdf_document
+#' date: Sept 2024
+#' title: Comparison to reduced form methods 
 #' ---
-#' Clear workspace and load packages:
-rm(list=ls())
+
 library(data.table)
 library(vars)
 library(urca)
@@ -16,7 +11,7 @@ library(knitr)
 library(lmtest)
 library(sandwich)
 library(ggplot2)
-
+rm(list=ls())
 load("../../Data/measurement.rdata")
 load("../../Data/actionsSetup.Rdata")
 

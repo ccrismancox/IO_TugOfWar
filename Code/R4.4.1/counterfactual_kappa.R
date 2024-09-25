@@ -3,13 +3,6 @@
 #' date: Sept 2024
 #' title: Counterfactual on kappa
 #' ---
-rm(list=ls())
-
-###############################################
-# SET magnitude
-
-mag0 <- 0.01
-mag1 <- 0.01
 
 ######################################
 # packages i need
@@ -17,8 +10,14 @@ library(matrixStats)
 library(ggplot2)
 library(rootSolve)
 library(Matrix)
+rm(list=ls())
 source("gamma2trans.R")
 source("helperFunctions.r")
+###############################################
+# SET magnitude
+
+mag0 <- 0.01
+mag1 <- 0.01
 
 
 ###############################################

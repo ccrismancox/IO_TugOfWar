@@ -3,8 +3,7 @@
 #' date: Sept. 2024
 #' title: First stage regressions
 #' ---
-#' Clear workspace and load packages:
-rm(list=ls())
+
 library(stargazer)
 library(sandwich)
 library(zoo)
@@ -15,9 +14,9 @@ library(doParallel)
 library(doRNG)
 library(parallel)
 library(moments)
-#'
-#' Build the data sets
-#'
+rm(list=ls())
+## load the data sets
+
 load("../../Data/measurement.rdata")
 load("../../Data/actionsSetup.Rdata")
 
@@ -79,28 +78,25 @@ se.list <- list(se0*NA, sqrt(diag(NeweyWest(mod1))))
 
 
 
-cat( stargazer(mod.list,
-               se=se.list,
+tab1 <- capture.output(stargazer(mod.list,
+              se=se.list,
                no.space = TRUE,
                omit.stat =  "all",
-               notes = c("\\scriptsize\\emph{Note:} $^*p<0.05$. Newey-West standard errors in parenthesis. No standard errors are reported in column 1 due to unit root."),
+               notes = c("Note: Newey-West standard errors in parenthesis. No standard errors are reported in column 1 due to unit root."),
                add.lines=list(
-                   c("$T$",
-                     paste("\\multicolumn{1}{c}{",
-                           sapply(mod.list, function(m){nrow(m$model)}),
-                           "}",sep="")),
-                   c("adj. $R^2$",
-                     paste("\\multicolumn{1}{c}{",
-                           sapply(mod.list, function(m){formatC(summary(m)$adj.r.squared,digits=3, format="f")}),
-                           "}",sep="")),
-                   c("$\\hat{\\sigma}$",
-                     paste("\\multicolumn{1}{c}{",
-                           sapply(mod.list, function(m){formatC(summary(m)$sigma,digits=3, format="f")}),
-                           "}",sep=""))
+                   c("$T",
+                     paste(sapply(mod.list, function(m){nrow(m$model)}),
+                           sep="")),
+                   c("adj. R2",
+                     paste(sapply(mod.list, function(m){formatC(summary(m)$adj.r.squared,digits=3, format="f")}),
+                           sep="")),
+                   c("sigma$",
+                     paste(sapply(mod.list, function(m){formatC(summary(m)$sigma,digits=3, format="f")}),
+                           sep=""))
                ),
                title="Regressing the state space on terrorist attacks",
                label="tab:firststage",
-               dep.var.labels = c("State", rep("$\\Delta$ State", 10)),
+               dep.var.labels = c("State", rep("Delta State", 10)),
                digits=2,
                align=TRUE,
                header=FALSE,
@@ -111,11 +107,12 @@ cat( stargazer(mod.list,
                covariate.labels = c("Hamas attack",
                                     "Fatah attacks",
                                     "Lag state",
-                                    "$\\Delta$ Lag state",
-                                    "Hamas attacks $\\times$ lag state",
-                                    "Fatah attacks $\\times$ lag state",
-                                    "Constant")),
-    file="../../Output/Tables/table1.tex", sep="\n")
+                                    "Delta Lag state",
+                                    "Hamas attacks x lag state",
+                                    "Fatah attacks x lag state",
+                                    "Constant"),
+               out="../../Output/Tables/table1.txt"))
+
 regData[,Date:= (seq.Date(as.Date("1994-1-1"), as.Date("2018-12-1"), by="month"))]
 mainData <- regData[,list(Date,states, lag.states)]
 mainData$Hattacks <- ifelse(dat$Hattacks>0,1,0)

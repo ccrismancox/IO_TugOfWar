@@ -1,9 +1,15 @@
-rm(list=ls())
+#' ---
+#' author: Casey Crisman-Cox and Mike Gibilisco
+#' date: Sept 2024
+#' title: Sensitivity of the second stage to changes in the first 
+#' ---
+
 library(foreach)
 library(doParallel)
 library(doRNG)
 library(data.table)
 library(MASS)
+rm(list=ls())
 source("helperFunctions.r")
 source("gamma2trans.R")
 source("firststageboot.r")

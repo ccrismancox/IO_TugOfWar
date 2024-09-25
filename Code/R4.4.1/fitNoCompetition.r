@@ -4,9 +4,10 @@
 #' title: Fit no competition models
 #' ---
 #' 
-rm(list=ls())
+
 library(data.table)
 library(knitr)
+rm(list=ls())
 load("Results/mainStateActions.Rdata")
 load("Results/firstStageOutput.Rdata")
 load("Results/mainModel.rdata")

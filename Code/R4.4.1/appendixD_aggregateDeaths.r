@@ -1,6 +1,6 @@
 library(data.table)
 library(zoo)
-
+rm(list=ls())
 pal2000 <-  fread("../../Data/palestinian_deaths_2000_2008.csv")
 pal2009 <-  fread("../../Data/palestinian_deaths_2008_2020.csv")
 

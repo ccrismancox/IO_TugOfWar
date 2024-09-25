@@ -2,13 +2,13 @@
 #' author: Casey Crisman-Cox and Mike Gibilisco
 #' date: Sept 2024
 #' title: Appendix I: Choice of discount factors
-#' output: pdf_document
 #' ---
-rm(list=ls())
+
 library(data.table)
 library(stringr)
 library(knitr)
 library(ggplot2)
+rm(list=ls())
 load("Results/firstStageOutput.Rdata")
 load("Results/mainModel.rdata")
 load("Results/mainStateActions.Rdata")
