@@ -52,13 +52,13 @@ rownames(G) <- c()
 nG <- dim(G)[1]
 
 # does everything work?
-thetaStar = list(betaH = thetaEst[1], # hamas state payoff 
+thetaStar = list(betaH = thetaEst[1], # hamas state payoff
                  betaF = thetaEst[2], # fatah state payoff
                  kappaH = c(thetaEst[3], 0), # hamas cost of attack
                  kappaF = c(thetaEst[4], 0), # fatah cost of attack
-                 delta=delta)  
+                 delta=delta)
 
-
+cat("3 checks to make sure that everything works as expected\n")
 max(abs(PSI(vEst, thetaStar, Trans, G) - vEst)) < 1e-8
 max(abs(Trans - gamma2trans(gammaStar, sigmaStar, states, discretize=F, d=.05, bound=0.025))) < 1e-10
 max(abs(PSI(vEst, thetaStar, gamma2trans(gammaStar, sigmaStar, states, discretize=F, d=.05, bound=0.025), G) - vEst)) < 1e-8
@@ -85,7 +85,7 @@ for (i in 2:length(steps0)){
   EQ <- multiroot(function(V){PSI(V, theta, Trans, G) - V}, predicted,
                   jactype="fullusr",
                   maxiter = 400, jacfunc = function(V){PsiDer(V, theta, Trans, G)-diag(length(V))})
-  
+
   vCF0[,i] <- EQ$root
 }
 
@@ -96,21 +96,21 @@ theta <- thetaStar
 
 for (i in 2:length(steps1)){
   JV <- PsiDer(vCF1[,i-1], theta, Trans, G)-diag(length(vCF1[,i-1]))
-  JBH <- matrix(c(rep(states, each =2), rep(0, length(states)*2)), ncol=1)  
+  JBH <- matrix(c(rep(states, each =2), rep(0, length(states)*2)), ncol=1)
   TJ <-  solve(-JV, JBH )
   predicted <- vCF1[,i-1] + as.numeric((steps1[i] - steps1[i-1]) * TJ)
-  
+
   theta$betaH <- steps1[i]
   EQ <- multiroot(function(V){PSI(V, theta, Trans, G) - V}, predicted,
                   jactype="fullusr",
                   maxiter = 400, jacfunc = function(V){PsiDer(V, theta, Trans, G)-diag(length(V))})
-  
+
   vCF1[,i] <- EQ$root
 }
- 
+
 CFCP0 <- AttackProbs(vCF0[,length(steps0)])
 CFCP1 <- AttackProbs(vCF1[,length(steps1)])
- 
+
 diffH0 <- CFCP0$prAH - EQCP$prAH
 diffF0 <- CFCP0$prAF - EQCP$prAF
 
@@ -123,7 +123,7 @@ ggCF_Hbeta <-  data.frame(change = c(diffH0[mainData$states.int], diffH1[mainDat
                                       diffF0[mainData$states.int], diffF1[mainData$states.int]),
                            time = as.Date(rep(mainData$Date,4), "%Y-%m-%d"),
                            actor = rep(c("Hamas", "Fatah"), each=2*Tperiod),
-                           cfb = as.factor(rep(c(0, 2, 0, 2), each=Tperiod)), 
+                           cfb = as.factor(rep(c(0, 2, 0, 2), each=Tperiod)),
                           cfbt =rep(c(paste0("'Decrease magnitude of'~beta[H]~'by'~",magnitude*100,"*'%'"),
                                       paste0("'Increase magnitude of'~beta[H]~'by'~",magnitude*100,"*'%'")), each = Tperiod))
 ggCF_Hbeta$actor <- factor(ggCF_Hbeta$actor, level=c("Fatah", "Hamas"), ordered=T)
@@ -142,10 +142,10 @@ theta <- thetaStar
 
 for (i in 2:length(steps0)){
   JV <- PsiDer(vCF0[,i-1], theta, Trans, G)-diag(length(vCF0[,i-1]))
-  JBF <- matrix(c(rep(0, length(states)*2), rep(states, each =2)), ncol=1)  
+  JBF <- matrix(c(rep(0, length(states)*2), rep(states, each =2)), ncol=1)
   TJ <- solve(-JV,  JBF)
   predicted <- vCF0[,i-1] + as.numeric((steps0[i] - steps0[i-1]) * TJ)
-  
+
   theta$betaF <- steps0[i]
   EQ <- multiroot(function(V){PSI(V, theta, Trans, G) - V}, predicted,
                   jactype="fullusr",
@@ -163,12 +163,12 @@ for (i in 2:length(steps1)){
   JBF <-  matrix(c(rep(0, length(states)*2), rep(states, each =2)), ncol=1)
   TJ <- solve(-JV, JBF)
   predicted <- vCF1[,i-1] + as.numeric((steps1[i] - steps1[i-1]) * TJ)
-  
+
   theta$betaF <- steps1[i]
   EQ <- multiroot(function(V){PSI(V, theta, Trans, G) - V}, predicted,
                   jactype="fullusr",
                   maxiter = 400, jacfunc = function(V){PsiDer(V, theta, Trans, G)-diag(length(V))})
-  
+
   vCF1[,i] <- EQ$root
 }
 
@@ -185,7 +185,7 @@ ggCF_Fbeta <- data.frame(change = c(diffH0[mainData$states.int], diffH1[mainData
                                     diffF0[mainData$states.int], diffF1[mainData$states.int]),
                          time = as.Date(rep(mainData$Date,4), "%Y-%m-%d"),
                          actor = rep(c("Hamas", "Fatah"), each=2*Tperiod),
-                         cfb = as.factor(rep(c(0, 2, 0, 2), each=Tperiod)), 
+                         cfb = as.factor(rep(c(0, 2, 0, 2), each=Tperiod)),
                          cfbt =rep(c(paste0("'Decrease magnitude of'~beta[F]~'by'~",magnitude*100,"*'%'"),
                                          paste0("'Increase magnitude of'~beta[F]~'by'~",magnitude*100,"*'%'")), each = Tperiod))
 ggCF_Fbeta$actor <- factor(ggCF_Fbeta$actor, level=c("Fatah", "Hamas"), ordered=T)
@@ -205,7 +205,7 @@ ggCF_together$CF<- factor(ggCF_together$CF, level=useLevel, ordered=T)
 plotCF_together <- ggplot(ggCF_together, aes(x=time, y=change, color=actor)) +
   geom_path(linewidth=1.05) +
   theme_bw(16) +
-  xlab("Time") + ylab("Change in Pr. Attack") + 
+  xlab("Time") + ylab("Change in Pr. Attack") +
   facet_wrap(~cfbt, labeller=label_parsed,nrow = 2)+
   scale_color_manual("Effect on",
                      values=c("navyblue", "orangered")) +
@@ -217,9 +217,9 @@ plotCF_together <- ggplot(ggCF_together, aes(x=time, y=change, color=actor)) +
         panel.grid.major.x = element_blank(),
         panel.grid.minor.x = element_blank(),
         legend.margin=margin(0,0,0,0),
-        legend.box.margin=margin(-10,0,0,0)) 
+        legend.box.margin=margin(-10,0,0,0))
 
-# sATE 
+# sATE
 # needs to be added to plotCF_together
 UL <- ggCF_together[ggCF_together$cfb==0 & ggCF_together$CF == useLevel[1],]
 UR <- ggCF_together[ggCF_together$cfb==2 & ggCF_together$CF == useLevel[1],]
@@ -227,19 +227,19 @@ BL <- ggCF_together[ggCF_together$cfb==0 & ggCF_together$CF == useLevel[2],]
 BR <- ggCF_together[ggCF_together$cfb==2 & ggCF_together$CF == useLevel[2],]
 
 sATE <- data.frame(upperleft = c(mean(UL$change[UL$actor=="Hamas"]),
-                                 sd(UL$change[UL$actor=="Hamas"]), 
+                                 sd(UL$change[UL$actor=="Hamas"]),
                                  mean(UL$change[UL$actor=="Fatah"]),
                                  sd(UL$change[UL$actor=="Fatah"])),
                    upperright = c(mean(UR$change[UR$actor=="Hamas"]),
-                                 sd(UR$change[UR$actor=="Hamas"]), 
+                                 sd(UR$change[UR$actor=="Hamas"]),
                                  mean(UR$change[UR$actor=="Fatah"]),
                                  sd(UR$change[UR$actor=="Fatah"])),
                    bottomleft = c(mean(BL$change[BL$actor=="Hamas"]),
-                                 sd(BL$change[BL$actor=="Hamas"]), 
+                                 sd(BL$change[BL$actor=="Hamas"]),
                                  mean(BL$change[BL$actor=="Fatah"]),
                                  sd(BL$change[BL$actor=="Fatah"])),
                    bottomright = c(mean(BR$change[BR$actor=="Hamas"]),
-                                  sd(BR$change[BR$actor=="Hamas"]), 
+                                  sd(BR$change[BR$actor=="Hamas"]),
                                   mean(BR$change[BR$actor=="Fatah"]),
                                   sd(BR$change[BR$actor=="Fatah"])))
 row.names(sATE) <- c("Hamas:mean", "Hamas:se", "Fatah:mean", "Fatah:se")

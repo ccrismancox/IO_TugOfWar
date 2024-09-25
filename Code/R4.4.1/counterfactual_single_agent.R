@@ -49,7 +49,7 @@ thetaStar = list(betaH = thetaEst[1], # hamas state payoff
              kappaH = c(thetaEst[3], 0), # hamas cost of attack
              kappaF = c(thetaEst[4], 0), # fatah cost of attack
              delta=delta)
-cat("Checks to make sure that everything works as expected\n")
+cat("3 checks to make sure that everything works as expected\n")
 max(abs(PSI(vEst, thetaStar, Trans, G) - vEst)) < 1e-8
 max(abs(Trans - gamma2trans(gammaStar, sigmaStar, states, discretize=F,d = .05, bound=0.025))) < 1e-10
 max(abs(PSI(vEst, thetaStar, gamma2trans(gammaStar, sigmaStar, states, discretize=F,d = .05, bound=0.025), G) - vEst)) < 1e-8
@@ -102,7 +102,7 @@ ggdif2time <- data.frame(change = c(diffHamas[mainData$states.int],
                          actor = rep(c("Hamas", "Fatah"),each=dim(mainData)[1]))
 
 
-pd2time <- ggplot(ggdif2time) +
+Pd2time <- ggplot(ggdif2time) +
   geom_line(aes(y=change, x=time, color = as.factor(actor), linetype = as.factor(actor)), linewidth=1.15) +
   theme_bw(11) +
   xlab("Time") + ylab("Change in Pr. Attack") +
@@ -111,7 +111,7 @@ pd2time <- ggplot(ggdif2time) +
   geom_hline(yintercept=0,linewidth=0.9) +
   theme(panel.grid.major.x = element_blank(),
         panel.grid.minor.x = element_blank()) +
-  theme(legend.position=c(0.125, 0.8)) +
+  theme(legend.position = "inside", legend.position.inside =  c(0.125, 0.8))+
   theme(legend.text=element_text(size=rel(0.8)),
         legend.title=element_text(size=rel(0.9)),
         legend.key.width = unit(.5, 'inches')) +

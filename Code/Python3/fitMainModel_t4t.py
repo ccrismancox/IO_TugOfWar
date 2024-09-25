@@ -210,7 +210,6 @@ print("Estimation time: %d seconds" %t1)
 
 # free the model
 nlp2.close()
-print(results[0][:given['nReal']])
 out = {'results': results}
     
 
@@ -237,7 +236,6 @@ tstat = results[0][:given['nReal']]/SE
 pval = stats.norm.sf(np.abs(tstat))*2
 output = np.concatenate((results[0][:given['nReal']], SE,
                     tstat, pval)).reshape((-1, 4), order="F")
-print(np.round(output,2))
 
 Vout = VCOV[:given['nReal'], :given['nReal']]
 

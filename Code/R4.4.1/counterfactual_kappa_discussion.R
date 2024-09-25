@@ -73,7 +73,7 @@ thetaStar = list(betaH = thetaEst[1], # hamas state payoff
                  kappaF = c(thetaEst[4], 0), # fatah cost of attack
                  delta=delta)
 
-
+cat("3 checks to make sure that everything works as expected\n")
 max(abs(PSI(vEst, thetaStar, Trans, G) - vEst)) < 1e-8
 max(abs(Trans - gamma2trans(gammaStar, sigmaStar, states, discretize=F, d=.05, bound=0.025))) < 1e-10
 max(abs(PSI(vEst, thetaStar, gamma2trans(gammaStar, sigmaStar, states, discretize=F, d=.05, bound=0.025), G) - vEst)) < 1e-8

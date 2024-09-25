@@ -20,10 +20,10 @@ source("gamma2trans.R")
 shift<-function(x,shift_by){
   stopifnot(is.numeric(shift_by))
   stopifnot(is.numeric(x))
-  
+
   if (length(shift_by)>1)
     return(sapply(shift_by,shift, x=x))
-  
+
   out<-NULL
   abs_shift_by=abs(shift_by)
   if (shift_by > 0 )
@@ -37,18 +37,18 @@ shift<-function(x,shift_by){
 
 ###############################################
 # set up model
-states <- seq(from = -50, to = 50, by = 1) 
+states <- seq(from = -50, to = 50, by = 1)
 G <- expand.grid(states, c(0,1), c(0,1))
 names(G) = c("state", "aH", "aF")
 G <- G[order(G$state, G$aH),]
 rownames(G) <- c()
 nG <- dim(G)[1]
 
-thetaStar = list(betaH = -1/500, # hamas state payoff 
+thetaStar = list(betaH = -1/500, # hamas state payoff
                  betaF = 1/500, # fatah state payoff
                  kappaH = c(-2, 0), # hamas cost of attack
                  kappaF = c(-2, 0), # fatah cost of attack
-                 delta=0.999)  
+                 delta=0.999)
 
 gammaStar <- c(0, -1, 1, 1, 0, 0)
 sigmaStar <- 2
@@ -67,27 +67,27 @@ vstart <- c(rowMeans(matrix(uas[,'uH'], ncol=2, byrow=T)),
             c(apply(array(uas[,'uF'], c(2,2,length(states))), 3, rowMeans)))
 
 thetaStar$delta <- 0.90
-EQsym <- multiroot(function(V){PSI(V, thetaStar, Trans, G) - V}, vstart, 
+EQsym <- multiroot(function(V){PSI(V, thetaStar, Trans, G) - V}, vstart,
                    maxiter = 100, jactype = "fullusr",
                    jacfunc = function(V){PsiDer(V, thetaStar, Trans, G)-diag(length(V))})
 
 thetaStar$delta <- 0.99
-EQsym <- multiroot(function(V){PSI(V, thetaStar, Trans, G) - V}, EQsym$root, 
+EQsym <- multiroot(function(V){PSI(V, thetaStar, Trans, G) - V}, EQsym$root,
           maxiter = 100, jactype = "fullusr",
           jacfunc = function(V){PsiDer(V, thetaStar, Trans, G)-diag(length(V))})
 
 thetaStar$delta <- 0.9945
-EQsym <- multiroot(function(V){PSI(V, thetaStar, Trans, G) - V}, EQsym$root, 
+EQsym <- multiroot(function(V){PSI(V, thetaStar, Trans, G) - V}, EQsym$root,
                    maxiter = 200, jactype = "fullusr",
                    jacfunc = function(V){PsiDer(V, thetaStar, Trans, G)-diag(length(V))})
 
 thetaStar$delta <- 0.99675
-EQsym <- multiroot(function(V){PSI(V, thetaStar, Trans, G) - V}, EQsym$root, 
+EQsym <- multiroot(function(V){PSI(V, thetaStar, Trans, G) - V}, EQsym$root,
                    maxiter = 200, jactype = "fullusr",
                    jacfunc = function(V){PsiDer(V, thetaStar, Trans, G)-diag(length(V))})
 
 thetaStar$delta <- 0.999
-EQsym <- multiroot(function(V){PSI(V, thetaStar, Trans, G) - V}, EQsym$root, 
+EQsym <- multiroot(function(V){PSI(V, thetaStar, Trans, G) - V}, EQsym$root,
                    maxiter = 200, jactype = "fullusr",
                    rtol=1e-10, atol=1e-12, ctol=1e-12,
                    jacfunc = function(V){PsiDer(V, thetaStar, Trans, G)-diag(length(V))})
@@ -107,8 +107,8 @@ ggdatasym <-  data.frame(PrAttack =c(EQCPsym$prAH, EQCPsym$prAF),
 
 set.seed(1)
 err <- rnorm(length(vstart))
-EQ1 <- multiroot(function(V){PSI(V, thetaStar, Trans, G) - V}, 
-                 vstart+err, 
+EQ1 <- multiroot(function(V){PSI(V, thetaStar, Trans, G) - V},
+                 vstart+err,
                    maxiter = 500, rtol=1e-10, atol=1e-12, ctol=1e-12,
                  jactype = "fullusr",
                    jacfunc = function(V){PsiDer(V, thetaStar, Trans, G)-diag(length(V))})
@@ -121,11 +121,11 @@ ggdata1 <-  data.frame(PrAttack =c(EQCP1$prAH, EQCP1$prAF),
                       actor = rep(c("Hamas", "Fatah"), each = length(states)))
 
 
-vHamas <- matrix(EQ1$root[1:(2*length(states))],  ncol=length(states)) 
+vHamas <- matrix(EQ1$root[1:(2*length(states))],  ncol=length(states))
 vFatah <- matrix(EQ1$root[(2*length(states)+1):(4*length(states))],  ncol=length(states))
 
 start3 <- c(vFatah[,length(states):1], vHamas[,length(states):1])
-EQ3 <- multiroot(function(V){PSI(V, thetaStar, Trans, G) - V}, start3, 
+EQ3 <- multiroot(function(V){PSI(V, thetaStar, Trans, G) - V}, start3,
                  maxiter = 500, rtol=1e-10, atol=1e-12, ctol=1e-12,
                  jactype = "fullusr",
                  jacfunc = function(V){PsiDer(V, thetaStar, Trans, G)-diag(length(V))})
@@ -149,23 +149,24 @@ ggAll$EQ <- factor(ggAll$EQ, levels= c("Fatah-Dominant Eq.", "Symmetric Eq.", "H
 Trans.symm <- Trans
 
 
-pEQall <- ggplot(ggAll, aes(x=states, y=PrAttack, color=actor, linetype=actor)) + 
-    geom_line(linewidth=1.25) + facet_grid(cols=vars(EQ)) + 
-  theme_bw(11) + xlab("Relative Popularity (states)") + ylab("Pr. Attack") + theme(legend.position=c(0.91, 0.8)) +
+pEQall <- ggplot(ggAll, aes(x=states, y=PrAttack, color=actor, linetype=actor)) +
+    geom_line(linewidth=1.25) + facet_grid(cols=vars(EQ)) +
+    theme_bw(11) + xlab("Relative Popularity (states)") + ylab("Pr. Attack") +
+    theme(legend.position = "inside", legend.position.inside =c(0.91, 0.8)) +
   scale_color_manual(values=c("navyblue", "orangered"),
   name="Actor") + scale_linetype_manual(values= c(1, 2), name="Actor") +
   theme(legend.text=element_text(size=rel(0.6)),
         legend.title=element_text(size=rel(0.8)),
-        legend.key.size = unit(0.5, 'lines')) + 
+        legend.key.size = unit(0.5, 'lines')) +
   theme(legend.background = element_rect(fill="white",
-                                         linewidth=0.5, linetype="solid", 
+                                         linewidth=0.5, linetype="solid",
                                          colour ="grey50"))
 
-pIDall <- ggplot(subset(ggAll, actor=="Hamas"),  aes(x=states, y=id)) + 
-  geom_bar(stat="identity", color = "seagreen") + facet_grid(cols=vars(EQ)) + 
-  theme_bw(11) + xlab("Relative Popularity (states)") + ylab("Invariant Dist.") 
+pIDall <- ggplot(subset(ggAll, actor=="Hamas"),  aes(x=states, y=id)) +
+  geom_bar(stat="identity", color = "seagreen") + facet_grid(cols=vars(EQ)) +
+  theme_bw(11) + xlab("Relative Popularity (states)") + ylab("Invariant Dist.")
 
-pCorall <- ggplot(subset(ggAll, states <40 & states>-40), aes(x=dPjds, y=PrAttack))+ 
+pCorall <- ggplot(subset(ggAll, states <40 & states>-40), aes(x=dPjds, y=PrAttack))+
       geom_point(size=1.25) + facet_grid(cols=vars(EQ), rows=vars(actor), scales = "free") +
       theme_bw(11) +  geom_smooth(method='lm', formula= y~x )
 
@@ -195,13 +196,13 @@ vCF1 <- array(NA, c(length(EQ1$root), length(steps1), 3))
 
 for (e in 1:dim(EQall)[2]){
   vCF0[,1,e] <- EQall[,e]
-  theta <- thetaStar 
+  theta <- thetaStar
   for (i in 2:length(steps0)){
     JV <- PsiDer(vCF0[,i-1,e], theta, Trans, G)-diag(length(vCF0[,i-1,e]))
-    JBH <- matrix(c(rep(states, each =2), rep(0, length(states)*2)), nrow=1)  
+    JBH <- matrix(c(rep(states, each =2), rep(0, length(states)*2)), nrow=1)
     TJ <- - JBH %*% solve(t(JV))
     predicted <- vCF0[,i-1,e] + as.numeric((steps0[i] - steps0[i-1]) * TJ)
-    
+
     theta$betaH <- steps0[i]
     EQcf <- multiroot(function(V){PSI(V, theta, Trans, G) - V},
                       predicted, maxiter = 400, rtol=1e-10, atol=1e-12, ctol=1e-12,
@@ -209,22 +210,22 @@ for (e in 1:dim(EQall)[2]){
                       jactype="fullusr")
     vCF0[,i,e] <- as.numeric(EQcf$root)
   }
-  
+
   vCF1[,1,e] <- EQall[,e]
-  theta <- thetaStar 
+  theta <- thetaStar
   for (i in 2:length(steps1)){
     JV <- PsiDer(vCF1[,i-1,e], theta, Trans, G)-diag(length(vCF1[,i-1,e]))
-    JBH <- matrix(c(rep(states, each =2), rep(0, length(states)*2)), nrow=1)  
+    JBH <- matrix(c(rep(states, each =2), rep(0, length(states)*2)), nrow=1)
     TJ <- - JBH %*% solve(t(JV))
     predicted <- vCF1[,i-1,e] + as.numeric((steps1[i] - steps1[i-1]) * TJ)
-    
+
     theta$betaH <- steps1[i]
-    EQcf <- multiroot(function(V){PSI(V, theta, Trans, G) - V}, 
+    EQcf <- multiroot(function(V){PSI(V, theta, Trans, G) - V},
                       predicted, maxiter = 400, rtol=1e-10, atol=1e-12, ctol=1e-12,
                       jacfunc = function(V){PsiDer(V, theta, Trans, G)-diag(length(V))},
                                             jactype="fullusr")
     vCF1[,i,e] <- EQcf$root
-    
+
   }
 }
 
@@ -252,15 +253,15 @@ for (e in 1:3){
     CP_eq$prAny <- CP_eq$prAH +   CP_eq$prAF -  CP_eq$prAH* CP_eq$prAF
     CP_cf0$prAny <- CP_cf0$prAH +   CP_cf0$prAF -  CP_cf0$prAH* CP_cf0$prAF
     CP_cf1$prAny <- CP_cf1$prAH +   CP_cf1$prAF -  CP_cf1$prAH* CP_cf1$prAF
-    
-    ggCF_Hbeta_e <-  data.frame(prattack = c(CP_cf0$prAH, CP_eq$prAH, CP_cf1$prAH, 
+
+    ggCF_Hbeta_e <-  data.frame(prattack = c(CP_cf0$prAH, CP_eq$prAH, CP_cf1$prAH,
                                              CP_cf0$prAF, CP_eq$prAF, CP_cf1$prAF,
                                              CP_cf0$prAny, CP_eq$prAny, CP_cf1$prAny),
                                 states = rep(states, 9),
                                 actor = rep(c("Hamas", "Fatah", "Either"), each=3*length(states)),
-                                cfb = as.factor(rep(c(0, 1, 2, 0, 1, 2, 0, 1, 2), each= length(states))))  
+                                cfb = as.factor(rep(c(0, 1, 2, 0, 1, 2, 0, 1, 2), each= length(states))))
     ggCF_Hbeta <- rbind(ggCF_Hbeta, ggCF_Hbeta_e)
-    
+
 }
 
 ggCF_Hbeta$actor <- factor(ggCF_Hbeta$actor, level=c("Fatah", "Hamas", "Either"), ordered=T)
@@ -277,15 +278,15 @@ pe <- ggplot(ggCF_Hbeta, aes(x=states, y=prattack, color=cfb)) +
                      labels=
                        as.character(
                          round(c(steps0[use0], thetaStar$betaH, steps1[use1]), digits=4)) )
-  
 
-ggsave("../../Output/Figures/figureB4.pdf", pe, height = 5, width= 6) 
+
+ggsave("../../Output/Figures/figureB4.pdf", pe, height = 5, width= 6)
 
 
 
 ####### single agent comparison #######
 ###############################################
-## Hamas 
+## Hamas
 gammaStar <- c(0, -1, 0, 1, 0, 0)
 sigmaStar <- 2
 
@@ -298,8 +299,8 @@ vstart <- c(rowMeans(matrix(uas[,'uH'], ncol=2, byrow=T)),
             c(apply(array(uas[,'uF'], c(2,2,length(states))), 3, rowMeans)))
 
 thetaStar$delta <- 0.999
-EQHamas <- multiroot(function(V){PSI(V, thetaStar, Trans, G) - V}, vstart, 
-                   maxiter = 200, 
+EQHamas <- multiroot(function(V){PSI(V, thetaStar, Trans, G) - V}, vstart,
+                   maxiter = 200,
                    jacfunc = function(V){PsiDer(V, thetaStar, Trans, G)-diag(length(V))},
                    jactype="fullusr")
 
@@ -313,15 +314,15 @@ ggdatasym <-  data.frame(PrAttack =c(EQCPhamas$prAH, EQCPhamas$prAF),
 
 
 ## Fatah
-gammaStar[2] <- 0 
+gammaStar[2] <- 0
 gammaStar[3] <- 1
 Trans <- gamma2trans(gammaStar, sigmaStar, states, d=1, discretize=F)
-vHamas <- matrix(EQHamas$root[1:(2*length(states))],  ncol=length(states)) 
+vHamas <- matrix(EQHamas$root[1:(2*length(states))],  ncol=length(states))
 vFatah <- matrix(EQHamas$root[(2*length(states)+1):(4*length(states))],  ncol=length(states))
 start <- c(vFatah[,length(states):1], vHamas[,length(states):1])
 
-EQFatah <- multiroot(function(V){PSI(V, thetaStar, Trans, G) - V}, start, 
-                     maxiter = 200, 
+EQFatah <- multiroot(function(V){PSI(V, thetaStar, Trans, G) - V}, start,
+                     maxiter = 200,
                      jacfunc = function(V){PsiDer(V, thetaStar, Trans, G)-diag(length(V))},
                      jactype="fullusr")
 EQCPfatah <- AttackProbs(EQFatah$root)
@@ -331,12 +332,12 @@ ggdata <- data.frame(PrAttack =c(EQCPhamas$prAH, EQCPfatah$prAF),
                      actor = rep(c("Hamas's Single Agent Problem", "Fatah's Single Agent Problem"), each = length(states)))
 
 pSAP <- ggplot(ggdata, aes(x=states, y=PrAttack)) + geom_line(linewidth=1.25) + theme_bw(11) +
-  xlab("Relative Popularity (states)") + ylab("Pr. Attack")  + 
+  xlab("Relative Popularity (states)") + ylab("Pr. Attack")  +
   facet_grid(cols=vars(actor)) + ylim(c(0.095, 0.71))
 
 ggsave("../../Output/Figures/figureB1.pdf" , height = 2.5, plot = pSAP, width= 6)
 
 
-### correlation in text 
+### correlation in text
 cor(ggdata$PrAttack[ggdata$actor=="Hamas's Single Agent Problem"], ggdata$PrAttack[ggdata$actor=="Fatah's Single Agent Problem"])
 
