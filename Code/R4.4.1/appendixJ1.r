@@ -61,7 +61,7 @@ for(i in 1:nrow(grid)){
 
   
 
-  cat("IPOPT running, please wait"\n)
+  cat("IPOPT running, please wait\n")
   system(paste("python ../Python3/fitMainModel.py"), ignore.stdout = TRUE)
   cat("IPOPT complete\n")
 

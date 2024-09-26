@@ -32,17 +32,14 @@ regData[,lag.attacks := shift(attacks)]
 
 
 ## deviations version mentioned in the text ##
+cat("Deviations model mentioned in text in Appendix G \n")
 coeftest(glm(attacks~state.deviations, family=poisson, data=regData),
          NeweyWest)
 
 ##### VAR approach#####
-## look for stationarity
-coint_ca.joA <- ca.jo(regData[,c("diff.states", "Hattack", "Fattack")],
-                      type = "trace",
-                      spec = "transitory")
-summary(coint_ca.joA) # every null rejected so VAR is fine with these variables
 ## using BIC or SC as it's listed here
-VARselect( na.omit(regData[,c("diff.states", "Hattack", "Fattack")]), lag.max = 10)$selection
+cat("Lag selection for the VAR using the BIC/SC\n")
+VARselect( na.omit(regData[,c("diff.states", "Hattack", "Fattack")]), lag.max = 10)$selection[3]
 
 V1 <- VAR( na.omit(regData[,c("diff.states", "Hattack", "Fattack")]), p =2)
 

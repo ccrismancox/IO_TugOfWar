@@ -57,7 +57,7 @@ for(i in 1:nrow(grid)){
   write.csv(c(mod0$coef, summary(mod0)$sigma), file="ipoptTEMP/gamma.csv",row.names = F)
   write.csv(bootOut, file="ipoptTEMP/V1.csv",row.names = F)
   
-  cat("IPOPT running, please wait"\n)
+  cat("IPOPT running, please wait\n")
   system(paste("python ../Python3/fitMainModel.py"), ignore.stdout = TRUE)
   cat("IPOPT complete\n")
 

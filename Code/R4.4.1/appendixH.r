@@ -49,7 +49,7 @@ if("try-error" %in% class(start)){
 write.csv(start, file=paste("ipoptTEMP/start.csv", sep=""),row.names = F)
 write.csv(regData, file=paste("ipoptTEMP/regData.csv", sep=""),row.names = F)
 
-cat("IPOPT running, please wait"\n)
+cat("IPOPT running, please wait\n")
 system(paste("python ../Python3/fitMainModel.py"), ignore.stdout = TRUE)
 cat("IPOPT complete\n")
 
@@ -77,7 +77,7 @@ if("try-error" %in% class(start)){
 write.csv(start, file=paste("ipoptTEMP/start.csv", sep=""),row.names = F)
 write.csv(regData, file=paste("ipoptTEMP/regData.csv", sep=""),row.names = F)
 
-cat("IPOPT running, please wait"\n)
+cat("IPOPT running, please wait\n")
 system(paste("python ../Python3/fitMainModel.py"), ignore.stdout = TRUE)
 cat("IPOPT complete\n")
 
@@ -106,7 +106,7 @@ if("try-error" %in% class(start)){
 write.csv(start, file=paste("ipoptTEMP/start.csv", sep=""),row.names = F)
 write.csv(regData, file=paste("ipoptTEMP/regData.csv", sep=""),row.names = F)
 
-cat("IPOPT running, please wait"\n)
+cat("IPOPT running, please wait\n")
 system(paste("python ../Python3/fitMainModel.py"), ignore.stdout = TRUE)
 cat("IPOPT complete\n")
 
@@ -134,7 +134,7 @@ if("try-error" %in% class(start)){
 write.csv(start, file=paste("ipoptTEMP/start.csv", sep=""),row.names = F)
 write.csv(regData, file=paste("ipoptTEMP/regData.csv", sep=""),row.names = F)
 
-cat("IPOPT running, please wait"\n)
+cat("IPOPT running, please wait\n")
 system(paste("python ../Python3/fitMainModel.py"), ignore.stdout = TRUE)
 cat("IPOPT complete\n")
 
@@ -339,7 +339,7 @@ if("try-error" %in% class(start)){
 write.csv(start, file=paste("ipoptTEMP/start.csv", sep=""),row.names = F)
 write.csv(regData, file=paste("ipoptTEMP/regData.csv", sep=""),row.names = F)
 
-cat("IPOPT running, please wait"\n)
+cat("IPOPT running, please wait\n")
 system(paste("python ../Python3/fitMainModel.py"), ignore.stdout = TRUE)
 cat("IPOPT complete\n")
 
@@ -369,7 +369,7 @@ if("try-error" %in% class(start)){
 write.csv(start, file=paste("ipoptTEMP/start.csv", sep=""),row.names = F)
 write.csv(regData, file=paste("ipoptTEMP/regData.csv", sep=""),row.names = F)
 
-cat("IPOPT running, please wait"\n)
+cat("IPOPT running, please wait\n")
 system(paste("python ../Python3/fitMainModel.py"), ignore.stdout = TRUE)
 cat("IPOPT complete\n")
 
