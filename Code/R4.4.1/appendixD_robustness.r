@@ -607,7 +607,7 @@ cat("First stage F stats for the rainfall only models range from",
     "to",
     max(round(rbind(D5a[1:4,], D5c[1:4,]), 1)[,3]), "\n")
 cat("First stage F stats for the over identified models models range from",
-    min(round(rbind(D5b[1:4,], D5d[1:4,], D5e[1:4,]), 1)[,3])
+    min(round(rbind(D5b[1:4,], D5d[1:4,], D5e[1:4,]), 1)[,3]),
     "to",
     max(round(rbind(D5b[1:4,], D5d[1:4,], D5e[1:4,]), 1)[,3]), "\n")
 
