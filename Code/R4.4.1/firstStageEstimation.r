@@ -38,7 +38,7 @@ df.test <- summary(ur.df(mod0$residuals))
 cat(ifelse(abs(drop(df.test@teststat)) > abs( df.test@cval[2]), TRUE, FALSE), "\n")
 cat("Do we reject the null of normal residuals (KS test)?\n")
 ks.test(scale(mod0$resid), pnorm)$p.value < 0.05
-cat("Do we reject the null of normal gammas in any bootstrap iteration (JB test)?\n")
+cat("Do we reject the null of normal residuals (JB test)?\n")
 jarque.test(mod0$resid)$p.value < 0.05
 
 bootOut <- firststageboot(mod0, regData)
