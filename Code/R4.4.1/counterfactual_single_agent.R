@@ -102,7 +102,7 @@ ggdif2time <- data.frame(change = c(diffHamas[mainData$states.int],
                          actor = rep(c("Hamas", "Fatah"),each=dim(mainData)[1]))
 
 
-Pd2time <- ggplot(ggdif2time) +
+pd2time <- ggplot(ggdif2time) +
   geom_line(aes(y=change, x=time, color = as.factor(actor), linetype = as.factor(actor)), linewidth=1.15) +
   theme_bw(11) +
   xlab("Time") + ylab("Change in Pr. Attack") +

@@ -243,7 +243,6 @@ while(tol > 1e-5){
   tol <- max(abs(c(twostep$par,vnew)-start))
   start <- c(twostep$par,vnew)
   vhat <- vnew
-  cat("tol: ", tol, "\n")
 }
 
 conv <- data.frame(V1=c(twostep$convergence, twostep$value))
