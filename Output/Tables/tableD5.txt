@@ -6,19 +6,19 @@ Robustness checks for the first-stage model: Time effects and endogeneity
                                       Delta State            
                             (1)    (2)    (3)    (4)    (5)  
 -------------------------------------------------------------
-Hamas attacks              -0.16  -0.17  -0.23  -0.26  -0.25 
-                           (0.19) (0.20) (0.17) (0.21) (0.18)
-Fatah attacks               1.39   1.62   1.36   1.82   1.70 
-                           (0.64) (0.66) (0.53) (0.62) (0.80)
-Constant                   -0.02  -0.04   0.11   0.07   0.07 
-                           (0.07) (0.08) (0.03) (0.05) (0.04)
+Hamas attacks              -0.21  -0.20  -0.28  -0.29  -0.29 
+                           (0.21) (0.23) (0.16) (0.21) (0.22)
+Fatah attacks               1.43   1.68   1.39   1.82   1.90 
+                           (0.65) (0.83) (0.53) (0.67) (1.14)
+Constant                   -0.01  -0.04   0.13   0.10   0.10 
+                           (0.07) (0.08) (0.04) (0.05) (0.06)
 -------------------------------------------------------------
 Interactions                Yes    Yes    Yes    Yes    Yes  
 Controls                     No     No    Yes    Yes    Yes  
-T                           298    298    298    298    295  
-sigma                      0.229  0.240  0.189  0.250  0.264 
-Cragg and Donald statistic 0.001  0.316  0.001  0.412  0.974 
+T                           288    288    288    288    285  
+sigma                      0.236  0.253  0.197  0.259  0.303 
+Cragg and Donald statistic 0.000  0.268  0.000  0.383  0.798 
 Number of instruments        4      5      4      5      20  
-Sargan-Hansen p value             0.758         0.632  0.141 
+Sargan-Hansen p value             0.884         0.811  0.139 
 =============================================================
 Note: Bekker's robust standard errors (IV models)            
