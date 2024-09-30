@@ -135,16 +135,26 @@ save(list=c("Trans", "mod0", "states", "bootOut", "regData"),
      file="Results/firstStageOutput.Rdata")
 
 
+
+
+marginalsF0 <- cbind(0,0, 1, 0, 0, states) %*%  mod0$coef
+marginalsH0 <- cbind(0,1,0,  0, states, 0) %*%  mod0$coef
+cat("Range of marginal effects for Fatah (AR1) \n")
+print(round(quantile(marginalsF0,c(0,1)),2))
+cat("Range of marginal effects for Hamas  (AR1) \n")
+print(round(quantile(marginalsH0,c(1,0)),2))
+
+
+
+
 #' For the ECM we consider two sets of hypothesis tests:
 #'
 #' 1. Are the combined estimates significant for each side at each state?
 #' 2. Does Fatah have an advantage at each state?
-
-
-
-
 marginalsF <- cbind(0,0, 1, 0, 0, states) %*%  mod1$coef
 marginalsH <- cbind(0,1,0,  0, states, 0) %*%  mod1$coef
+
+
 Vmod1 <-  NeweyWest(mod1)
 seMF <- sqrt(diag(cbind(0,0, 1, 0, 0, states) %*% Vmod1 %*% t(cbind(0,0, 1, 0, 0, states))))
 seMH <- sqrt(diag(cbind(0, 1,0, 0, states, 0) %*% Vmod1 %*% t(cbind(0, 1,0,  0, states, 0))))

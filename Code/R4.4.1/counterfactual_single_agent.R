@@ -171,12 +171,12 @@ cat(kable(sATE, digits=2, format="pipe"),
 ## substantive effects mentioned in text
 cat("Effects mentioned in text\n")
 ## Fatah uses 34% more violence b/c of competition
-cat("Fatah uses,",
+cat("Fatah uses",
 round(mean((EQCP$prAF[mainData$states.int] -
             EQCPFSA$prAF[mainData$states.int])/EQCPFSA$prAF[mainData$states.int]),3)*100,
 "% more violence b/c of competition\n")
 ## Hamas uses 37% more violence b/c of competition
-cat("Hamas uses,",
+cat("Hamas uses",
 round(mean((EQCP$prAH[mainData$states.int] -
             EQCPHSA$prAH[mainData$states.int])/ EQCPHSA$prAH[mainData$states.int]), 3)*100,
 "% more violence b/c of competition\n")
@@ -184,8 +184,9 @@ round(mean((EQCP$prAH[mainData$states.int] -
 
 
 ##During Oslo
+cat("But, heterogeneous effects exist. During Oslo era:\n")
 cat("Percentage change from counterfactual to real world in the Pr. Hamas attacks is",
-    round(mean((EQCP$prAH[mainData$states.int][1:81] -EQCPHSA$prAH[mainData$states.int][1:81])/ EQCPHSA$prAH[mainData$states.int][1:81])*100,1), "\n")
+    round(mean((EQCP$prAH[mainData$states.int][1:81] -EQCPHSA$prAH[mainData$states.int][1:81])/ EQCPHSA$prAH[mainData$states.int][1:81])*100,1), "%\n")
 
 
 ### largest effect size with more violence in counterfactual
@@ -193,7 +194,7 @@ m <-  max(EQCPHSA$prAH[mainData$states.int[1:81]]/EQCP$prAH[mainData$states.int[
 cat("The maximum effect on Hamas during Oslo era is a", round(100*(m-1),1), "% increase in Hamas violence if Fatah never attacks\n")
 cat("Substantively, this is",
     round(sum(mainData$Hattacks[1:81]) * (m-1), 2),
-    "fewer months\n")
+    "fewer months that have a Hamas attack\n")
 
 
 ggdif2 <- data.frame(change = c(EQCP$prAH - EQCPHSA$prAH,
@@ -209,7 +210,7 @@ pd2states <- ggplot(ggdif2) +
                      name="Actor") + scale_linetype_manual(values= c(1, 2), name="Actor") +
   geom_rug(data = mainData, aes(x = states.discrete), inherit.aes=F, color="grey50") +
   geom_hline(yintercept=0,linewidth=0.9) +
-  theme(legend.position=c(0.85, 0.8)) +
+  theme(legend.position = "inside", legend.position.inside =c(0.85, 0.8)) +
   theme(legend.text=element_text(size=rel(0.6)),
         legend.title=element_text(size=rel(0.8)),
         legend.key.width = unit(.5, 'inches')) +
