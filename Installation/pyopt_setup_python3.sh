@@ -1,4 +1,4 @@
-# Testing on Ubuntu 22.04
+# Testing on Ubuntu 20.04
 REPDIR=`pwd`
 sudo apt update
 sudo apt -y upgrade
@@ -22,7 +22,7 @@ gpg --no-default-keyring --keyring ./temp.gpg --export --output R.gpg
 rm R.asc
 rm temp.gpg
 sudo mv R.gpg /etc/apt/keyrings
-sudo echo "deb [signed-by=/etc/apt/keyrings/R.gpg] https://cloud.r-project.org/bin/linux/ubuntu jammy-cran40/"| sudo tee -a  /etc/apt/sources.list
+sudo echo "deb [signed-by=/etc/apt/keyrings/R.gpg] https://cloud.r-project.org/bin/linux/ubuntu focal-cran40/"| sudo tee -a  /etc/apt/sources.list
 
 sudo apt update 
 sudo apt -y upgrade 
