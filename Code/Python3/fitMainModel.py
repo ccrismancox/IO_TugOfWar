@@ -295,26 +295,16 @@ if twostep:
   ay = LLtheta(ax, agamma, Y, given)
   adolc.dependent(ay)
   adolc.trace_off()
+
+
   
-  
-  def const_theta(x,gamma, given):
-    beta = x[:given['nBeta']]
-    kappa = x[given['nBeta']:given['nReal']]
-    v= x[given['nReal']:]    
-    return constraint_parameter(beta, kappa, gamma, v,given)
-  
-  adolc.trace_on(6)
-  ax = adolc.adouble(x0)
-  adolc.independent(ax)
-  ay=const_theta(ax, agamma, given)
-  adolc.dependent(ay)
-  adolc.trace_off()
+    
   
   Bgamma = adolc.jacobian(5, x0).T.dot(adolc.jacobian(3, gamma))
-  
-  Hgamma = adolc.jacobian(6, x0).T.dot(adolc.jacobian(4, gamma))
+  JV_gamma  = adolc.jacobian(4, gamma)
+  Hgamma = Htheta.dot(JV_gamma)
   W = Bgamma + Hgamma
-  R = np.diag(const(x0)).dot(adolc.jacobian(4, gamma))
+  R = np.diag(const(x0)).dot(JV_gamma) #zeros
   C = np.vstack((W, R))
   
 
