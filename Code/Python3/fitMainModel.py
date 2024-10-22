@@ -129,7 +129,7 @@ val = Jac_c_adolc(x0, False)
 Jac = sps.coo_matrix( (val, (idx[0], idx[1])), shape= (given['nAll']-given['nReal'], given['nAll']))
 # define the number of nonzeros in the jacobian 
 nnzj = Jac.nnz
-print("Jacobian has %i non-zero elements (%f%% sparse)"%(nnzj, 100*nnzj/((given['nAll']-given['nReal'])*given['nAll'])))
+print("Jacobian has %i non-zero elements (%f%% dense)"%(nnzj, 100*nnzj/((given['nAll']-given['nReal'])*given['nAll'])))
    
 
              
@@ -177,7 +177,7 @@ H2 = hessLag_adolc(x0, xL, 1.0, False)
 t1 = time() - t0
 print("Hessian time: %d seconds"%t1)
 nnzh = len(H2)
-print("Hessian has %i non-zero elements (%f%% sparse)"%(nnzh, 100*nnzh/(given['nAll']**2)))
+print("Hessian has %i non-zero elements (%f%% dense)"%(nnzh, 100*nnzh/(given['nAll']**2)))
     
           
           
@@ -295,13 +295,43 @@ if twostep:
   ay = LLtheta(ax, agamma, Y, given)
   adolc.dependent(ay)
   adolc.trace_off()
-
-
   
+  
+  class jac_theta_adolc:
     
-  
-  Bgamma = adolc.jacobian(5, x0).T.dot(adolc.jacobian(3, gamma))
+    def __init__(self, x):
+        #options = np.array([1,1,0,0],dtype=int)
+        options = None
+        result = adolc.colpack.sparse_jac_no_repeat(5,x,options)
+        
+        self.nnz  = result[0]     
+        self.rind = np.asarray(result[1],dtype=int)
+        self.cind = np.asarray(result[2],dtype=int)
+        self.values = np.asarray(result[3],dtype=float)
+        
+    def __call__(self, x, flag, user_data=None):
+        if flag:
+            return (self.rind, self.cind)
+        else:
+            result = adolc.colpack.sparse_jac_repeat(5, x, self.nnz, self.rind,
+                self.cind, self.values)
+            return result[3]
+
+  Jac_theta_adolc = jac_theta_adolc(x0)
+
+    
+
+
+
+  idx = Jac_theta_adolc(x0, True)
+  val = Jac_theta_adolc(x0, False)
+  JLL_theta = sps.coo_matrix( (val, (idx[0], idx[1])), shape= (300,  given['nAll']))
+
+  JLL_gamma = adolc.jacobian(3, gamma)
   JV_gamma  = adolc.jacobian(4, gamma)
+  
+  Bgamma = JLL_theta.T.dot(JLL_gamma)
+  
   Hgamma = Htheta.dot(JV_gamma)
   W = Bgamma + Hgamma
   R = np.diag(const(x0)).dot(JV_gamma) #zeros
