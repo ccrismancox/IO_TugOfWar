@@ -5,7 +5,7 @@
 ## A note for replicators
 Conducting constrained maximum likelihood estimation (CMLE)  requires specialized (open source) software that we are only able to run using the Ubuntu Linux operating system. 
 We provide detailed setup instructions below. 
-All results were produced on a computer using Ubuntu 20.04.6 (Focal Fossa) using R 4.4.1 ("Race for Your Life") and Python 3.8.10.
+All results were produced on a computer using Ubuntu 20.04.6 (Focal Fossa) using R 4.4.1 ("Race for Your Life") and Python 3.8.10. The entire archive should require no more than 2 GB of available RAM, but we a machine with at least 4GB to be safe.
 
 ## Replication package contents
 Files marked with (U) require Ubuntu, with the setup as described below.
@@ -23,6 +23,7 @@ Files marked with (U) require Ubuntu, with the setup as described below.
     - `pyopt_setup_python3.sh` (U)  A bash script designed to be run on a fresh installation of Ubuntu 20.04.6. It should also work on the live version or on existing Ubuntu 20.04.6 installations, but this is not tested.
 	This file  will install all the necessary outside software to replicate the results (Internet connection is required).
     - `Rpackages.r` An R script that installs all the `R` packages used here with the versions used here.
+	- `sources.list` A sources file needed to replace the existing sources file if using a "live" version of Ubuntu 20.04.6 [(see below)](#using-a-live-version)
 - Data: These are both the original data used in the analysis as well as the merged and complete versions used in the analysis.
     - `acosta1993.csv` Acosta and Ramos' (2017) data to supplement missing data from the Global Terrorism Database (GTD).
 	- `actionsSetup.Rdata` Produced by `buildDataSets.r`, below, aggregates the GTD data to monthly level. This produces the main measurement of the actions
@@ -107,11 +108,32 @@ The software setup currently uses Ubuntu 20.04.6. To install operating system
 
 1. Download iso file and use it to create a "bootable" flash drive
     - [The iso image can be obtained at this link](https://releases.ubuntu.com/focal/ubuntu-20.04.6-desktop-amd64.iso).
+	- Instructions for creating a bootable flash drive can be found [here (Mac)](https://ubuntu.com/tutorials/create-a-usb-stick-on-macos#1-overview) or [here (Windows)](https://ubuntu.com/tutorials/create-a-usb-stick-on-windows#1-overview).
 2. Insert the flash drive and power on the computer
     - Enter the machine's boot menu by pressing the appropriate key repeatedly  (the button to activate the boot menu varies with computer make and models -- common keys include F12 (DELL, Most ACERs),   F8 (Most ASUS), ESC (HP and some ASUS).
 4. Select the option to boot from the flash drive USB
-5. You may try using the "live" testing version that does not install the operating system. We have not tested it with this package, but believe it should work. You may also select "install." WARNING: this will require you to format all or part of your hard drive so don't do it if you don't want that.
-6.  Download the replication package  (scroll your cursor to the upper left corner where it says "Activities" and then select the Firefox icon to access the internet)
+5. Select "install." WARNING: this will require you to format all or part of your hard drive so don't do it if you don't want that. You can also do a dual boot or live, but we only vouch for and fully support for installation.
+6. Download the replication package  (scroll your cursor to the upper left corner where it says "Activities" and then select the Firefox icon to access the internet)
+
+
+### Using a live version
+If trying to use a live version Ubuntu, you should make the following adjustments. 
+
+1. Replace the live versions sources.list file with the one provided here. This can be accomplished using running the following shell command from the main replication folder
+```bash
+sudo mv sources.list /etc/apt/sources.list
+```
+This should be down between steps 3 and 4 in the [replication instructions, below](#replication).
+
+**WARNINGS**
+
+1. We did not test the live version and do not support it beyond what is listed here.
+2. Live versions store the OS in active memory, reducing what is available for actual use. This means that the available memory for replication will be noticably less than the computer's listed specs.
+
+### Other alternatives
+Another alternative that should work is the Windows sub-system for Linux (WSL). This is probably the easiest approach for Windows users and should work. However, we do not vouch for it and haven't tested it. 
+
+
 
 ## Replication
 From a fresh installation of Ubuntu 20.04.6, you will need to use the following steps to prepare the replication environment.
