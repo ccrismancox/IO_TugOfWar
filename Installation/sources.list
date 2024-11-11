@@ -1,0 +1,7 @@
+deb cdrom:[Ubuntu 20.04.6 LTS _Focal Fossa_ - Release amd64 (20230316)]/ focal main restricted
+deb http://archive.ubuntu.com/ubuntu/ focal main restricted
+deb http://security.ubuntu.com/ubuntu/ focal-security main restricted
+deb http://archive.ubuntu.com/ubuntu/ focal-updates main restricted
+deb http://archive.ubuntu.com/ubuntu/ focal universe
+deb http://archive.ubuntu.com/ubuntu/ focal-updates universe
+
