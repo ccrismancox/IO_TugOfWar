@@ -1,6 +1,6 @@
-# Replication instructions for ``Tug of War: The Heterogeneous Effects of Outbidding between Terrorist Groups''
+# Replication instructions for "Tug of War: The Heterogeneous Effects of Outbidding between Terrorist Groups"
 # Casey Crisman-Cox and Michael Gibilisco
-# Sept 2024
+# Nov 2024
 
 ## A note for replicators
 Conducting constrained maximum likelihood estimation (CMLE)  requires specialized (open source) software that we are only able to run using the Ubuntu Linux operating system. 
