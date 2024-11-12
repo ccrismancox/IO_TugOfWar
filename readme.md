@@ -5,7 +5,7 @@
 ## A note for replicators
 Conducting constrained maximum likelihood estimation (CMLE)  requires specialized (open source) software that we are only able to run using the Ubuntu Linux operating system. 
 We provide detailed setup instructions below. 
-All results were produced on a computer using Ubuntu 20.04.6 (Focal Fossa) using R 4.4.1 ("Race for Your Life") and Python 3.8.10. The entire archive should require no more than 2 GB of available RAM, but we a machine with at least 4GB to be safe.
+All results were produced on a computer using Ubuntu 20.04.6 (Focal Fossa) using R 4.4.1 ("Race for Your Life") and Python 3.8.10. The entire archive should require no more than 2 GB of available RAM, but we recommend a machine with at least 4GB to be safe.
 
 ## Replication package contents
 Files marked with (U) require Ubuntu, with the setup as described below.
@@ -128,7 +128,7 @@ This should be down between steps 3 and 4 in the [replication instructions, belo
 **WARNINGS**
 
 1. We did not test the live version and do not support it beyond what is listed here.
-2. Live versions store the OS in active memory, reducing what is available for actual use. This means that the available memory for replication will be noticably less than the computer's listed specs.
+2. Live versions store the OS in active memory, reducing what RAM is available for actual use. This means that the available memory for replication will be noticeably less than the computer's listed specs.
 
 ### Other alternatives
 Another alternative that should work is the Windows sub-system for Linux (WSL). This is probably the easiest approach for Windows users and should work. However, we do not vouch for it and haven't tested it. 
@@ -177,3 +177,11 @@ nohup bash replicateAll.sh &
 ```
 will run both of the above order.
 Finally, note that some of code files in the main text replication file also produce results for the appendix (e.g., some of Appendix G is actually produced by `modelFit.r`).
+
+Replicating just the main text results takes roughly 40 minutes on an ASUS laptop with 4GB RAM with an [Intel i3-5020U (4 threads)](https://www.intel.com/content/www/us/en/products/sku/84699/intel-core-i35020u-processor-3m-cache-2-20-ghz/specifications.html).
+Replicating the appendix without Appendix F takes roughly one day on the same machine. Replicating Appendix F takes roughly a week on this machine, but the code in `appendixF.r` is parallelized and timing improves in the number of available cores.
+
+
+### Final note on RAM concerns
+
+If the output in `nohup.out` text contains the phrase "killed" or outputs are missing in the output folder, then there is likely a memory problem. This can be due to either using a live version that eats up RAM or otherwise having insufficient available memory. Close all other applications (i.e., everything but the terminal running the code) and try again. If there are still issues, try upgrading to a higher memory machine or switching to a real installation rather than a live version.  This is most likely to occur when building the two-step corrected standard errors in `fitMainModel.py` and creating Table 2.
